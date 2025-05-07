@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Forex Quiz - Module 1, Lesson 3</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; max-width: 900px; margin: auto; }
+    h1 { color: #2c3e50; }
+    .question { margin-bottom: 20px; }
+    .question h3 { margin-bottom: 5px; }
+    .results { margin-top: 30px; font-size: 1.2em; font-weight: bold; color: #27ae60; }
+    button { padding: 10px 20px; background-color: #2980b9; color: white; border: none; cursor: pointer; border-radius: 5px; }
+    button:hover { background-color: #3498db; }
+  </style>
+</head>
+<body>
+  <h1>Forex Quiz – Module 1, Lesson 1</h1>
+  <form id="quizForm">
+    <!-- Questions -->
+    <div id="quiz"></div>
+    <button type="submit">Submit Quiz</button>
+  </form>
+  <div class="results" id="results"></div>
+
+  <script>
+    const questions = [
+    {
+      q: "What does the bid price represent in a Forex quote?",
+      options: ["The price to buy from the broker", "The price the broker buys from you", "The mid-point between buy/sell", "The lowest price of the day"],
+      answer: 1
+    },
+    {
+      q: "If EUR/USD = 1.1050 / 1.1052, what is the spread?",
+      options: ["0.0002", "2.0000", "0.0001", "0.0020"],
+      answer: 0
+    },
+    {
+      q: "When you sell EUR/USD, which price applies?",
+      options: ["Ask", "Spread", "Bid", "Mid"],
+      answer: 2
+    },
+    {
+      q: "When you buy EUR/USD, which price applies?",
+      options: ["Bid", "Ask", "Mid", "Spread"],
+      answer: 1
+    },
+    {
+      q: "What is the broker’s profit in a no-commission Forex model?",
+      options: ["Ask price", "Spread", "Bid price", "Pip value"],
+      answer: 1
+    },
+    {
+      q: "Which of these typically has the tightest spread?",
+      options: ["EUR/USD", "Exotic pairs", "Crypto pairs", "Low-volume pairs"],
+      answer: 0
+    },
+    {
+      q: "How do market conditions affect the spread?",
+      options: ["They don't", "They only affect ask", "They widen or tighten spreads", "They lower the bid"],
+      answer: 2
+    },
+    {
+      q: "Which spread type is preferred for predictability?",
+      options: ["Fixed spread", "Variable spread", "Wide spread", "Hidden spread"],
+      answer: 0
+    },
+    {
+      q: "Which type of trader prefers low variable spreads?",
+      options: ["Long-term investors", "Swing traders", "Scalpers", "Position traders"],
+      answer: 2
+    },
+    {
+      q: "What does a spread of 0.0002 equal in pips?",
+      options: ["20 pips", "2 pips", "0.2 pips", "200 pips"],
+      answer: 1
+    },
+    {
+      q: "Why is it important to trade during major market sessions?",
+      options: ["More leverage", "Wider spreads", "Tighter spreads and more liquidity", "Fixed spreads only"],
+      answer: 2
+    },
+    {
+      q: "What’s the first thing that happens when you open a trade?",
+      options: ["You break even", "You profit", "You pay commission", "You start at a small loss due to spread"],
+      answer: 3
+    },
+    {
+      q: "What is true of fixed spreads?",
+      options: ["They change with news", "They stay the same", "They are unpredictable", "They only apply at night"],
+      answer: 1
+    },
+    {
+      q: "Which of these pairs is likely to have a tighter spread?",
+      options: ["EUR/USD", "ZAR/JPY", "TRY/CHF", "BTC/USD"],
+      answer: 0
+    },
+    {
+      q: "Why should beginners consider fixed spreads?",
+      options: ["Higher profits", "Less volatility", "More predictability", "Guaranteed trades"],
+      answer: 2
+    },
+    {
+      q: "What must happen to cover the spread and make a profit?",
+      options: ["Price must stay still", "Price must move in your favor more than the spread", "Spread must reduce", "Volume must decrease"],
+      answer: 1
+    },
+    {
+      q: "Which is NOT a factor influencing spread size?",
+      options: ["Market volatility", "Time of day", "Currency liquidity", "Broker’s nationality"],
+      answer: 3
+    },
+    {
+      q: "In the quote GBP/USD = 1.2500 / 1.2503, what happens if you buy then price moves to 1.2530/1.2533?",
+      options: ["You lose 3 pips", "You profit 27 pips", "You lose 27 pips", "You break even"],
+      answer: 1
+    },
+    {
+      q: "What does a tighter spread imply for the trader?",
+      options: ["More cost", "Faster execution", "Lower cost of entry", "Higher risk"],
+      answer: 2
+    },
+    {
+      q: "If you buy a currency pair and immediately sell it, what happens?",
+      options: ["You break even", "You profit", "You lose the spread", "You gain leverage"],
+      answer: 2
+    },
+
+    // Deeper Thinking Questions
+    {
+      q: "Why might spreads widen during major economic news?",
+      options: ["Increased liquidity", "Decreased broker fees", "Increased volatility and risk", "Regulated price levels"],
+      answer: 2
+    },
+    {
+      q: "Why is spread a key factor in scalping strategies?",
+      options: ["Spreads affect long-term trades only", "Scalpers enter and exit quickly, so high spreads eat profits", "Scalpers don't care about cost", "Spreads don’t affect scalping"],
+      answer: 1
+    },
+    {
+      q: "What could a sudden jump in spread indicate during trading?",
+      options: ["High market stability", "Broker promotions", "Upcoming market-moving event or low liquidity", "Technical error"],
+      answer: 2
+    },
+    {
+      q: "How could a trader mitigate the cost of spread when trading frequently?",
+      options: ["Avoid all trades", "Use wider spread pairs", "Trade during high liquidity sessions and choose low-spread brokers", "Stick to crypto"],
+      answer: 2
+    },
+    {
+      q: "What does it mean if a broker consistently shows much wider spreads than others?",
+      options: ["They are ECN", "They provide better service", "Their profit model relies heavily on spread", "They offer lower leverage"],
+      answer: 2
+    },
+
+
+    ];
+
+    const quizContainer = document.getElementById("quiz");
+    questions.forEach((q, i) => {
+      const div = document.createElement("div");
+      div.className = "question";
+      div.innerHTML = `<h3>Q${i + 1}: ${q.q}</h3>` +
+        q.options.map((opt, j) => `
+          <label>
+            <input type="radio" name="q${i}" value="${j}" required> ${opt}
+          </label><br>`).join("");
+      quizContainer.appendChild(div);
+    });
+
+    document.getElementById("quizForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      let score = 0;
+      questions.forEach((q, i) => {
+        const selected = document.querySelector(`input[name='q${i}']:checked`);
+        if (selected && parseInt(selected.value) === q.answer) score++;
+      });
+      const percent = (score / questions.length) * 100;
+      document.getElementById("results").innerText = `You scored ${score} out of ${questions.length} (${percent.toFixed(2)}%)`;
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin Deposit Table</title>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+  <style>
+    table { border-collapse: collapse; width: 100%; margin-top: 20px; }
+    .bigtable { height: 300px; overflow-y: scroll;}
+    th, td { border: 1px solid #ccc; padding: 10px; text-align: center; }
+    img { width: 40px; height: 40px; border-radius: 50%; }
+    input[type="number"] { width: 100px; padding: 5px; }
+    button { padding: 5px 10px; cursor: pointer; }
+  </style>
+</head>
+<body >
+  <h2>Deposit Table (Admin)</h2>
+  <div class="bigtable">
+    <table id="depositTable">
+      <thead>
+        <tr>
+          <th>Profile</th>
+          <th>Name</th>
+          <th>Surname</th>
+          <th>Equity</th>
+          <th>Amount to Record (ZAR)</th>
+          <th>Save as Trade</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <script>
+    // Firebase config
+    const firebaseConfig = {
+      apiKey: "AIzaSyBIRVXFCPBpepPUEZz9aAbF-oVICVxTsec",
+      authDomain: "mt-trading-signup-and-log-in.firebaseapp.com",
+      databaseURL: "https://mt-trading-signup-and-log-in-default-rtdb.firebaseio.com",
+      projectId: "mt-trading-signup-and-log-in",
+      storageBucket: "mt-trading-signup-and-log-in.appspot.com",
+      messagingSenderId: "101302422584",
+      appId: "1:101302422584:web:07d472b05e81a6930beacd"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+    const storage = firebase.storage();
+
+    const tableBody = document.querySelector('#depositTable tbody');
+
+    // Fetch all users
+    db.ref('users').once('value').then(snapshot => {
+      snapshot.forEach(userSnap => {
+        const uid = userSnap.key;
+        const userData = userSnap.val();
+
+        const name = userData.name || 'N/A';
+        const surname = userData.surname || 'N/A';
+
+        // Create table row
+        const tr = document.createElement('tr');
+
+        // Profile picture
+        const profileCell = document.createElement('td');
+        const img = document.createElement('img');
+        storage.ref(`profile_pictures/${uid}`).getDownloadURL()
+          .then(url => img.src = url)
+          .catch(() => img.src = 'https://via.placeholder.com/40');
+        profileCell.appendChild(img);
+        tr.appendChild(profileCell);
+
+        // Name & Surname
+        tr.innerHTML += `<td>${name}</td><td>${surname}</td>`;
+
+        // Equity (realtime)
+        const equityCell = document.createElement('td');
+        const equitySpan = document.createElement('span');
+        equitySpan.id = `equity-${uid}`;
+        equitySpan.textContent = 'Loading...';
+        equityCell.appendChild(equitySpan);
+        tr.appendChild(equityCell);
+
+        // Set real-time listener for equity
+        db.ref(`users/${uid}/webtrade/equity`).on('value', snap => {
+          const val = snap.val();
+          document.getElementById(`equity-${uid}`).textContent = isNaN(val) ? '0.00' : parseFloat(val).toFixed(2);
+        });
+
+        // Input field for amount
+        const amountCell = document.createElement('td');
+        const input = document.createElement('input');
+        input.type = 'number';
+        input.step = '0.01';
+        input.placeholder = 'e.g. 250.00';
+        amountCell.appendChild(input);
+        tr.appendChild(amountCell);
+
+        // Save as trade button
+        const actionCell = document.createElement('td');
+        const btn = document.createElement('button');
+        btn.innerText = 'Save';
+        btn.onclick = () => {
+          const amount = parseFloat(input.value);
+          if (!isNaN(amount)) {
+            const time = new Date().toLocaleString();
+            db.ref(`users/${uid}/past-trades`).push({
+              symbol: 'BALANCE',
+              time: time,
+              profit: amount,
+              volume: '-',
+              entry: '-',
+              type: '-',
+              current: '-',
+              sl: '-',
+              tp: '-',
+            });
+            alert(`Recorded deposit of R${amount.toFixed(2)} for ${name}`);
+            input.value = '';
+          } else {
+            alert('Please enter a valid number.');
+          }
+        };
+        actionCell.appendChild(btn);
+        tr.appendChild(actionCell);
+
+        tableBody.appendChild(tr);
+      });
+    });
+  </script>
+</body>
+</html>

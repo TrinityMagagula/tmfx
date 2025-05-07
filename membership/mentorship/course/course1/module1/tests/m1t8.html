@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Forex Quiz - Module 1, Lesson 3</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; max-width: 900px; margin: auto; }
+    h1 { color: #2c3e50; }
+    .question { margin-bottom: 20px; }
+    .question h3 { margin-bottom: 5px; }
+    .results { margin-top: 30px; font-size: 1.2em; font-weight: bold; color: #27ae60; }
+    button { padding: 10px 20px; background-color: #2980b9; color: white; border: none; cursor: pointer; border-radius: 5px; }
+    button:hover { background-color: #3498db; }
+  </style>
+</head>
+<body>
+  <h1>Forex Quiz – Module 1, Lesson 1</h1>
+  <form id="quizForm">
+    <!-- Questions -->
+    <div id="quiz"></div>
+    <button type="submit">Submit Quiz</button>
+  </form>
+  <div class="results" id="results"></div>
+
+  <script>
+    const questions = [
+    
+    {
+    q: "Which trading session is considered the most active in the Forex market?",
+    options: ["Tokyo", "Sydney", "London", "New York"],
+    answer: 2
+  },
+  {
+    q: "What are the trading hours of the New York session in GMT?",
+    options: ["08:00 – 16:00", "13:00 – 21:00", "00:00 – 08:00", "22:00 – 06:00"],
+    answer: 1
+  },
+  {
+    q: "Which currency pairs are most commonly traded during the Tokyo session?",
+    options: ["EUR/USD, GBP/USD", "USD/JPY, EUR/JPY, GBP/JPY", "AUD/USD, NZD/USD", "EUR/GBP, GBP/CHF"],
+    answer: 1
+  },
+  {
+    q: "What makes the London-New York overlap the most volatile period?",
+    options: ["Only U.S. data is released", "No central banks are active", "It includes two major financial centers trading simultaneously", "Traders take profit before market close"],
+    answer: 2
+  },
+  {
+    q: "Which session marks the start of the Forex trading day?",
+    options: ["New York", "Tokyo", "Sydney", "London"],
+    answer: 2
+  },
+  {
+    q: "Why does the London session influence the rest of the trading day?",
+    options: ["Because it has the lowest volatility", "It overlaps with the Sydney session", "It involves many emerging markets", "It sets the tone due to high trading volume"],
+    answer: 3
+  },
+  {
+    q: "During which session would you expect AUD/USD to be most active?",
+    options: ["London", "Tokyo", "New York", "Sydney"],
+    answer: 3
+  },
+  {
+    q: "Which pair is least likely to be actively traded during the Sydney session?",
+    options: ["AUD/USD", "NZD/USD", "USD/JPY", "EUR/GBP"],
+    answer: 3
+  },
+  {
+    q: "What session is most likely to react to European news releases?",
+    options: ["New York", "Tokyo", "London", "Sydney"],
+    answer: 2
+  },
+  {
+    q: "What is a key characteristic of the Tokyo session?",
+    options: ["Highest volatility", "First session of the trading day", "Most USD data releases", "Focus on AUD pairs"],
+    answer: 1
+  },
+  {
+    q: "What happens during session overlaps in the Forex market?",
+    options: ["Liquidity decreases", "Volatility and liquidity increase", "Spreads widen", "Trading stops"],
+    answer: 1
+  },
+  {
+    q: "Which session has the lowest average trading volume?",
+    options: ["New York", "London", "Tokyo", "Sydney"],
+    answer: 3
+  },
+  {
+    q: "What is a benefit of higher liquidity in trading sessions?",
+    options: ["Increased slippage", "Better execution and tighter spreads", "More trading holidays", "Fewer currency options"],
+    answer: 1
+  },
+  {
+    q: "During which session are major U.S. economic reports typically released?",
+    options: ["Tokyo", "London", "New York", "Sydney"],
+    answer: 2
+  },
+  {
+    q: "Which currency pairs are typically active during the London session?",
+    options: ["EUR/USD, GBP/USD, USD/JPY", "AUD/USD, USD/CAD", "NZD/USD, EUR/CHF", "USD/CNH, USD/HKD"],
+    answer: 0
+  },
+  {
+    q: "What effect does overlapping sessions typically have on price movements?",
+    options: ["Smaller movements", "More stable prices", "Larger movements", "Reduced liquidity"],
+    answer: 2
+  },
+  {
+    q: "What type of traders may benefit from the Tokyo session?",
+    options: ["Those focusing on AUD news", "Traders targeting JPY pairs", "Traders using fundamental analysis only", "Investors trading gold"],
+    answer: 1
+  },
+  {
+    q: "Which session would you expect more action on NZD/USD?",
+    options: ["New York", "London", "Tokyo", "Sydney"],
+    answer: 3
+  },
+  {
+    q: "Which session overlaps with the Tokyo session?",
+    options: ["New York", "London", "Sydney", "None"],
+    answer: 2
+  },
+  {
+    q: "Which two sessions overlap between 13:00 and 16:00 GMT?",
+    options: ["Tokyo and Sydney", "London and New York", "London and Tokyo", "Sydney and New York"],
+    answer: 1
+  },
+
+  // Deeper-level understanding questions
+  {
+    q: "Why might a trader avoid opening new positions during the Sydney session?",
+    options: ["It is the weekend", "Market volatility is too high", "There is generally low liquidity and small price movements", "Too many economic events occur"],
+    answer: 2
+  },
+  {
+    q: "How could a trader take advantage of the London-New York overlap?",
+    options: ["By avoiding trading completely", "By focusing on less volatile pairs", "By using strategies that exploit high volatility and fast price movements", "By trading illiquid currency pairs"],
+    answer: 2
+  },
+  {
+    q: "If a trader specializes in trading economic news, which session is most important for them?",
+    options: ["Sydney", "Tokyo", "New York", "London"],
+    answer: 2
+  },
+  {
+    q: "Why might a long-term investor care about session overlaps?",
+    options: ["They influence major price turning points due to heavy institutional activity", "They help identify arbitrage opportunities", "They show holiday trading hours", "They allow for fixed spreads"],
+    answer: 0
+  },
+  {
+    q: "A trader wants to catch momentum after the London session starts. What should they be cautious about?",
+    options: ["Stable price action", "Sudden spikes from European data releases", "Low liquidity", "Quiet markets"],
+    answer: 1
+  },
+
+  // More regular knowledge questions
+  {
+    q: "Which trading session is typically quieter and provides fewer opportunities for day traders?",
+    options: ["London", "Sydney", "New York", "Tokyo"],
+    answer: 1
+  },
+  {
+    q: "Why is the London session considered a trend-setter?",
+    options: ["It comes before Tokyo", "It overlaps with Sydney", "It sees large institutional flows and major news releases", "It is the first session of the week"],
+    answer: 2
+  },
+  {
+    q: "Which time zone is used as the standard reference in global Forex trading?",
+    options: ["EST", "CET", "GMT", "UTC+9"],
+    answer: 2
+  },
+  {
+    q: "What makes trading during overlap periods attractive for scalpers?",
+    options: ["Wider spreads", "Greater volatility and faster execution", "Less market activity", "More economic holidays"],
+    answer: 1
+  },
+  {
+    q: "What is a common characteristic of the Tokyo session compared to London?",
+    options: ["Higher liquidity", "Higher volatility", "Lower volume and narrower ranges", "More USD reports"],
+    answer: 2
+  },
+
+    ];
+
+    const quizContainer = document.getElementById("quiz");
+    questions.forEach((q, i) => {
+      const div = document.createElement("div");
+      div.className = "question";
+      div.innerHTML = `<h3>Q${i + 1}: ${q.q}</h3>` +
+        q.options.map((opt, j) => `
+          <label>
+            <input type="radio" name="q${i}" value="${j}" required> ${opt}
+          </label><br>`).join("");
+      quizContainer.appendChild(div);
+    });
+
+    document.getElementById("quizForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      let score = 0;
+      questions.forEach((q, i) => {
+        const selected = document.querySelector(`input[name='q${i}']:checked`);
+        if (selected && parseInt(selected.value) === q.answer) score++;
+      });
+      const percent = (score / questions.length) * 100;
+      document.getElementById("results").innerText = `You scored ${score} out of ${questions.length} (${percent.toFixed(2)}%)`;
+    });
+  </script>
+</body>
+</html>

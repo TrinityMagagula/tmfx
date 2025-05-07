@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TM FX TRADING PLATFORM</title>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lightweight-charts@4.1.1/dist/lightweight-charts.standalone.production.js"></script>
+  <link rel="stylesheet" href="webterminal.css">
+
+</head>
+<body>
+<header>TM FX TRADING PLATFORM</header>
+
+
+<div class="container">
+  <div class="chart-container">
+
+
+
+
+
+    <div class="navbar">
+      <h1>TM FX Index</h1>
+      <select id="timeframe">
+        <option value="1m">M1</option>
+        <option value="5m">M5</option>
+        <option value="15m">M15</option>
+        <option value="30m">M30</option>
+        <option value="1h">H1</option>
+        <option value="4h">H4</option>
+        <option value="1d">D1</option>
+        <option value="1w">W1</option>
+        <option value="1mn">MN</option>
+      </select>
+    </div>
+  
+    <div id="chartContainer">
+      <div id="chart"></div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/lightweight-charts@4.1.1/dist/lightweight-charts.standalone.production.js"></script>
+  <script type="module" src="chart.js"></script>
+
+  
+
+
+
+
+
+
+
+  <div class="trade-panel">
+    <h2>Account Panel</h2>
+    <div class="profile-section">
+      <img id="profilePic" class="profile-pic" src="" alt="User Pic">
+      <span id="userName">Loading...</span>
+    </div>
+    <div class="panel-item"><span>Balance:</span><span id="balance">Loading...</span></div>
+    <div class="panel-item"><span>Equity:</span><span id="equity">Loading...</span></div>
+    <div class="panel-item"><span>Margin:</span><span id="margin">0</span></div>
+    <div class="panel-item"><span>Open PnL:</span><span id="pnl">0.00</span></div>
+    <div class="panel-item"><span>Current Price:</span><span id="price">0.00</span></div>
+    <div class="panel-item">
+      <span>Take Profit:</span><input class="panel-inputs" type="number" id="tp" value="0.00" />
+    </div>
+    <div class="panel-item">
+      <span>Stop Loss:</span><input class="panel-inputs" type="number" id="sl" value="0.00" />
+    </div>
+    <div class="panel-item">
+      <span>Lot Size:</span><input class="panel-inputs" type="number" id="lot" value="0.01" step="0.01" />
+    </div>
+    <div class="buttons">
+      <button class="buy-btn" onclick="trade('buy')">Buy</button>
+      <button class="sell-btn" onclick="trade('sell')">Sell</button>
+      <button class="close-btn" onclick="closeAllTrades()">Close All</button>
+    </div>
+  </div>
+</div>
+<div id="tradesContainer"  class="openTrades">
+  <div  style="position: absolute; margin-bottom: 5rem; text-align: center;">
+    <h2>Open Trades</h2>
+  </div>
+
+    <div style="margin-top: 5rem; overflow-y: scroll; max-height: 200px;">
+      <table>
+        <thead>
+          <tr>
+            <th>Symbol</th>
+            <th>Time</th>
+            <th>Type</th>
+            <th>Volume</th>
+            <th>Entry</th>
+            <th>TP</th>
+            <th>SL</th>
+            <th>Current</th>
+            <th>P/L</th>
+            <th>Modify</th>
+            <th>Close</th>
+          </tr>
+        </thead>
+        <tbody id="openTrades"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="history" id="historyContainer">
+  <div  style="position: absolute; margin-bottom: 5rem; text-align: center;">
+    <h2>Trade History</h2>
+  </div>
+
+
+  <div style="margin-top: 5rem; overflow-y: scroll; max-height: 200px;">
+    <table>
+      <thead>
+        <tr>
+          <th>Symbol</th>
+          <th>Time</th>
+          <th>Type</th>
+          <th>Volume</th>
+          <th>Entry</th>
+          <th>Close</th>
+          <th>TP</th>
+          <th>SL</th>
+          <th>P/L</th>
+          <th>Reason</th>
+        </tr>
+      </thead>
+      <tbody id="tradeHistory"></tbody>
+    </table>
+  </div>  
+</div>
+
+
+
+
+
+  <script>
+
+    const tradesToggleBtn = document.getElementById("tradesToggleBtn");
+    const tradesContainer = document.getElementById("tradesContainer");
+
+    tradesToggleBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      tradesContainer.classList.toggle("show");
+    });
+
+    document.addEventListener("click", (e) => {
+      if (window.innerWidth <= 640 && tradesContainer.classList.contains("show")) {
+        if (!tradesContainer.contains(e.target) && e.target !== tradesToggleBtn) {
+          tradesContainer.classList.remove("show");
+        }
+      }
+    });
+
+
+
+    const historyToggleBtn = document.getElementById("historyToggleBtn");
+    const historyContainer = document.getElementById("historyContainer");
+
+    historyToggleBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      historyContainer.classList.toggle("show");
+    });
+
+    document.addEventListener("click", (e) => {
+      if (window.innerWidth <= 640 && historyContainer.classList.contains("show")) {
+        if (!historyContainer.contains(e.target) && e.target !== historyToggleBtn) {
+          historyContainer.classList.remove("show");
+        }
+      }
+    });
+
+  </script>
+
+<script type="module" src="webterminal.js"></script>
+</body>
+<footer>
+  <p>&copy; 2024 TM FX TRADING (pty) Ltd. All rights reserved.</p>
+</footer>
+</html>

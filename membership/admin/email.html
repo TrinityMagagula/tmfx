@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Invoice - TM FX TRADING</title>
+  <style>
+    body {
+      background: #ccc;
+      margin: 0;
+      padding: 20px;
+      font-family: Arial, sans-serif;
+    }
+
+    .a4-invoice {
+      width: 210mm;
+      height: 297mm;
+      background: #fff;
+      margin: auto;
+      padding: 20mm;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+      box-sizing: border-box;
+      overflow: hidden;
+    }
+
+    .header, .company-details, .user-details, .footer {
+      margin-bottom: 20px;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      height: 60px;
+    }
+
+    h2 {
+      margin: 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    th, td {
+      border: 1px solid #ccc;
+      padding: 10px;
+      text-align: left;
+      font-size: 14px;
+    }
+
+    th {
+      background-color: #f2f2f2;
+    }
+
+    .total-row td {
+      font-weight: bold;
+    }
+
+    .print-button {
+      margin: 20px auto;
+      text-align: center;
+    }
+
+    .print-button button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    @media print {
+      body {
+        background: white;
+        margin: 0;
+        padding: 0;
+      }
+
+      .print-button {
+        display: none;
+      }
+
+      .a4-invoice {
+        width: 210mm;
+        height: 297mm;
+        margin: 0;
+        padding: 20mm;
+        box-shadow: none;
+        page-break-after: avoid;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="a4-invoice" id="invoice">
+  <div class="header">
+    <img src="logo.png" alt="TM FX Logo" class="logo" />
+    <div>
+      <h2>INVOICE</h2>
+      <p><strong>Date:</strong> <span id="date"></span></p>
+      <p><strong>Invoice #:</strong> INV-00123</p>
+    </div>
+  </div>
+
+  <div class="company-details">
+    <strong>TM FX TRADING PTY LTD</strong><br />
+    Stand No 0427, Sfunindlela Trust<br />
+    Kabokweni, Mpumalanga, 1245<br />
+    Reg No: K2024684842<br />
+    Email: support@tmfx.co.za
+  </div>
+
+  <div class="user-details">
+    <strong>Bill To:</strong><br />
+    John Doe<br />
+    123 Client Street<br />
+    Cape Town, Western Cape, 8000<br />
+    Email: johndoe@email.com
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Item</th>
+        <th>Description</th>
+        <th>Price (ZAR)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Mentorship</td>
+        <td>1-on-1 trading mentorship program</td>
+        <td>R200.00</td>
+      </tr>
+      <tr>
+        <td>Signals</td>
+        <td>Monthly premium signal subscription</td>
+        <td>R300.00</td>
+      </tr>
+      <tr>
+        <td>Competition</td>
+        <td>Entry to trading competition</td>
+        <td>R200.00</td>
+      </tr>
+      <tr>
+        <td>Course 1</td>
+        <td>Beginner to advanced trading course</td>
+        <td>R400.00</td>
+      </tr>
+      <tr class="total-row">
+        <td colspan="2">Total</td>
+        <td>R1,100.00</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="footer">
+    <strong>Banking Details:</strong><br />
+    Bank: Standard Bank<br />
+    Account Name: TM FX TRADING PTY LTD<br />
+    Account Number: 1234567890<br />
+    Branch Code: 051001<br />
+    Reference: Invoice # INV-00123
+  </div>
+</div>
+
+<div class="print-button">
+  <button onclick="window.print()">Print Invoice</button>
+</div>
+
+<script>
+  document.getElementById("date").textContent = new Date().toLocaleDateString();
+</script>
+</body>
+</html>

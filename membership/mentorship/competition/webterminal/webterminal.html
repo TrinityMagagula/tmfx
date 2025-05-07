@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TM FX TRADING PLATFORM</title>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
+  <link rel="stylesheet" href="webterminal.css">
+  <script src="https://cdn.jsdelivr.net/npm/lightweight-charts@4.1.1/dist/lightweight-charts.standalone.production.js"></script>
+  <script type="module" src="../webterminal/charts/chart.js"></script>
+  <script type="module" src="webterminal.js"></script>
+
+</head>
+<body>
+  <header>
+    <div class="containernav">
+        <div class="logo">
+            <h1>TM FX TRADING <span class="small-text">(pty) Ltd</span></h1>
+        </div>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="../competition.html">Competition</a></li>
+                <li><a href="../../../../index.html" onclick="logout(event)">Logout</a></li>
+            </ul>
+            <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+        </nav>
+    </div>
+
+        <script>
+        function toggleMenu() {
+            document.querySelector('.nav-links').classList.toggle('active');
+        }
+        
+        function logout(event) {
+            event.preventDefault();
+            signOut(auth).then(() => {
+                alert("You have been logged out.");
+                window.location.href = "index.html"; // Redirect to home page after alert
+            }).catch((error) => {
+                console.error("Logout error:", error);
+            });
+        }
+
+        let inactivityTime = function () {
+            let timer;
+            window.onload = resetTimer;
+            window.onmousemove = resetTimer;
+            window.onkeypress = resetTimer;
+
+            function logoutUser() {
+                signOut(auth).then(() => {
+                    alert("You have been logged out.");
+                    window.location.href = "index.html"; // Redirect after alert
+                }).catch((error) => {
+                    console.error("Logout error:", error);
+                });
+            }
+
+            function resetTimer() {
+                clearTimeout(timer);
+                timer = setTimeout(logoutUser, 600000); // Logout after 10 minutes of inactivity
+            }
+        };
+
+        inactivityTime();
+
+        function logout() {
+            alert("You have been logged out.");
+        }
+
+    </script>
+</header>
+
+<div class="container">
+  <div class="chart-container">
+    <div class="navbar">
+      <h1>TM FX Index</h1>
+      <a href="chart.html" style="color: aliceblue;">Full screen</a>
+      <select id="timeframe">
+        <option value="1m">M1</option>
+        <option value="5m">M5</option>
+        <option value="15m">M15</option>
+        <option value="30m">M30</option>
+        <option value="1h">H1</option>
+        <option value="4h">H4</option>
+        <option value="1d">D1</option>
+        <option value="1w">W1</option>
+        <option value="1mn">MN</option>
+      </select>
+    </div>
+  
+    <div id="chartContainer">
+      <div id="chart"></div>
+    </div>
+  </div>
+
+
+
+
+  <div class="trade-panel">
+    <h2>Account Panel</h2>
+    <div class="profile-section">
+      <img id="profilePic" class="profile-pic" src="" alt="User Pic">
+      <span id="userName">Loading...</span>
+    </div>
+    <div class="panel-item"><span>Balance:</span><span id="balance">Loading...</span></div>
+    <div class="panel-item"><span>Equity:</span><span id="equity">Loading...</span></div>
+    <div class="panel-item"><span>Margin:</span><span id="margin">0</span></div>
+    <div class="panel-item"><span>Free Margin:</span><span id="freemargin">0 ZAR</span></div>
+    <div class="panel-item"><span>Open PnL:</span><span id="pnl">0.00</span></div>
+    <div class="panel-item"><span>Current Price:</span><span id="price">0.00</span></div>
+    <div class="panel-item">
+      <span>Take Profit:</span><input class="panel-inputs" type="number" id="tp" value="0.00" />
+    </div>
+    <div class="panel-item">
+      <span>Stop Loss:</span><input class="panel-inputs" type="number" id="sl" value="0.00" />
+    </div>
+    <div class="panel-item">
+      <span>Lot Size:</span><input class="panel-inputs" type="number" id="lot" value="0.01" step="0.01" />
+    </div>
+    <div class="buttons">
+      <button class="buy-btn" onclick="trade('buy')">Buy</button>
+      <button class="sell-btn" onclick="trade('sell')">Sell</button>
+      <button class="close-btn" onclick="closeAllTrades()">Close All</button>
+    </div>
+  </div>
+</div>
+
+
+<div id="tradesContainer"  class="openTrades">
+  <div  style="position: absolute; margin-bottom: 5rem; text-align: center;">
+    <h2>Open Trades</h2>
+  </div>
+
+    <div style="margin-top: 5rem; overflow-y: scroll; max-height: 200px;">
+      <table>
+        <thead>
+          <tr>
+            <th>Symbol</th>
+            <th>Time</th>
+            <th>Type</th>
+            <th>Volume</th>
+            <th>Entry</th>
+            <th>TP</th>
+            <th>SL</th>
+            <th>Current</th>
+            <th>P/L</th>
+            <th>Modify</th>
+            <th>Close</th>
+          </tr>
+        </thead>
+        <tbody id="openTrades"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="history" id="historyContainer">
+  <div  style="position: absolute; margin-bottom: 5rem; text-align: center;">
+    <h2>Trade History</h2>
+  </div>
+
+
+  <div style="margin-top: 5rem; overflow-y: scroll; max-height: 200px;">
+    <table>
+      <thead>
+        <tr>
+          <th>Symbol</th>
+          <th>Time</th>
+          <th>Type</th>
+          <th>Volume</th>
+          <th>Entry</th>
+          <th>Close</th>
+          <th>TP</th>
+          <th>SL</th>
+          <th>P/L</th>
+          <th>Reason</th>
+        </tr>
+      </thead>
+      <tbody id="tradeHistory"></tbody>
+    </table>
+  </div>  
+</div>
+
+
+
+<script>
+// Firebase Init
+firebase.initializeApp({
+  apiKey: "AIzaSyBIRVXFCPBpepPUEZz9aAbF-oVICVxTsec",
+  authDomain: "mt-trading-signup-and-log-in.firebaseapp.com",
+  databaseURL: "https://mt-trading-signup-and-log-in-default-rtdb.firebaseio.com",
+  projectId: "mt-trading-signup-and-log-in",
+  storageBucket: "mt-trading-signup-and-log-in.appspot.com",
+  messagingSenderId: "101302422584",
+  appId: "1:101302422584:web:07d472b05e81a6930beacd"
+});
+
+const db = firebase.database();
+const auth = firebase.auth();
+const storage = firebase.storage();
+let currentUser;
+
+auth.onAuthStateChanged(user => {
+  if (user) {
+    currentUser = user;
+    const uid = user.uid;
+    db.ref(`users/${uid}/loginID`).once('value').then(snap => {
+      if (!snap.exists()) location.href = 'membership.html';
+      else initUser(uid);
+    });
+  } else {
+    location.href = 'signup.html';
+  }
+});
+
+function initUser(uid) {
+  db.ref(`users/${uid}/name`).once('value').then(snap => {
+    document.getElementById('userName').innerText = snap.val();
+  });
+
+  const defaultProfilePic = "https://firebasestorage.googleapis.com/v0/b/mt-trading-signup-and-log-in.appspot.com/o/tm%20fx.png?alt=media&token=4e6aded3-2796-4487-82d4-987b75ca18c1"; // Replace with your actual default pic URL
+  
+  storage.ref(`profile_pictures/${uid}`).getDownloadURL()
+    .then(url => {
+      document.getElementById('profilePic').src = url;
+    })
+    .catch(error => {
+      // If the profile picture doesn't exist or there's an error, use the default
+      document.getElementById('profilePic').src = defaultProfilePic;
+    });
+
+  const balanceRef = db.ref(`users/${uid}/webtrade/balance/`);
+  balanceRef.once('value').then(snap => {
+    if (!snap.exists()) balanceRef.set(0);
+    document.getElementById('balance').innerText = snap.val() + ' ZAR';
+  });
+
+  const equityRef = db.ref(`users/${uid}/webtrade/equity/`);
+  equityRef.once('value').then(snap => {
+    if (!snap.exists()) equityRef.set(0);
+    document.getElementById('equity').innerText = snap.val() + ' ZAR';
+  });
+
+  const marginRef = db.ref(`users/${uid}/webtrade/margin/`);
+  marginRef.once('value').then(snap => {
+    if (!snap.exists()) marginRef.set(0);
+    document.getElementById('margin').innerText = snap.val();
+  });
+
+  const pnlRef = db.ref(`users/${uid}/webtrade/pnl`);
+  pnlRef.once('value').then(snap => {
+    if (!snap.exists()) pnlRef.set(0);
+    document.getElementById('pnl').innerText = snap.val() + ' ZAR';
+  });
+
+  const priceRef = db.ref(`syntheticIndex/price/`);
+  priceRef.once('value').then(snap => {
+    if (!snap.exists()) priceRef.set(0);
+    document.getElementById('price').innerText = snap.val() + ' ZAR';
+  });
+
+  loadOpenTrades();
+  loadTradeHistory();
+  startAccountPanelRealtimeUpdates(uid);
+  calculateRealtimeBalance(uid);
+
+
+}
+
+function calculateRealtimeBalance(uid) {
+  const balanceRef = db.ref(`users/${uid}/webtrade/balance`);
+  const pastTradesRef = db.ref(`users/${uid}/past-trades`);
+
+  pastTradesRef.on('value', snap => {
+    let totalProfit = 0;
+    snap.forEach(trade => {
+      const profit = parseFloat(trade.val().profit || 0);
+      totalProfit += profit;
+    });
+
+    balanceRef.set(totalProfit.toFixed(2));
+  });
+}
+
+
+function startAccountPanelRealtimeUpdates(uid) {
+  const balanceRef = db.ref(`users/${uid}/webtrade/balance`);
+  const pnlRef = db.ref(`users/${uid}/webtrade/pnl`);
+  const marginRef = db.ref(`users/${uid}/webtrade/margin`);
+  const equityRef = db.ref(`users/${uid}/webtrade/equity`);
+  const freemarginRef = db.ref(`users/${uid}/webtrade/freemargin`);
+  const openTradesRef = db.ref(`users/${uid}/open-trades`);
+  const priceRef = db.ref('syntheticIndex/price');
+
+  let currentPrice = 0;
+  let openTrades = [];
+
+  balanceRef.on('value', snap => {
+    const balance = parseFloat(snap.val() || 0);
+    document.getElementById('balance').innerText = balance.toFixed(2) + ' ZAR';
+  });
+
+  pnlRef.on('value', snap => {
+    const pnl = parseFloat(snap.val() || 0);
+    const pnlEl = document.getElementById('pnl');
+    pnlEl.innerText = pnl.toFixed(2) + ' ZAR';
+    pnlEl.style.color = pnl >= 0 ? 'green' : 'red';
+  });
+
+  equityRef.on('value', snap => {
+    const equity = parseFloat(snap.val() || 0);
+    document.getElementById('equity').innerText = equity.toFixed(2) + ' ZAR';
+
+    // If equity <= 0, close all trades
+    if (equity <= 0) {
+      db.ref(`users/${uid}/open-trades`).once('value', snap => {
+        snap.forEach(tradeSnap => {
+          const tradeId = tradeSnap.key;
+          closeTrade(tradeId, 'Blown');
+        });
+      });
+    }
+  });
+
+  marginRef.on('value', snap => {
+    const margin = parseFloat(snap.val() || 0);
+    document.getElementById('margin').innerText = margin.toFixed(2);
+
+    // Update Free Margin
+    equityRef.once('value').then(eqSnap => {
+      const equity = parseFloat(eqSnap.val() || 0);
+      const freeMargin = equity - margin;
+      freemarginRef.set(freeMargin);
+      document.getElementById('freemargin').innerText = freeMargin.toFixed(2) + ' ZAR';
+    });
+  });
+
+  freemarginRef.on('value', snap => {
+    const freemargin = parseFloat(snap.val() || 0);
+    if (document.getElementById('freemargin')) {
+      document.getElementById('freemargin').innerText = freemargin.toFixed(2) + ' ZAR';
+    }
+  });
+
+  openTradesRef.on('value', snap => {
+    openTrades = [];
+    snap.forEach(tradeSnap => {
+      openTrades.push(tradeSnap.val());
+    });
+    updateTradeStats();
+  });
+
+  priceRef.on('value', snap => {
+    currentPrice = parseFloat(snap.val());
+    document.getElementById('price').innerText = currentPrice.toFixed(2) + ' ZAR';
+    updateTradeStats();
+  });
+
+  function updateTradeStats() {
+    let totalPnL = 0;
+    let totalMargin = 0;
+
+    openTrades.forEach(trade => {
+      const volume = parseFloat(trade.volume || 0);
+      const entry = parseFloat(trade.entry || 0);
+      const type = trade.type.toLowerCase();
+
+      let profit = 0;
+      if (type === 'buy') profit = (currentPrice - entry) * volume;
+      else profit = (entry - currentPrice) * volume;
+
+      totalPnL += profit;
+      totalMargin += volume * 100;
+    });
+
+    totalPnL = parseFloat(totalPnL.toFixed(2));
+    totalMargin = parseFloat(totalMargin.toFixed(2));
+
+    pnlRef.set(totalPnL);
+    marginRef.set(totalMargin);
+
+    balanceRef.once('value').then(balSnap => {
+      const balance = parseFloat(balSnap.val() || 0);
+      const equity = parseFloat((balance + totalPnL).toFixed(2));
+      equityRef.set(equity);
+      const freeMargin = equity - totalMargin;
+      freemarginRef.set(freeMargin);
+    });
+  }
+}
+
+
+
+// ✅ Realtime Listener: Only update 'current' in DOM and auto-close on SL/TP
+function startRealtimePriceListener() {
+  firebase.auth().onAuthStateChanged(user => {
+    if (user) {
+      const uid = user.uid;
+      db.ref('syntheticIndex/price/').on('value', snapshot => {
+        const price = snapshot.val();
+        const container = document.getElementById('openTrades');
+        const rows = container.getElementsByTagName('tr');
+        for (let row of rows) {
+          const tradeIdMatch = row.querySelector('td button.modify-btn')?.getAttribute('onclick')?.match(/'([^']+)'/);
+          if (tradeIdMatch && tradeIdMatch[1]) {
+            const id = tradeIdMatch[1];
+            const currentCell = document.getElementById(`current-${id}`);
+            const entryCell = document.getElementById(`entry-${id}`);
+            const profitCell = document.getElementById(`profit-${id}`);
+
+            if (currentCell && entryCell && profitCell) {
+              currentCell.innerText = price;
+
+              const entry = parseFloat(entryCell.innerText);
+              const type = row.cells[2].innerText.toLowerCase();
+              const volume = parseFloat(row.cells[3].innerText);
+
+              let profit = 0;
+              if (type === 'buy') {
+                profit = (price - entry) * volume;
+              } else {
+                profit = (entry - price) * volume;
+              }
+
+              profit = parseFloat(profit.toFixed(2));
+              profitCell.innerText = profit;
+              profitCell.style.color = profit < 0 ? 'red' : 'green';
+
+              // ✅ Read SL/TP from Firebase instead of input field
+              db.ref(`users/${uid}/open-trades/${id}`).once('value').then(tradeSnap => {
+                const trade = tradeSnap.val();
+                if (!trade) return;
+
+                const tp = parseFloat(trade.tp);
+                const sl = parseFloat(trade.sl);
+
+                if (type === 'buy') {
+                  if (price >= tp && tp !== 0) {
+                    closeTrade(id, 'TP Hit');
+                  } else if (price <= sl && sl !== 0) {
+                    closeTrade(id, 'SL Hit');
+                  }
+                } else if (type === 'sell') {
+                  if (price <= tp && tp !== 0) {
+                    closeTrade(id, 'TP Hit');
+                  } else if (price >= sl && sl !== 0) {
+                    closeTrade(id, 'SL Hit');
+                  }
+                }
+              });
+            }
+          }
+        }
+      });
+    }
+  });
+}
+
+
+function trade(type) {
+  const uid = currentUser?.uid;
+  if (!uid) {
+    alert("User not logged in");
+    return;
+  }
+
+  const lot = parseFloat(document.getElementById('lot').value);
+  const sl = parseFloat(document.getElementById('sl').value);
+  const tp = parseFloat(document.getElementById('tp').value);
+
+  if (isNaN(lot) || lot <= 0 || lot > 1) {
+    alert("Lot size must be between 0.01 and 1.00");
+    return;
+  }
+
+  const contractSize = 100000;
+  const leverage = 100;
+
+  // Get the current price
+  db.ref('syntheticIndex/price/').once('value').then(priceSnap => {
+    const price = parseFloat(priceSnap.val());
+
+    db.ref(`users/${uid}/webtrade`).once('value').then(userSnap => {
+      const userData = userSnap.val();
+      const freemargin = parseFloat(userData?.freemargin || 0);
+      const balance = parseFloat(userData?.balance || 0);
+
+      const marginRequired = (lot * contractSize) / leverage;
+
+      if (marginRequired > 0.9 * balance) {
+        alert("Not enough Margin, Check Lot Size");
+        return;
+      }
+
+      if (freemargin < 100) {
+        alert("Not Enough Free Margin");
+        return;
+      }
+
+      const validBuy =
+        type === 'buy' &&
+        (tp >= price || tp === 0) &&
+        (sl <= price || sl === 0);
+
+      const validSell =
+        type === 'sell' &&
+        (tp <= price || tp === 0) &&
+        (sl >= price || sl === 0);
+
+      if (validBuy || validSell) {
+        const tradeData = {
+          symbol: 'TM FX Index',
+          time: new Date().toLocaleString(),
+          volume: lot * 100,
+          entry: price,
+          sl,
+          tp,
+          type,
+          current: price,
+          profit: 0
+        };
+
+        const tradeId = Date.now();
+
+        const updates = {};
+        updates[`users/${uid}/open-trades/${tradeId}`] = tradeData;
+        updates[`users/${uid}/webtrade/freemargin`] = freemargin - 100;
+
+        db.ref().update(updates).then(() => {
+          loadOpenTrades(); // Update UI
+        }).catch(error => {
+          console.error("Trade error:", error);
+          alert("Failed to execute trade.");
+        });
+      } else {
+        alert("Invalid SL/TP for this trade type. Min lot = 0.01, Max lot = 1.00");
+      }
+    });
+  });
+}
+
+
+
+// ✅ Load once on page load
+window.addEventListener('load', () => {
+  startRealtimePriceListener();
+  loadOpenTrades();
+  loadTradeHistory();
+});
+
+// ✅ Close single trade
+function closeTrade(tradeId, reason = 'Manual Close') {
+  const uid = currentUser.uid;
+  const closeBtn = document.querySelector(`button.close-btn-small[onclick="closeTrade('${tradeId}')"]`);
+  if (closeBtn) {
+    closeBtn.disabled = true;
+    closeBtn.style.backgroundColor = 'grey';
+    closeBtn.style.cursor = 'not-allowed';
+  }
+
+  db.ref(`users/${uid}/open-trades/${tradeId}`).once('value').then(async tradeSnap => {
+    const trade = tradeSnap.val();
+
+    const priceSnap = await db.ref('syntheticIndex/price/').once('value');
+    const currentPrice = priceSnap.val();
+
+    let profit = 0;
+    if (trade.type === 'buy') {
+      profit = (currentPrice - trade.entry) * trade.volume;
+    } else {
+      profit = (trade.entry - currentPrice) * trade.volume;
+    }
+
+    profit = parseFloat(profit.toFixed(2));
+
+    const closedTrade = {
+      ...trade,
+      current: currentPrice,
+      profit,
+      reason
+    };
+
+    await db.ref(`users/${uid}/past-trades/${tradeId}`).set(closedTrade);
+    await db.ref(`users/${uid}/open-trades/${tradeId}`).remove();
+
+    loadOpenTrades();
+    loadTradeHistory();
+  });
+}
+
+
+// ✅ Close all trades
+function closeAllTrades() {
+  const uid = currentUser.uid;
+  db.ref(`users/${uid}/open-trades`).once('value').then(async snapshot => {
+    const priceSnap = await db.ref('syntheticIndex/price/').once('value');
+    const currentPrice = priceSnap.val();
+
+    const updates = {};
+    snapshot.forEach(tradeSnap => {
+      const trade = tradeSnap.val();
+      const id = tradeSnap.key;
+
+      let profit = 0;
+      if (trade.type === 'buy') {
+        profit = (currentPrice - trade.entry) * trade.volume;
+      } else {
+        profit = (trade.entry - currentPrice) * trade.volume;
+      }
+
+      profit = parseFloat(profit.toFixed(2));
+
+      updates[`users/${uid}/past-trades/${id}`] = {
+        ...trade,
+        current: currentPrice,
+        profit,
+        reason: "Manual Close"
+      };
+      updates[`users/${uid}/open-trades/${id}`] = null;
+    });
+
+    db.ref().update(updates).then(() => {
+      loadOpenTrades();
+      loadTradeHistory();
+    });
+  });
+}
+
+
+// ✅ Modify trade TP/SL with validation
+function modifyTrade(tradeId) {
+  const uid = currentUser.uid;
+  const tp = parseFloat(document.getElementById(`tp-${tradeId}`).value);
+  const sl = parseFloat(document.getElementById(`sl-${tradeId}`).value);
+  const type = document.querySelector(`#current-${tradeId}`).parentElement.children[2].innerText.toLowerCase();
+  const current = parseFloat(document.getElementById(`current-${tradeId}`).innerText);
+
+  if (type === 'buy') {
+    if ((tp >= current || tp === 0) && (sl <= current || sl === 0)) {
+      db.ref(`users/${uid}/open-trades/${tradeId}`).update({ tp, sl });
+    } else {
+      alert("Invalid TP/SL for Buy. TP must be >= current or 0, SL <= current or 0.");
+    }
+  } else {
+    if ((tp <= current || tp === 0) && (sl >= current || sl === 0)) {
+      db.ref(`users/${uid}/open-trades/${tradeId}`).update({ tp, sl });
+    } else {
+      alert("Invalid TP/SL for Sell. TP must be <= current or 0, SL >= current or 0.");
+    }
+  }
+}
+
+// ✅ Load open trades
+function loadOpenTrades() {
+  const uid = currentUser.uid;
+  db.ref(`users/${uid}/open-trades`).once('value').then(snapshot => {
+    const container = document.getElementById('openTrades');
+    container.innerHTML = '';
+    snapshot.forEach(child => {
+      const trade = child.val();
+
+      let profit = 0;
+      if (trade.type === 'buy') {
+        profit = (trade.current - trade.entry) * trade.volume;
+      } else {
+        profit = (trade.entry - trade.current) * trade.volume;
+      }
+
+      profit = parseFloat(profit.toFixed(2));
+      const profitLossColor = profit < 0 ? 'red' : 'green';
+
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${trade.symbol}</td>
+        <td>${trade.time}</td>
+        <td>${trade.type}</td>
+        <td>${trade.volume}</td>
+        <td id="entry-${child.key}">${trade.entry}</td>
+        <td><input type="number" id="tp-${child.key}" class="tp1" value="${trade.tp}" /></td>
+        <td><input type="number" id="sl-${child.key}" class="tp1" value="${trade.sl}" /></td>
+        <td id="current-${child.key}">${trade.current}</td>
+        <td id="profit-${child.key}" style="color:${profitLossColor}">${profit}</td>
+        <td><button class="modify-btn" onclick="modifyTrade('${child.key}')">Modify</button></td>
+        <td><button class="close-btn-small" onclick="closeTrade('${child.key}')">X</button></td>
+      `;
+      container.appendChild(row);
+    });
+  });
+}
+
+// ✅ Load past trades
+function loadTradeHistory() {
+  const uid = currentUser.uid;
+  db.ref(`users/${uid}/past-trades`).on('value', snapshot => {
+    const container = document.getElementById('tradeHistory');
+    container.innerHTML = '';
+    snapshot.forEach(child => {
+      const trade = child.val();
+      const profitLossColor = trade.profit < 0 ? 'red' : 'green';
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${trade.symbol}</td>
+        <td>${trade.time}</td>
+        <td>${trade.type}</td>
+        <td>${trade.volume}</td>
+        <td>${trade.entry}</td>
+        <td>${trade.current}</td>
+        <td>${trade.tp}</td>
+        <td>${trade.sl}</td>
+        <td style="color:${profitLossColor}">${trade.profit}</td>
+        <td>${trade.reason || ''}</td>
+      `;
+
+      container.appendChild(row);
+    });
+  });
+}
+
+
+
+</script>
+</body>
+<footer>
+  <p>&copy; 2024 TM FX TRADING (pty) Ltd. All rights reserved.</p>
+</footer>
+</html>

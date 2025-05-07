@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Forex Quiz - Module 1, Lesson 3</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; max-width: 900px; margin: auto; }
+    h1 { color: #2c3e50; }
+    .question { margin-bottom: 20px; }
+    .question h3 { margin-bottom: 5px; }
+    .results { margin-top: 30px; font-size: 1.2em; font-weight: bold; color: #27ae60; }
+    button { padding: 10px 20px; background-color: #2980b9; color: white; border: none; cursor: pointer; border-radius: 5px; }
+    button:hover { background-color: #3498db; }
+  </style>
+</head>
+<body>
+  <h1>Forex Quiz – Module 1, Lesson 1</h1>
+  <form id="quizForm">
+    <!-- Questions -->
+    <div id="quiz"></div>
+    <button type="submit">Submit Quiz</button>
+  </form>
+  <div class="results" id="results"></div>
+
+  <script>
+    const questions = [
+    {
+      q: "What does a currency pair consist of?",
+      options: ["Two countries", "A base and a quote currency", "Two stock prices", "Two exchanges"],
+      answer: 1
+    },
+    {
+      q: "In EUR/USD, which is the base currency?",
+      options: ["USD", "EUR", "Both", "Depends on trend"],
+      answer: 1
+    },
+    {
+      q: "If EUR/USD = 1.1000, what does it mean?",
+      options: ["1 USD = 1.10 EUR", "1 EUR = 1.10 USD", "Rate is falling", "Market is closed"],
+      answer: 1
+    },
+    {
+      q: "What happens if you buy EUR/USD and it rises?",
+      options: ["You lose", "You profit", "You break even", "You pay a fee"],
+      answer: 1
+    },
+    {
+      q: "What is another term for 'going long'?",
+      options: ["Selling", "Holding", "Buying", "Shorting"],
+      answer: 2
+    },
+    {
+      q: "What does 'going short' mean?",
+      options: ["Buy base currency", "Sell quote currency", "Sell base currency", "Buy both currencies"],
+      answer: 2
+    },
+    {
+      q: "Which of these is a major currency pair?",
+      options: ["EUR/AUD", "USD/ZAR", "EUR/USD", "GBP/JPY"],
+      answer: 2
+    },
+    {
+      q: "Major pairs always include which currency?",
+      options: ["EUR", "GBP", "USD", "JPY"],
+      answer: 2
+    },
+    {
+      q: "What are some characteristics of major pairs?",
+      options: ["Low liquidity, wide spreads", "High liquidity, tight spreads", "Unstable pricing", "Fixed value"],
+      answer: 1
+    },
+    {
+      q: "Which pair is considered a minor pair?",
+      options: ["USD/JPY", "EUR/USD", "EUR/GBP", "USD/MXN"],
+      answer: 2
+    },
+    {
+      q: "Minor pairs do NOT include which currency?",
+      options: ["JPY", "USD", "GBP", "CHF"],
+      answer: 1
+    },
+    {
+      q: "Which best describes minor pairs?",
+      options: ["Always include USD", "High liquidity", "Cross currency pairs", "Involve crypto"],
+      answer: 2
+    },
+    {
+      q: "Which of these is a minor currency pair?",
+      options: ["USD/ZAR", "EUR/JPY", "USD/CHF", "NZD/USD"],
+      answer: 1
+    },
+    {
+      q: "What is a typical downside of minor pairs?",
+      options: ["No volatility", "Wider spreads", "Fixed prices", "No trading access"],
+      answer: 1
+    },
+    {
+      q: "What defines exotic currency pairs?",
+      options: ["USD and any crypto", "Two major currencies", "Major + emerging economy currency", "Only Asian currencies"],
+      answer: 2
+    },
+    {
+      q: "What is a trait of exotic pairs?",
+      options: ["Tight spreads", "Low risk", "High volatility", "Low returns"],
+      answer: 2
+    },
+    {
+      q: "Which of the following is an exotic pair?",
+      options: ["USD/JPY", "USD/ZAR", "EUR/GBP", "AUD/USD"],
+      answer: 1
+    },
+    {
+      q: "Why are exotic pairs riskier?",
+      options: ["Low volume", "High liquidity", "Stable economies", "Easy to predict"],
+      answer: 0
+    },
+    {
+      q: "What happens if political instability affects the ZAR?",
+      options: ["USD/ZAR drops", "ZAR strengthens", "USD/ZAR rises", "No change"],
+      answer: 2
+    },
+    {
+      q: "What type of trader should avoid exotic pairs?",
+      options: ["Experienced", "Beginners", "Hedge funds", "Banks"],
+      answer: 1
+    },
+    {
+      q: "Which of these pairs includes an emerging market currency?",
+      options: ["USD/CHF", "USD/MXN", "EUR/JPY", "GBP/USD"],
+      answer: 1
+    },
+    {
+      q: "What is the typical spread on exotic pairs compared to majors?",
+      options: ["Smaller", "Equal", "Wider", "Zero"],
+      answer: 2
+    },
+    {
+      q: "Which pair does NOT belong in exotic pairs?",
+      options: ["USD/HKD", "EUR/SEK", "GBP/JPY", "USD/THB"],
+      answer: 2
+    },
+    {
+      q: "Which minor pair contains the Japanese Yen?",
+      options: ["CHF/JPY", "USD/JPY", "USD/CHF", "NZD/USD"],
+      answer: 0
+    },
+    {
+      q: "What does a rising EUR/GBP pair suggest?",
+      options: ["GBP is strengthening", "EUR is weakening", "EUR is strengthening", "No clear trend"],
+      answer: 2
+    },
+
+    // 5 Deeper Insight Questions
+    {
+      q: "Why do major pairs generally have lower spreads?",
+      options: ["Less interest", "High trading volume", "Infrequent trading", "More news coverage"],
+      answer: 1
+    },
+    {
+      q: "Which is a reason to avoid trading exotic pairs during news events?",
+      options: ["Lack of movement", "Low volatility", "High spreads and risk", "Too many trades"],
+      answer: 2
+    },
+    {
+      q: "How can global news affect minor pairs?",
+      options: ["It doesn’t", "Only affects USD pairs", "Can cause volatility and price swings", "Only lowers spread"],
+      answer: 2
+    },
+    {
+      q: "What’s the potential benefit of trading minor pairs?",
+      options: ["Fixed profit", "Better liquidity", "Greater volatility opportunities", "Guaranteed success"],
+      answer: 2
+    },
+    {
+      q: "Why is understanding base vs. quote currency essential in Forex?",
+      options: ["To avoid trading fees", "To know which broker to use", "To understand profit direction", "To open an account"],
+      answer: 2
+    },
+
+
+    ];
+
+    const quizContainer = document.getElementById("quiz");
+    questions.forEach((q, i) => {
+      const div = document.createElement("div");
+      div.className = "question";
+      div.innerHTML = `<h3>Q${i + 1}: ${q.q}</h3>` +
+        q.options.map((opt, j) => `
+          <label>
+            <input type="radio" name="q${i}" value="${j}" required> ${opt}
+          </label><br>`).join("");
+      quizContainer.appendChild(div);
+    });
+
+    document.getElementById("quizForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      let score = 0;
+      questions.forEach((q, i) => {
+        const selected = document.querySelector(`input[name='q${i}']:checked`);
+        if (selected && parseInt(selected.value) === q.answer) score++;
+      });
+      const percent = (score / questions.length) * 100;
+      document.getElementById("results").innerText = `You scored ${score} out of ${questions.length} (${percent.toFixed(2)}%)`;
+    });
+  </script>
+</body>
+</html>

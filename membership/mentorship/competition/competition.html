@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>TM FX COMPETITION ROOM</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdn.jsdelivr.net/npm/emoji-picker-element@^1/index.js" type="module"></script>
+  <link rel="stylesheet" href="competition.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+
+
+<body>
+  <header>
+  <div class="container">
+      <div class="logo">
+          <h1>TM FX TRADING <span class="small-text">(pty) Ltd</span></h1>
+      </div>
+      <nav>
+          <ul class="nav-links">
+              <li><a href="../../profile/profile.html">My Profile</a></li>
+              <li><a href="webterminal/webterminal.html">Web Terminal</a></li>
+              <li><a href="../../mentorship/mentorship.html">Mentorship</a></li>
+              <li><a href="../../admin/admin.html">Admin</a></li>
+              
+              <li id="leaveBtn"><a href="index.html" onclick="logout(event)">Logout</a></li>
+          </ul>
+          <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+      </nav>
+  </div>
+
+  <div class="ticker-strip" style="margin-top: 3rem;">
+      <iframe
+          src="https://www.tradingview-widget.com/embed-widget/ticker-tape/?locale=en#%7B%22symbols%22%3A%5B%7B%22proName%22%3A%22FOREXCOM%3ASPXUSD%22%2C%22title%22%3A%22S%26P%20500%22%7D%2C%7B%22proName%22%3A%22FOREXCOM%3ANSXUSD%22%2C%22title%22%3A%22US%20100%22%7D%2C%7B%22proName%22%3A%22FX_IDC%3AEURUSD%22%2C%22title%22%3A%22EUR%2FUSD%22%7D%2C%7B%22proName%22%3A%22BITSTAMP%3ABTCUSD%22%2C%22title%22%3A%22Bitcoin%22%7D%2C%7B%22proName%22%3A%22BITSTAMP%3AETHUSD%22%2C%22title%22%3A%22Ethereum%22%7D%5D%2C%22showSymbolLogo%22%3Atrue%2C%22colorTheme%22%3A%22dark%22%2C%22isTransparent%22%3Atrue%2C%22displayMode%22%3A%22adaptive%22%2C%22width%22%3A%22100%25%22%2C%22height%22%3A44%7D"
+          width="100%" height="50" frameborder="0" allowtransparency="true" scrolling="no">
+      </iframe>
+  </div>
+
+</header>
+
+    <script>
+        function toggleMenu() {
+            document.querySelector('.nav-links').classList.toggle('active');
+        }
+        
+        function logout(event) {
+            event.preventDefault();
+            signOut(auth).then(() => {
+                alert("You have been logged out.");
+                window.location.href = "index.html"; // Redirect to home page after alert
+            }).catch((error) => {
+                console.error("Logout error:", error);
+            });
+        }
+
+        let inactivityTime = function () {
+            let timer;
+            window.onload = resetTimer;
+            window.onmousemove = resetTimer;
+            window.onkeypress = resetTimer;
+
+            function logoutUser() {
+                signOut(auth).then(() => {
+                    alert("You have been logged out.");
+                    window.location.href = "index.html"; // Redirect after alert
+                }).catch((error) => {
+                    console.error("Logout error:", error);
+                });
+            }
+
+            function resetTimer() {
+                clearTimeout(timer);
+                timer = setTimeout(logoutUser, 600000); // Logout after 10 minutes of inactivity
+            }
+        };
+
+        inactivityTime();
+
+        function logout() {
+            alert("You have been logged out.");
+        }
+
+    </script>
+
+  <div>
+
+
+    <div>
+      <p>Logged in as <span id="username"></span></p>
+
+    </div>
+    <section class="top">
+        <div class="Details">
+            <h2 id="welcome-message">Welcome to the Competition</h2>
+                <div style="margin-top: 1rem;" id="user-details">
+                    <!-- User details will be populated here -->
+
+                </div>
+                
+
+                <div style="margin-top: 2rem;">
+                    <p><strong>Requirements:</strong></p>
+                    <li>Go to "My Profile" and update your profile details correctly</li>
+                    
+                    <li>Join Competition Whatsapp group for Announcements and engagement</li>
+                    <a href="https://chat.whatsapp.com/Hna9qvbY0jmFJ0fzwrqxUj" target="_blank" style="color: white; background-color: #3a3d3a; padding: 10px 20px; border-radius: 5px; text-decoration: none; display: inline-flex; align-items: center;">
+                        <i class="fab fa-whatsapp" style="margin-right: 8px;"></i> Competition Group Chat
+                    </a>
+
+                    <p style="margin-top: 1rem;"> <strong>Please note:</strong> Failure to complete above requirements will
+                        lead to account deletion and disqualification</p>
+                </div>
+
+        </div>
+
+        <div class="stats">
+            <h2>Statistics</h2>
+
+
+        </div>
+
+    </section>
+    <section></section>
+    <!-- Chat Section -->
+    <div class="chatbox-container" >
+      <!-- Leaderboard -->
+      <div class="leaderboard">
+        <h2>Leaderboard</h2>
+        <table id="leaderboardTable">
+          <thead>
+            <tr>
+              <th>Rank</th>
+              <th>Picture</th>
+              <th>Name</th>
+              <th>Province</th>
+              <th>Status</th>
+              <th>Equity</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Leaderboard rows will be populated here -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Chat Box -->
+      <div class="chat-box" id="chatBoxContainer" style="background-color: #0f0c29;">
+        <h2>Messages</h2>
+        <div class="user-icons" id="usersBox"></div>
+        <div id="chatBox" class="chat-messages"></div>
+        <div id="replyTo" class="reply-box hidden"></div>
+        <div class="chat-input-wrapper">
+          <button id="emojiBtn" class="text-2xl">😊</button>
+          <input class="textbox" id="msgInput" type="text" placeholder="Type message..." class="text1 flex-grow p-2 rounded bg-white/10 text-white placeholder-white/70 text-sm">
+          <input type="file" id="imageUpload" class="hidden" accept="image/*" />
+          <button id="uploadBtn" title="Upload Image" class="text-xl">📷</button>
+          <button id="recordBtn" title="Record Voice" class="text-xl">🎙️</button>
+          <button id="sendBtn" title="Send Message" class="text-green-400 text-xl">✅</button>
+        </div>
+        <emoji-picker id="emojiPicker"></emoji-picker>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating Chat Toggle Button (visible on small screens) -->
+    <button id="chatToggleBtn"
+    class="fixed bottom-4 right-4 bg-green-500 text-white p-3 rounded-full shadow-lg sm:hidden z-50">
+    💬
+    </button>
+
+    <script>
+    const chatToggleBtn = document.getElementById("chatToggleBtn");
+    const chatBoxContainer = document.getElementById("chatBoxContainer");
+
+    chatToggleBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      chatBoxContainer.classList.toggle("show");
+    });
+
+    document.addEventListener("click", (e) => {
+      if (window.innerWidth <= 640 && chatBoxContainer.classList.contains("show")) {
+        if (!chatBoxContainer.contains(e.target) && e.target !== chatToggleBtn) {
+          chatBoxContainer.classList.remove("show");
+        }
+      }
+    });
+  </script>
+      
+    <script type="module" src="competition.js"></script>
+
+</body>
+<footer>
+  <p>&copy; 2024 TM FX TRADING (pty) Ltd. All rights reserved.</p>
+</footer>
+</html>

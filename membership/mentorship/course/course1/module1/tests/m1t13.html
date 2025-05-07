@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Forex Quiz - Module 1, Lesson 3</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; max-width: 900px; margin: auto; }
+    h1 { color: #2c3e50; }
+    .question { margin-bottom: 20px; }
+    .question h3 { margin-bottom: 5px; }
+    .results { margin-top: 30px; font-size: 1.2em; font-weight: bold; color: #27ae60; }
+    button { padding: 10px 20px; background-color: #2980b9; color: white; border: none; cursor: pointer; border-radius: 5px; }
+    button:hover { background-color: #3498db; }
+  </style>
+</head>
+<body>
+  <h1>Forex Quiz – Module 1, Lesson 1</h1>
+  <form id="quizForm">
+    <!-- Questions -->
+    <div id="quiz"></div>
+    <button type="submit">Submit Quiz</button>
+  </form>
+  <div class="results" id="results"></div>
+
+  <script>
+    const questions = [
+    
+    {
+    q: "What is the primary role of a forex broker?",
+    options: ["To provide investment advice", "To guarantee profits", "To give traders access to the forex market", "To lend money to traders"],
+    answer: 2
+  },
+  {
+    q: "Which of the following is NOT a service typically offered by a forex broker?",
+    options: ["Trading platforms", "Leverage", "Interbank account access", "Charts and tools"],
+    answer: 2
+  },
+  {
+    q: "What does ECN stand for in ECN broker?",
+    options: ["Electronic Currency Network", "Electronic Communication Network", "Exchange Commission Network", "Earnings Control Node"],
+    answer: 1
+  },
+  {
+    q: "How does a Market Maker broker typically execute trades?",
+    options: ["Through a central exchange", "By sending them to a bank", "By taking the opposite side of your trade", "Via blockchain"],
+    answer: 2
+  },
+  {
+    q: "Which type of broker typically has lower spreads but may charge commissions?",
+    options: ["Market Maker", "A-book", "ECN/STP", "Retail broker"],
+    answer: 2
+  },
+  {
+    q: "What is a key advantage of using an ECN broker?",
+    options: ["Wider spreads", "Slower execution", "Access to real market liquidity", "Guaranteed profits"],
+    answer: 2
+  },
+  {
+    q: "What is the 'spread' in forex trading?",
+    options: ["The gap between two markets", "The fee charged by the government", "The difference between the bid and ask price", "A broker's commission"],
+    answer: 2
+  },
+  {
+    q: "If the bid is 1.1000 and ask is 1.1002, what is the spread?",
+    options: ["1 pip", "0 pips", "2 pips", "0.2 pips"],
+    answer: 2
+  },
+  {
+    q: "How much does a 2-pip spread cost on a 1 standard lot trade?",
+    options: ["$2", "$10", "$20", "$200"],
+    answer: 2
+  },
+  {
+    q: "What is a commission in forex trading?",
+    options: ["A tax paid to the government", "A bonus for traders", "A fee charged per trade by ECN brokers", "An overnight interest rate"],
+    answer: 2
+  },
+  {
+    q: "What is a swap fee in forex?",
+    options: ["A transaction fee", "An overnight interest charge or payment", "A one-time account fee", "A penalty for over-leveraging"],
+    answer: 1
+  },
+  {
+    q: "Which type of broker earns from spreads and commissions without trading against clients?",
+    options: ["Market Maker", "B-book", "A-book", "Dealer broker"],
+    answer: 2
+  },
+  {
+    q: "What is the potential conflict of interest with B-book brokers?",
+    options: ["They execute trades too quickly", "They lose money when you lose", "They profit when you lose", "They delay withdrawals"],
+    answer: 2
+  },
+  {
+    q: "What is a hybrid broker?",
+    options: ["A broker that only uses B-book", "A broker that doesn’t use spreads", "A broker that uses both A-book and B-book models", "A broker with no regulations"],
+    answer: 2
+  },
+  {
+    q: "What might happen if you become consistently profitable with a hybrid broker?",
+    options: ["They may block your account", "You’ll get higher spreads", "You may be switched to A-book execution", "You will get lower leverage"],
+    answer: 2
+  },
+  {
+    q: "Which regulator is known for strict oversight in forex markets?",
+    options: ["FBI", "FCA", "WHO", "IRS"],
+    answer: 1
+  },
+  {
+    q: "Which platform is commonly supported by many brokers?",
+    options: ["WhatsApp", "Zoom", "MT4/MT5", "Photoshop"],
+    answer: 2
+  },
+  {
+    q: "What is a key sign of a reliable broker?",
+    options: ["They offer free money", "They are regulated and transparent", "They have no terms and conditions", "They promise no losses"],
+    answer: 1
+  },
+  {
+    q: "What does 'execution speed' affect in trading?",
+    options: ["Withdrawal time", "Spread cost", "Order fulfillment timing", "Leverage calculation"],
+    answer: 2
+  },
+  {
+    q: "Which of the following is a risk with Market Maker brokers?",
+    options: ["Access to liquidity", "Fixed commissions", "Conflicts of interest", "Fast execution"],
+    answer: 2
+  },
+
+  // Deeper Understanding Questions
+
+  {
+    q: "Why might a B-book broker prefer that clients remain unprofitable?",
+    options: ["They earn higher commission", "They make more profit when clients lose", "It improves their reputation", "It reduces spread costs"],
+    answer: 1
+  },
+  {
+    q: "How does the hybrid broker model help the broker reduce risk?",
+    options: ["It avoids all regulation", "It hides fees", "It shifts profitable traders to A-book to avoid loss", "It increases swaps"],
+    answer: 2
+  },
+  {
+    q: "Why is regulation important when choosing a forex broker?",
+    options: ["It guarantees profit", "It ensures the broker can take the other side", "It protects traders from fraud and abuse", "It lowers swap fees"],
+    answer: 2
+  },
+  {
+    q: "How can a trader detect if their broker is manipulating prices?",
+    options: ["By checking leverage", "By analyzing platform bugs", "By observing slippage or delayed execution patterns", "By watching spreads only"],
+    answer: 2
+  },
+  {
+    q: "What is one risk of choosing a broker with very high leverage and no regulation?",
+    options: ["Higher swap fees", "Easier trading", "Increased risk of large losses and fraud", "More accurate charts"],
+    answer: 2
+  },
+  {
+    q: "Why might a scalper prefer an ECN broker over a Market Maker?",
+    options: ["ECN brokers allow delayed execution", "They want wider spreads", "Scalpers need tight spreads and fast execution", "ECN brokers allow leverage over 1000:1"],
+    answer: 2
+  },
+  {
+    q: "What can happen if your ECN broker has low liquidity providers?",
+    options: ["More reliable trades", "No impact", "Slippage and poor execution", "Lower swap fees"],
+    answer: 2
+  },
+  {
+    q: "Why should traders compare spreads and commissions together?",
+    options: ["Spreads matter more than commissions", "Only commissions affect cost", "Both impact the total cost of a trade", "None of them matter"],
+    answer: 2
+  },
+  {
+    q: "What is one strategy brokers use to manage risk from winning clients?",
+    options: ["Increase leverage", "Switch them to A-book execution", "Disable withdrawals", "Lower swaps"],
+    answer: 1
+  },
+  {
+    q: "How can using a demo account help you evaluate a broker?",
+    options: ["You get profits easily", "It shows how brokers make money", "It helps test execution, spreads, and support quality", "It earns you interest"],
+    answer: 2
+  },
+
+    ];
+
+    const quizContainer = document.getElementById("quiz");
+    questions.forEach((q, i) => {
+      const div = document.createElement("div");
+      div.className = "question";
+      div.innerHTML = `<h3>Q${i + 1}: ${q.q}</h3>` +
+        q.options.map((opt, j) => `
+          <label>
+            <input type="radio" name="q${i}" value="${j}" required> ${opt}
+          </label><br>`).join("");
+      quizContainer.appendChild(div);
+    });
+
+    document.getElementById("quizForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      let score = 0;
+      questions.forEach((q, i) => {
+        const selected = document.querySelector(`input[name='q${i}']:checked`);
+        if (selected && parseInt(selected.value) === q.answer) score++;
+      });
+      const percent = (score / questions.length) * 100;
+      document.getElementById("results").innerText = `You scored ${score} out of ${questions.length} (${percent.toFixed(2)}%)`;
+    });
+  </script>
+</body>
+</html>

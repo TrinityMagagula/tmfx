@@ -1,0 +1,43 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TM FX TRADING WALLET</title>
+  <link rel="stylesheet" href="subsheader.css">
+  <link rel="stylesheet" href="footer.css">
+</head>
+
+<body style="background-color: #141b31">
+    <header>
+        <div class="containernav">
+            <div class="logo">
+                <h1>
+                    TM FX TRADING WALLET
+                        <span class="small-text">
+                            (pty) Ltd
+                        </span>
+                </h1>
+            </div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="subscriptions.html">Subscriptions</a></li>
+                    <li><a href="wallet.html">Wallet</a></li>
+                    <li><a href="index1.html" onclick="logout(event)">Logout</a></li>
+                </ul>
+                <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+            </nav>
+        </div>
+
+        <script>
+            function toggleMenu() {
+                document.querySelector('.nav-links').classList.toggle('active');
+            }
+            
+        </script>
+    </header>
+</body>
+<footer class="footer">
+    <p>&copy; 2024 TM FX TRADING (pty) Ltd. All rights reserved.</p>
+</footer>

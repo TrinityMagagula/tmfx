@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TM FX TRADING Wallet (pty) Ltd - Sign Up</title>
+    <link rel="icon" href="images/logo 32.png" type="image/png">
+    <link rel="stylesheet" href="signup.css">
+
+    <script type="module" src="signup.js"></script>
+    <script>
+        function toggleMenu() {
+            const navLinks = document.getElementById('nav-links');
+            navLinks.classList.toggle('show');
+        }
+    </script>
+
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <h1>TM FX TRADING <span class="small-text">(pty) Ltd</span></h1>
+            <nav>
+                <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+                <ul id="nav-links">
+                    <li><a href="../login/login.html" id="login-button">Login</a></li>
+                    <li><a href="../index.html">Home</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section id="signup-section">
+        <h2>Sign Up</h2>
+        <form id="signup-form">
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" required>
+            <small class="error" id="name-error"></small>
+
+            <label for="surname">Surname</label>
+            <input type="text" id="surname" name="surname" required>
+            <small class="error" id="surname-error"></small>
+
+            <label for="birthdate">Birth Date</label>
+            <input type="date" id="birthdate" name="birthdate" required>
+            <small class="error" id="birthdate-error"></small>
+
+            <label for="phone">Cellphone Number</label>
+            <input type="tel" id="phone" name="phone" required>
+            <small class="error" id="phone-error"></small>
+
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required>
+            <small class="error" id="email-error"></small>
+
+            <label for="password">Create Password</label>
+            <input type="password" id="password" name="password" required>
+            <small class="error" id="password-error"></small>
+
+            <label for="confirm-password">Confirm Password</label>
+            <input type="password" id="confirm-password" name="confirm-password" required>
+            <small class="error" id="confirm-password-error"></small>
+
+            <label for="Agent">Referral Code</label>
+            <input type="number" id="Agent" name="Agent">
+            <small class="error" id="Agent-error"></small>
+
+            <button type="submit">Register</button>
+        </form>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 TM FX TRADING (pty) Ltd. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>

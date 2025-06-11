@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TM Sales and Marketing | Direct Marketing Solutions</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #e74c3c;
+            --accent-color: #3498db;
+            --light-color: #ecf0f1;
+            --dark-color: #2c3e50;
+            --text-color: #333;
+            --text-light: #7f8c8d;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: #f9f9f9;
+        }
+        
+        a {
+            text-decoration: none;
+            color: var(--primary-color);
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header & Navigation */
+        header {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+        
+        .logo span {
+            color: var(--secondary-color);
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 30px;
+        }
+        
+        nav ul li a {
+            font-weight: 600;
+            transition: color 0.3s;
+            position: relative;
+        }
+        
+        nav ul li a:hover {
+            color: var(--secondary-color);
+        }
+        
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background: var(--secondary-color);
+            bottom: -5px;
+            left: 0;
+            transition: width 0.3s;
+        }
+        
+        nav ul li a:hover::after {
+            width: 100%;
+        }
+        
+        .menu-toggle {
+            display: none;
+            cursor: pointer;
+            font-size: 24px;
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(44, 62, 80, 0.8), rgba(44, 62, 80, 0.8)), url('https://images.unsplash.com/photo-1551434678-e076c223a692?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80') no-repeat center center/cover;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            color: white;
+            margin-top: 60px;
+        }
+        
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            animation: fadeIn 1s ease-in-out;
+        }
+        
+        .hero p {
+            font-size: 20px;
+            margin-bottom: 30px;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: var(--secondary-color);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 5px;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        .btn:hover {
+            background: #c0392b;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 2px solid white;
+            margin-left: 15px;
+        }
+        
+        .btn-outline:hover {
+            background: white;
+            color: var(--secondary-color);
+        }
+        
+        /* About Section */
+        .section {
+            padding: 80px 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .section-title h2 {
+            font-size: 36px;
+            color: var(--primary-color);
+            position: relative;
+            display: inline-block;
+            padding-bottom: 15px;
+        }
+        
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            width: 70px;
+            height: 3px;
+            background: var(--secondary-color);
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .about-content {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 40px;
+        }
+        
+        .about-text {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .about-text h3 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+        
+        .about-text p {
+            margin-bottom: 15px;
+            color: var(--text-light);
+        }
+        
+        .about-image {
+            flex: 1;
+            min-width: 300px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+        
+        .about-image:hover {
+            transform: translateY(-10px);
+        }
+        
+        .about-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        /* Services Section */
+        .services {
+            background-color: var(--light-color);
+        }
+        
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .service-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .service-icon {
+            background: var(--primary-color);
+            color: white;
+            font-size: 40px;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .service-content {
+            padding: 30px;
+        }
+        
+        .service-content h3 {
+            font-size: 22px;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+        
+        .service-content p {
+            color: var(--text-light);
+            margin-bottom: 20px;
+        }
+        
+        .service-content ul {
+            margin-bottom: 20px;
+            padding-left: 20px;
+        }
+        
+        .service-content ul li {
+            margin-bottom: 10px;
+            color: var(--text-light);
+        }
+        
+        /* Clients Section */
+        .clients {
+            text-align: center;
+        }
+        
+        .clients-content {
+            max-width: 800px;
+            margin: 0 auto 50px;
+        }
+        
+        .clients-content p {
+            color: var(--text-light);
+            margin-bottom: 20px;
+        }
+        
+        .client-logos {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .client-logo {
+            width: 150px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            filter: grayscale(100%);
+            opacity: 0.7;
+            transition: all 0.3s;
+        }
+        
+        .client-logo:hover {
+            filter: grayscale(0);
+            opacity: 1;
+        }
+        
+        .client-logo img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+        
+        /* Vacancies Section */
+        .vacancies {
+            background-color: var(--light-color);
+        }
+        
+        .vacancy-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .vacancy-content p {
+            color: var(--text-light);
+            margin-bottom: 20px;
+        }
+        
+        .vacancy-list {
+            margin: 30px 0;
+        }
+        
+        .vacancy-list h3 {
+            font-size: 22px;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+        
+        .vacancy-list ul {
+            margin-bottom: 30px;
+            padding-left: 20px;
+        }
+        
+        .vacancy-list ul li {
+            margin-bottom: 10px;
+            color: var(--text-light);
+        }
+        
+        /* Contact Section */
+        .contact {
+            background: linear-gradient(rgba(44, 62, 80, 0.9), rgba(44, 62, 80, 0.9)), url('https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80') no-repeat center center/cover;
+            color: white;
+            text-align: center;
+        }
+        
+        .contact .section-title h2 {
+            color: white;
+        }
+        
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 40px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.9);
+        }
+        
+        .form-group textarea {
+            height: 150px;
+            resize: vertical;
+        }
+        
+        /* Footer */
+        footer {
+            background: var(--dark-color);
+            color: white;
+            padding: 50px 0 20px;
+        }
+        
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-column {
+            flex: 1;
+            min-width: 250px;
+        }
+        
+        .footer-column h3 {
+            font-size: 20px;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            width: 40px;
+            height: 2px;
+            background: var(--secondary-color);
+            bottom: 0;
+            left: 0;
+        }
+        
+        .footer-column p {
+            margin-bottom: 15px;
+            color: #bdc3c7;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+            list-style: none;
+        }
+        
+        .footer-links a {
+            color: #bdc3c7;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: var(--secondary-color);
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: white;
+            transition: all 0.3s;
+        }
+        
+        .social-links a:hover {
+            background: var(--secondary-color);
+            transform: translateY(-3px);
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #bdc3c7;
+            font-size: 14px;
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 36px;
+            }
+            
+            .hero p {
+                font-size: 18px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+            
+            nav {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: white;
+                padding: 20px;
+                box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+                transform: translateY(-150%);
+                transition: transform 0.3s;
+            }
+            
+            nav.active {
+                transform: translateY(0);
+            }
+            
+            nav ul {
+                flex-direction: column;
+            }
+            
+            nav ul li {
+                margin: 10px 0;
+            }
+            
+            .hero h1 {
+                font-size: 32px;
+            }
+            
+            .hero p {
+                font-size: 16px;
+            }
+            
+            .btn {
+                padding: 10px 20px;
+                font-size: 14px;
+            }
+            
+            .section {
+                padding: 60px 0;
+            }
+            
+            .section-title h2 {
+                font-size: 30px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .hero h1 {
+                font-size: 28px;
+            }
+            
+            .btn-group {
+                display: flex;
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .btn-outline {
+                margin-left: 0;
+            }
+            
+            .about-image {
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <a href="#" class="logo">TM <span>SALES AND MARKETING</span></a>
+            <div class="menu-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#about">About Us</a></li>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#clients">Clients</a></li>
+                    <li><a href="#vacancies">Vacancies</a></li>
+                    <li><a href="#contact">Contact Us</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container hero-content">
+            <h1>Elevate Your Brand with Powerful Marketing Solutions</h1>
+            <p>TM Sales and Marketing delivers exceptional face-to-face and digital sales and marketing strategies that drive growth and create meaningful customer connections.</p>
+            <div class="btn-group">
+                <a href="#services" class="btn">Our Services</a>
+                <a href="#contact" class="btn btn-outline">Get In Touch</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="section" id="about">
+        <div class="container">
+            <div class="section-title">
+                <h2>About Us</h2>
+            </div>
+            <div class="about-content">
+                <div class="about-text">
+                    <h3>Your Trusted Partner in Sales & Marketing</h3>
+                    <p>TM Sales and Marketing is a dynamic marketing firm specializing in both direct face-to-face sales and marketing, comprehensive digital sales and marketing solutions. We bridge the gap between traditional and modern marketing approaches to deliver exceptional results for our clients.</p>
+                    <p>Founded on principles of integrity, innovation, and customer focus, we've grown to become a trusted partner for businesses looking to expand their reach and increase their sales performance across South Africa.</p>
+                    <p>Our team combines years of industry experience with fresh perspectives to create marketing campaigns that resonate with your target audience and deliver measurable ROI.</p>
+                </div>
+                <div class="about-image">
+                    <img src="https://images.unsplash.com/photo-1521791055366-0d553872125f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1469&q=80" alt="Team Meeting">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="section services" id="services">
+        <div class="container">
+            <div class="section-title">
+                <h2>Our Services</h2>
+            </div>
+            <div class="services-grid">
+                <!-- Face-to-Face Marketing -->
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-handshake"></i>
+                    </div>
+                    <div class="service-content">
+                        <h3>Face-to-Face Sales and Marketing</h3>
+                        <p>Our direct sales and marketing solutions create personal connections that digital simply can't match. We specialize in high-impact, in-person sales and marketing strategies that deliver results.</p>
+                        <h4>Key Advantages:</h4>
+                        <ul>
+                            <li>Immediate customer feedback and engagement</li>
+                            <li>Higher conversion rates through personal interaction</li>
+                            <li>Builds trust and brand loyalty quickly</li>
+                            <li>Effective for complex products requiring explanation</li>
+                            <li>Creates memorable brand experiences</li>
+                        </ul>
+                        <p>Our trained professionals represent your brand with expertise, delivering your message with passion and precision in high-traffic locations and targeted events.</p>
+                    </div>
+                </div>
+                
+                <!-- Online Marketing -->
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-globe"></i>
+                    </div>
+                    <div class="service-content">
+                        <h3>Online Marketing</h3>
+                        <p>Expand your digital footprint with our comprehensive online marketing services designed to increase visibility and drive conversions.</p>
+                        <h4>Key Advantages:</h4>
+                        <ul>
+                            <li>24/7 brand presence and accessibility</li>
+                            <li>Precise targeting based on demographics and behavior</li>
+                            <li>Scalable campaigns with measurable analytics</li>
+                            <li>Cost-effective compared to traditional media</li>
+                            <li>Global reach with local targeting capabilities</li>
+                        </ul>
+                        <p>From social media management to SEO and PPC campaigns, we create digital strategies that complement your offline efforts for a unified brand experience.</p>
+                    </div>
+                </div>
+                
+                <!-- Integrated Solutions -->
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-sync-alt"></i>
+                    </div>
+                    <div class="service-content">
+                        <h3>Integrated Marketing Solutions</h3>
+                        <p>The most powerful approach combines both face-to-face and digital strategies for maximum impact.</p>
+                        <h4>Our Integrated Approach:</h4>
+                        <ul>
+                            <li>Seamless brand messaging across all channels</li>
+                            <li>Digital follow-up after in-person interactions</li>
+                            <li>Geo-targeted digital ads supporting field teams</li>
+                            <li>Data collection for personalized marketing</li>
+                            <li>Comprehensive performance tracking</li>
+                        </ul>
+                        <p>We design campaigns that leverage the strengths of both approaches, creating a marketing ecosystem that delivers superior results.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Clients Section -->
+    <section class="section clients" id="clients">
+        <div class="container">
+            <div class="section-title">
+                <h2>Partner With Us</h2>
+            </div>
+            <div class="clients-content">
+                <p>Join forces with TM Sales and Marketing to amplify your brand presence and accelerate your sales growth across South Africa. Our unique combination of direct marketing expertise and digital proficiency creates unparalleled opportunities for your business.</p>
+                <p>When you partner with us, you gain access to:</p>
+                <ul style="list-style-type: none; text-align: left; max-width: 600px; margin: 20px auto;">
+                    <li><i class="fas fa-check" style="color: var(--secondary-color); margin-right: 10px;"></i> A dedicated team of marketing professionals</li>
+                    <li><i class="fas fa-check" style="color: var(--secondary-color); margin-right: 10px;"></i> Customized campaigns tailored to your objectives</li>
+                    <li><i class="fas fa-check" style="color: var(--secondary-color); margin-right: 10px;"></i> Multi-channel marketing strategies</li>
+                    <li><i class="fas fa-check" style="color: var(--secondary-color); margin-right: 10px;"></i> Detailed performance analytics</li>
+                    <li><i class="fas fa-check" style="color: var(--secondary-color); margin-right: 10px;"></i> Continuous optimization based on results</li>
+                </ul>
+                <p>Whether you're launching a new product, entering a new market, or looking to revitalize your existing marketing efforts, we have the tools, talent, and techniques to deliver exceptional outcomes.</p>
+                <a href="partners.html" class="btn">Learn More About Partnership</a>
+            </div>
+            <div>
+                <h1>Active Clients</h1>
+            </div>
+            <div class="client-logos">
+                
+                <div class="client-logo">
+                    <img src="https://firebasestorage.googleapis.com/v0/b/mt-trading-signup-and-log-in.appspot.com/o/tm%20fx.png?alt=media&token=4e6aded3-2796-4487-82d4-987b75ca18c1" alt="Client Logo">
+                </div>
+                
+            </div>
+        </div>
+    </section>
+
+    <!-- Vacancies Section -->
+    <section class="section vacancies" id="vacancies">
+        <div class="container">
+            <div class="section-title">
+                <h2>Training & Mentorship</h2>
+            </div>
+            <div class="vacancy-content">
+                <p>At TM Sales and Marketing, we're committed to developing the next generation of sales and marketing professionals through our comprehensive training and mentorship program. This paid program is designed to equip participants with the skills, knowledge, and experience needed to excel in sales and marketing careers.</p>
+                
+                <div class="vacancy-list">
+                    <h3>Program Highlights:</h3>
+                    <ul>
+                        <li>Hands-on training in both direct and digital marketing techniques</li>
+                        <li>Personalized mentorship from industry experts</li>
+                        <li>Practical experience working with real client campaigns</li>
+                        <li>Business ownership fundamentals for entrepreneurial paths</li>
+                        <li>Portfolio development showcasing your achievements</li>
+                    </ul>
+                </div>
+                
+                <div class="vacancy-list">
+                    <h3>Characteristics We Develop:</h3>
+                    <p>Our program focuses on cultivating these essential qualities of top-performing sales and marketing professionals:</p>
+                    <ul>
+                        <li><strong>Communication Excellence:</strong> Mastering both verbal and non-verbal communication</li>
+                        <li><strong>Product Knowledge:</strong> Deep understanding of products and value propositions</li>
+                        <li><strong>Persuasion Skills:</strong> Ethical influence and negotiation techniques</li>
+                        <li><strong>Resilience:</strong> Handling rejection and maintaining motivation</li>
+                        <li><strong>Adaptability:</strong> Adjusting approaches based on customer needs</li>
+                        <li><strong>Time Management:</strong> Prioritizing tasks for maximum productivity</li>
+                        <li><strong>Digital Proficiency:</strong> Leveraging technology for sales success</li>
+                        <li><strong>Emotional Intelligence:</strong> Reading and responding to customer emotions</li>
+                    </ul>
+                </div>
+                
+                <div class="vacancy-list">
+                    <h3>Program Structure:</h3>
+                    <p>Our 12-week intensive program combines classroom learning with field experience:</p>
+                    <ul>
+                        <li>Weeks 1-4: Core sales techniques and marketing fundamentals</li>
+                        <li>Weeks 5-8: Specialization in chosen area (direct sales/digital marketing)</li>
+                        <li>Weeks 9-12: Client project implementation with mentor supervision</li>
+                        <li>Graduation: Certification and portfolio presentation</li>
+                    </ul>
+                    <p>Participants receive a competitive stipend during the program with performance-based bonuses available.</p>
+                </div>
+                
+                <a href="vacancies.html" class="btn">Apply for Training Program</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="section contact" id="contact">
+        <div class="container">
+            <div class="section-title">
+                <h2>Contact Us</h2>
+            </div>
+            <div class="contact-form">
+                <form>
+                    <div class="form-group">
+                        <label for="name">Your Name</label>
+                        <input type="text" id="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone">
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Your Message</label>
+                        <textarea id="message" required></textarea>
+                    </div>
+                    <button type="submit" class="btn">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>About TM Sales</h3>
+                    <p>TM Sales and Marketing is a premier marketing firm specializing in integrated direct and digital marketing solutions that drive growth and create meaningful customer connections.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#about">About Us</a></li>
+                        <li><a href="#services">Services</a></li>
+                        <li><a href="#clients">Clients</a></li>
+                        <li><a href="#vacancies">Vacancies</a></li>
+                        <li><a href="#contact">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contact Info</h3>
+                    <p><i class="fas fa-map-marker-alt" style="margin-right: 10px;"></i> 123 Marketing Street, Johannesburg, South Africa</p>
+                    <p><i class="fas fa-phone" style="margin-right: 10px;"></i> +27 11 123 4567</p>
+                    <p><i class="fas fa-envelope" style="margin-right: 10px;"></i> info@tmsales.co.za</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 TM Sales and Marketing. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Mobile Menu Toggle
+        document.querySelector('.menu-toggle').addEventListener('click', function() {
+            document.querySelector('nav').classList.toggle('active');
+        });
+        
+        // Smooth Scrolling for Anchor Links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                if(this.getAttribute('href') === '#') return;
+                
+                const target = document.querySelector(this.getAttribute('href'));
+                if(target) {
+                    window.scrollTo({
+                        top: target.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                    
+                    // Close mobile menu if open
+                    document.querySelector('nav').classList.remove('active');
+                }
+            });
+        });
+        
+        // Sticky Header on Scroll
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            if(window.scrollY > 100) {
+                header.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
+            } else {
+                header.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
+            }
+        });
+        
+        // Form Submission
+        document.querySelector('form')?.addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Thank you for your message! We will contact you soon.');
+            this.reset();
+        });
+    </script>
+</body>
+</html>

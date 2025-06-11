@@ -1,0 +1,1590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AlphaSynth Prop Trading | Trade Synthetic Markets with Demo Capital</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #1a2b6d;
+            --secondary: #f7931a;
+            --dark: #0f172a;
+            --light: #f8fafc;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header Styles */
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo img {
+            height: 40px;
+            margin-right: 10px;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 25px;
+        }
+        
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        nav ul li a:hover {
+            color: var(--secondary);
+        }
+        
+        .auth-buttons .btn {
+            margin-left: 10px;
+            padding: 8px 15px;
+            border-radius: 4px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .btn-login {
+            background-color: transparent;
+            color: white;
+            border: 1px solid white;
+        }
+        
+        .btn-login:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .btn-signup {
+            background-color: var(--secondary);
+            color: white;
+            border: 1px solid var(--secondary);
+        }
+        
+        .btn-signup:hover {
+            background-color: #e07e0a;
+            border-color: #e07e0a;
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--primary) 0%, #2c3e50 100%);
+            color: white;
+            padding: 80px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80') no-repeat center center/cover;
+            opacity: 0.2;
+            z-index: 0;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .hero h1 {
+            font-size: 42px;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+        
+        .hero p {
+            font-size: 18px;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+        
+        .hero-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: inline-block;
+        }
+        
+        .btn-primary {
+            background-color: var(--secondary);
+            color: white;
+            border: 1px solid var(--secondary);
+        }
+        
+        .btn-primary:hover {
+            background-color: #e07e0a;
+            border-color: #e07e0a;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-secondary {
+            background-color: transparent;
+            color: white;
+            border: 1px solid white;
+        }
+        
+        .btn-secondary:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Stats Section */
+        .stats {
+            padding: 60px 0;
+            background-color: white;
+        }
+        
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            text-align: center;
+        }
+        
+        .stat-item {
+            padding: 30px 20px;
+            border-radius: 8px;
+            background-color: #f8fafc;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s;
+        }
+        
+        .stat-item:hover {
+            transform: translateY(-5px);
+        }
+        
+        .stat-number {
+            font-size: 36px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+        
+        .stat-label {
+            font-size: 16px;
+            color: #64748b;
+        }
+        
+        /* Features Section */
+        .features {
+            padding: 80px 0;
+            background-color: #f1f5f9;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .section-header h2 {
+            font-size: 32px;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+        
+        .section-header p {
+            color: #64748b;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+        
+        .feature-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .feature-img {
+            height: 180px;
+            overflow: hidden;
+        }
+        
+        .feature-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        
+        .feature-card:hover .feature-img img {
+            transform: scale(1.05);
+        }
+        
+        .feature-content {
+            padding: 25px;
+        }
+        
+        .feature-content h3 {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+        
+        .feature-content p {
+            color: #64748b;
+            margin-bottom: 15px;
+        }
+        
+        .feature-link {
+            color: var(--secondary);
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+        }
+        
+        .feature-link i {
+            margin-left: 5px;
+            transition: transform 0.3s;
+        }
+        
+        .feature-link:hover i {
+            transform: translateX(3px);
+        }
+        
+        /* Pricing Section */
+        .pricing {
+            padding: 80px 0;
+            background-color: white;
+        }
+        
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 50px;
+        }
+        
+        .pricing-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s;
+            position: relative;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .pricing-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .pricing-header {
+            padding: 25px;
+            background-color: var(--primary);
+            color: white;
+            text-align: center;
+        }
+        
+        .pricing-header h3 {
+            font-size: 22px;
+            margin-bottom: 5px;
+        }
+        
+        .pricing-header .price {
+            font-size: 36px;
+            font-weight: 700;
+            margin: 15px 0;
+        }
+        
+        .pricing-header .price span {
+            font-size: 16px;
+            font-weight: normal;
+        }
+        
+        .pricing-body {
+            padding: 25px;
+        }
+        
+        .pricing-features {
+            list-style: none;
+            margin-bottom: 30px;
+        }
+        
+        .pricing-features li {
+            padding: 8px 0;
+            border-bottom: 1px dashed #e2e8f0;
+            display: flex;
+            align-items: center;
+        }
+        
+        .pricing-features li i {
+            color: var(--success);
+            margin-right: 10px;
+        }
+        
+        .pricing-footer {
+            padding: 0 25px 25px;
+            text-align: center;
+        }
+        
+        .btn-block {
+            display: block;
+            width: 100%;
+        }
+        
+        .popular-tag {
+            position: absolute;
+            top: -10px;
+            right: 20px;
+            background-color: var(--secondary);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            box-shadow: 0 4px 10px rgba(247, 147, 26, 0.3);
+        }
+        
+        /* Trading Platform Preview */
+        .platform-preview {
+            padding: 80px 0;
+            background-color: #f1f5f9;
+        }
+        
+        .platform-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+        
+        .platform-content h2 {
+            font-size: 32px;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+        
+        .platform-content p {
+            color: #64748b;
+            margin-bottom: 30px;
+        }
+        
+        .platform-image {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        .platform-image img {
+            width: 100%;
+            display: block;
+            border-radius: 8px;
+        }
+        
+        .platform-image::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(26, 43, 109, 0.1), rgba(26, 43, 109, 0.3));
+            border-radius: 8px;
+        }
+        
+        /* Testimonials */
+        .testimonials {
+            padding: 80px 0;
+            background-color: white;
+        }
+        
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 50px;
+        }
+        
+        .testimonial-card {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            position: relative;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .testimonial-card::before {
+            content: '"';
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 60px;
+            color: #e2e8f0;
+            font-family: serif;
+            line-height: 1;
+            z-index: 0;
+        }
+        
+        .testimonial-content {
+            position: relative;
+            z-index: 1;
+            margin-bottom: 20px;
+            color: #64748b;
+        }
+        
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+        }
+        
+        .author-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-right: 15px;
+        }
+        
+        .author-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .author-info h4 {
+            font-size: 16px;
+            margin-bottom: 5px;
+            color: var(--primary);
+        }
+        
+        .author-info p {
+            font-size: 14px;
+            color: #94a3b8;
+        }
+        
+        /* FAQ Section */
+        .faq {
+            padding: 80px 0;
+            background-color: #f1f5f9;
+        }
+        
+        .faq-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .faq-item {
+            background-color: white;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        
+        .faq-question {
+            padding: 20px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--primary);
+            background-color: white;
+            transition: background-color 0.3s;
+        }
+        
+        .faq-question:hover {
+            background-color: #f8fafc;
+        }
+        
+        .faq-question i {
+            transition: transform 0.3s;
+        }
+        
+        .faq-answer {
+            padding: 0 25px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s, padding 0.3s;
+            color: #64748b;
+        }
+        
+        .faq-item.active .faq-question {
+            background-color: #f8fafc;
+        }
+        
+        .faq-item.active .faq-question i {
+            transform: rotate(180deg);
+        }
+        
+        .faq-item.active .faq-answer {
+            padding: 0 25px 20px;
+            max-height: 500px;
+        }
+        
+        /* CTA Section */
+        .cta {
+            padding: 80px 0;
+            background: linear-gradient(135deg, var(--primary) 0%, #2c3e50 100%);
+            color: white;
+            text-align: center;
+        }
+        
+        .cta h2 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+        
+        .cta p {
+            max-width: 700px;
+            margin: 0 auto 30px;
+            opacity: 0.9;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 60px 0 0;
+        }
+        
+        .footer-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-col h3 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-col h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background-color: var(--secondary);
+        }
+        
+        .footer-col ul {
+            list-style: none;
+        }
+        
+        .footer-col ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-col ul li a {
+            color: #94a3b8;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-col ul li a:hover {
+            color: white;
+        }
+        
+        .footer-contact p {
+            color: #94a3b8;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .footer-contact p i {
+            margin-right: 10px;
+            color: var(--secondary);
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            transition: all 0.3s;
+        }
+        
+        .social-links a:hover {
+            background-color: var(--secondary);
+            transform: translateY(-3px);
+        }
+        
+        .footer-bottom {
+            background-color: rgba(0, 0, 0, 0.2);
+            padding: 20px 0;
+            text-align: center;
+            color: #94a3b8;
+            font-size: 14px;
+        }
+        
+        .footer-bottom a {
+            color: var(--secondary);
+            text-decoration: none;
+        }
+        
+        /* Mobile Menu */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 1024px) {
+            .stats-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .features-grid, .pricing-grid, .testimonials-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .platform-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .platform-image {
+                order: -1;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header-container {
+                position: relative;
+            }
+            
+            nav {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background-color: var(--primary);
+                padding: 20px;
+                box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+                display: none;
+            }
+            
+            nav.active {
+                display: block;
+            }
+            
+            nav ul {
+                flex-direction: column;
+            }
+            
+            nav ul li {
+                margin: 0 0 15px 0;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .auth-buttons {
+                display: none;
+            }
+            
+            .hero h1 {
+                font-size: 32px;
+            }
+            
+            .hero p {
+                font-size: 16px;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 300px;
+                margin-bottom: 10px;
+            }
+            
+            .footer-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .stats-container, .features-grid, .pricing-grid, .testimonials-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .section-header h2 {
+                font-size: 28px;
+            }
+            
+            .cta h2 {
+                font-size: 28px;
+            }
+        }
+        
+        /* Trading Chart Placeholder */
+        .trading-chart {
+            background-color: #1e293b;
+            border-radius: 8px;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #94a3b8;
+            margin: 40px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .trading-chart::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80') no-repeat center center/cover;
+            opacity: 0.3;
+        }
+        
+        .chart-container {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .chart-container h3 {
+            color: white;
+            margin-bottom: 10px;
+        }
+        
+        /* Trading Pair Ticker */
+        .ticker-container {
+            background-color: white;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+        }
+        
+        .ticker-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .ticker-header h3 {
+            color: var(--primary);
+        }
+        
+        .ticker-pairs {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+        }
+        
+        .ticker-pair {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 10px;
+            border-radius: 4px;
+            background-color: #f8fafc;
+        }
+        
+        .pair-name {
+            font-weight: 500;
+            color: var(--primary);
+        }
+        
+        .pair-price {
+            font-weight: 600;
+        }
+        
+        .price-up {
+            color: var(--success);
+        }
+        
+        .price-down {
+            color: var(--danger);
+        }
+        
+        /* Mission & Vision Section */
+        .mission-vision {
+            padding: 80px 0;
+            background-color: white;
+        }
+        
+        .mv-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+        }
+        
+        .mv-card {
+            background-color: #f8fafc;
+            padding: 40px;
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .mv-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background-color: var(--secondary);
+        }
+        
+        .mv-card h3 {
+            font-size: 24px;
+            color: var(--primary);
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .mv-card p {
+            color: #64748b;
+        }
+        
+        /* Compliance Section */
+        .compliance {
+            padding: 60px 0;
+            background-color: #f1f5f9;
+        }
+        
+        .compliance-container {
+            background-color: white;
+            border-radius: 8px;
+            padding: 40px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        }
+        
+        .compliance-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .compliance-header h2 {
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+        
+        .compliance-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .compliance-content p {
+            margin-bottom: 20px;
+            color: #64748b;
+        }
+        
+        .compliance-logos {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+        
+        .compliance-logo {
+            height: 60px;
+            opacity: 0.7;
+            filter: grayscale(100%);
+            transition: all 0.3s;
+        }
+        
+        .compliance-logo:hover {
+            opacity: 1;
+            filter: grayscale(0%);
+        }
+        
+        /* Demo Disclaimer */
+        .demo-disclaimer {
+            background-color: var(--warning);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .demo-disclaimer a {
+            color: white;
+            text-decoration: underline;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <!-- Demo Disclaimer Banner -->
+    <div class="demo-disclaimer">
+        <div class="container">
+            <p><strong>DISCLAIMER:</strong> AlphaSynth is a demo proprietary trading firm. All trading is conducted with virtual funds and does not involve real money. Payouts are not derived from actual market profits but are simulated by the company for educational purposes only.</p>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+
+                <span>AlphaSynth</span>
+            </div>
+            
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <nav id="mainNav">
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#pricing">Pricing</a></li>
+                    <li><a href="#platform">Platform</a></li>
+                    <li><a href="#faq">FAQ</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+            
+            <div class="auth-buttons">
+                <a href="#" class="btn btn-login">Login</a>
+                <a href="#" class="btn btn-signup">Sign Up</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container hero-content">
+            <h1>Trade Synthetic Markets with Demo Capital</h1>
+            <p>Join AlphaSynth Prop Firm and access up to R500,000 in virtual funding to trade our exclusive synthetic indices. Prove your skills and earn simulated payouts up to 90%.</p>
+            
+            <div class="hero-buttons">
+                <a href="#" class="btn btn-primary">Get Funded Today</a>
+                <a href="#" class="btn btn-secondary">Learn More</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats">
+        <div class="container">
+            <div class="stats-container">
+                <div class="stat-item">
+                    <div class="stat-number">R25M+</div>
+                    <div class="stat-label">Simulated Payouts</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">5,000+</div>
+                    <div class="stat-label">Traders Funded</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">90%</div>
+                    <div class="stat-label">Max Profit Share</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">24/7</div>
+                    <div class="stat-label">Trading Hours</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="about">
+        <div class="container">
+            <div class="section-header">
+                <h2>Why Trade With AlphaSynth?</h2>
+                <p>We provide traders with a unique opportunity to trade synthetic indices with virtual capital, offering a risk-free environment to develop and test strategies.</p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-img">
+                        <img src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" alt="Virtual Funding">
+                    </div>
+                    <div class="feature-content">
+                        <h3>Virtual Funding</h3>
+                        <p>Trade with up to R500,000 in demo capital without risking your own money. Our simulated funding allows you to practice and prove your trading skills.</p>
+                        <a href="#" class="feature-link">Learn more <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-img">
+                        <img src="https://images.unsplash.com/photo-1642790559316-ca3b2c0d2f1b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" alt="Synthetic Indices">
+                    </div>
+                    <div class="feature-content">
+                        <h3>Exclusive Synthetic Indices</h3>
+                        <p>Access our proprietary synthetic markets that operate 24/7 with customizable volatility profiles, perfect for testing strategies in various market conditions.</p>
+                        <a href="#" class="feature-link">Learn more <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-img">
+                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" alt="Profit Sharing">
+                    </div>
+                    <div class="feature-content">
+                        <h3>Simulated Profit Sharing</h3>
+                        <p>Earn up to 90% of simulated profits with our scaling plan. As you demonstrate consistent performance, your virtual account size grows.</p>
+                        <a href="#" class="feature-link">Learn more <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trading Chart Placeholder -->
+    <section class="trading-chart">
+        <div class="chart-container">
+            <h3>AlphaSynth Synthetic Index (SYN-50)</h3>
+            <p>24-hour performance chart - Custom volatility profile</p>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section class="pricing" id="pricing">
+        <div class="container">
+            <div class="section-header">
+                <h2>Choose Your Challenge</h2>
+                <p>Select the virtual funding amount that matches your trading style. All challenges are conducted with demo funds for educational purposes.</p>
+            </div>
+            
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <h3>Starter</h3>
+                        <div class="price">R1,499 <span>/ one-time</span></div>
+                        <p>R50,000 Virtual Account</p>
+                    </div>
+                    <div class="pricing-body">
+                        <ul class="pricing-features">
+                            <li><i class="fas fa-check"></i> Phase 1: 10% Profit Target</li>
+                            <li><i class="fas fa-check"></i> Phase 2: 5% Profit Target</li>
+                            <li><i class="fas fa-check"></i> Max Daily Loss: 5%</li>
+                            <li><i class="fas fa-check"></i> Max Overall Loss: 10%</li>
+                            <li><i class="fas fa-check"></i> Minimum Trading Days: 5</li>
+                            <li><i class="fas fa-check"></i> 80% Simulated Profit Share</li>
+                        </ul>
+                    </div>
+                    <div class="pricing-footer">
+                        <a href="#" class="btn btn-primary btn-block">Get Started</a>
+                    </div>
+                </div>
+                
+                <div class="pricing-card">
+                    <div class="popular-tag">MOST POPULAR</div>
+                    <div class="pricing-header">
+                        <h3>Advanced</h3>
+                        <div class="price">R2,999 <span>/ one-time</span></div>
+                        <p>R200,000 Virtual Account</p>
+                    </div>
+                    <div class="pricing-body">
+                        <ul class="pricing-features">
+                            <li><i class="fas fa-check"></i> Phase 1: 10% Profit Target</li>
+                            <li><i class="fas fa-check"></i> Phase 2: 5% Profit Target</li>
+                            <li><i class="fas fa-check"></i> Max Daily Loss: 5%</li>
+                            <li><i class="fas fa-check"></i> Max Overall Loss: 10%</li>
+                            <li><i class="fas fa-check"></i> Minimum Trading Days: 5</li>
+                            <li><i class="fas fa-check"></i> 85% Simulated Profit Share</li>
+                            <li><i class="fas fa-check"></i> Free Retry (Conditions Apply)</li>
+                        </ul>
+                    </div>
+                    <div class="pricing-footer">
+                        <a href="#" class="btn btn-primary btn-block">Get Started</a>
+                    </div>
+                </div>
+                
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <h3>Professional</h3>
+                        <div class="price">R4,999 <span>/ one-time</span></div>
+                        <p>R500,000 Virtual Account</p>
+                    </div>
+                    <div class="pricing-body">
+                        <ul class="pricing-features">
+                            <li><i class="fas fa-check"></i> Phase 1: 10% Profit Target</li>
+                            <li><i class="fas fa-check"></i> Phase 2: 5% Profit Target</li>
+                            <li><i class="fas fa-check"></i> Max Daily Loss: 5%</li>
+                            <li><i class="fas fa-check"></i> Max Overall Loss: 10%</li>
+                            <li><i class="fas fa-check"></i> Minimum Trading Days: 5</li>
+                            <li><i class="fas fa-check"></i> 90% Simulated Profit Share</li>
+                            <li><i class="fas fa-check"></i> Free Retry (Conditions Apply)</li>
+                            <li><i class="fas fa-check"></i> Dedicated Account Manager</li>
+                        </ul>
+                    </div>
+                    <div class="pricing-footer">
+                        <a href="#" class="btn btn-primary btn-block">Get Started</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trading Pair Ticker -->
+    <section class="container">
+        <div class="ticker-container">
+            <div class="ticker-header">
+                <h3>Synthetic Indices</h3>
+                <small>Live Demo Prices</small>
+            </div>
+            <div class="ticker-pairs">
+                <div class="ticker-pair">
+                    <span class="pair-name">SYN-50</span>
+                    <span class="pair-price price-up">4,382.75 <i class="fas fa-caret-up"></i></span>
+                </div>
+                <div class="ticker-pair">
+                    <span class="pair-name">SYN-100</span>
+                    <span class="pair-price price-down">8,761.30 <i class="fas fa-caret-down"></i></span>
+                </div>
+                <div class="ticker-pair">
+                    <span class="pair-name">SYN-VOL</span>
+                    <span class="pair-price price-up">12,429.45 <i class="fas fa-caret-up"></i></span>
+                </div>
+                <div class="ticker-pair">
+                    <span class="pair-name">SYN-TECH</span>
+                    <span class="pair-price price-up">6,782.90 <i class="fas fa-caret-up"></i></span>
+                </div>
+                <div class="ticker-pair">
+                    <span class="pair-name">SYN-COMM</span>
+                    <span class="pair-price price-down">3,245.60 <i class="fas fa-caret-down"></i></span>
+                </div>
+                <div class="ticker-pair">
+                    <span class="pair-name">SYN-CRYPT</span>
+                    <span class="pair-price price-up">9,876.25 <i class="fas fa-caret-up"></i></span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Platform Preview -->
+    <section class="platform-preview" id="platform">
+        <div class="container platform-container">
+            <div class="platform-content">
+                <h2>Our Advanced Trading Platform</h2>
+                <p>Trade our exclusive synthetic indices on a platform built for performance. Our web-based terminal offers advanced charting, technical indicators, and real-time data feeds - all with the convenience of browser-based access.</p>
+                
+                <ul style="list-style: none; margin-top: 20px;">
+                    <li style="margin-bottom: 10px; display: flex; align-items: center;">
+                        <i class="fas fa-check-circle" style="color: var(--success); margin-right: 10px;"></i>
+                        <span>Browser-based - no downloads required</span>
+                    </li>
+                    <li style="margin-bottom: 10px; display: flex; align-items: center;">
+                        <i class="fas fa-check-circle" style="color: var(--success); margin-right: 10px;"></i>
+                        <span>Advanced charting with 50+ indicators</span>
+                    </li>
+                    <li style="margin-bottom: 10px; display: flex; align-items: center;">
+                        <i class="fas fa-check-circle" style="color: var(--success); margin-right: 10px;"></i>
+                        <span>Customizable volatility profiles</span>
+                    </li>
+                    <li style="margin-bottom: 10px; display: flex; align-items: center;">
+                        <i class="fas fa-check-circle" style="color: var(--success); margin-right: 10px;"></i>
+                        <span>One-click trading</span>
+                    </li>
+                    <li style="margin-bottom: 10px; display: flex; align-items: center;">
+                        <i class="fas fa-check-circle" style="color: var(--success); margin-right: 10px;"></i>
+                        <span>Full trading history and analytics</span>
+                    </li>
+                </ul>
+                
+                <a href="#" class="btn btn-primary" style="margin-top: 20px;">Try Demo Platform</a>
+            </div>
+            
+            <div class="platform-image">
+                <img src="https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" alt="Trading Platform">
+            </div>
+        </div>
+    </section>
+
+    <!-- Mission & Vision -->
+    <section class="mission-vision">
+        <div class="container mv-container">
+            <div class="mv-card">
+                <h3>Our Mission</h3>
+                <p>To provide traders with a realistic, risk-free environment to develop and test their trading strategies using synthetic markets. We aim to democratize access to trading education by removing financial barriers while maintaining professional standards.</p>
+            </div>
+            
+            <div class="mv-card">
+                <h3>Our Vision</h3>
+                <p>To become the leading educational prop trading firm for synthetic indices, recognized for our innovative platform, fair evaluation process, and commitment to trader development. We envision a community where traders can hone their skills without financial risk.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testimonials">
+        <div class="container">
+            <div class="section-header">
+                <h2>What Our Traders Say</h2>
+                <p>Hear from traders who have used our demo platform to improve their skills and test strategies.</p>
+            </div>
+            
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <p>The synthetic indices at AlphaSynth provided the perfect environment to test my volatility strategies without risking real capital. The platform is intuitive and the evaluation process is fair.</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="David K.">
+                        </div>
+                        <div class="author-info">
+                            <h4>David K.</h4>
+                            <p>Cape Town</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <p>As someone new to trading, I appreciated being able to practice with virtual funds. The educational resources and synthetic markets helped me understand price action without the stress of losing money.</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Nomvula M.">
+                        </div>
+                        <div class="author-info">
+                            <h4>Nomvula M.</h4>
+                            <p>Johannesburg</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <p>The ability to customize volatility profiles is game-changing. I could simulate different market conditions and see how my strategy would perform. This is invaluable practice for any serious trader.</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <img src="https://randomuser.me/api/portraits/men/67.jpg" alt="James L.">
+                        </div>
+                        <div class="author-info">
+                            <h4>James L.</h4>
+                            <p>Durban</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Compliance Section -->
+    <section class="compliance">
+        <div class="container">
+            <div class="compliance-container">
+                <div class="compliance-header">
+                    <h2>Important Compliance Information</h2>
+                    <p>Transparency and education are at the core of our values</p>
+                </div>
+                
+                <div class="compliance-content">
+                    <p><strong>Demo Trading Only:</strong> AlphaSynth operates as an educational platform providing simulated trading experiences. All trading is conducted with virtual funds and does not involve real money or real market execution.</p>
+                    
+                    <p><strong>Not Financial Advice:</strong> Our services are for educational purposes only. We do not provide financial advice, and nothing on our platform should be construed as such.</p>
+                    
+                    <p><strong>No Regulatory Oversight:</strong> AlphaSynth is not regulated by the FSCA, FSP, or any other financial regulatory body as we do not handle client funds or engage in real market trading.</p>
+                    
+                    <p><strong>Simulated Payouts:</strong> Any payouts or profit splits are simulated by the company for educational purposes and are not derived from actual market profits.</p>
+                    
+                    <p><strong>Risk Disclosure:</strong> While trading with virtual funds carries no financial risk, trading real markets involves substantial risk of loss. Past performance in our simulated environment is not indicative of future results in live markets.</p>
+                </div>
+                
+                <div class="compliance-logos">
+                    <img src="https://via.placeholder.com/120x60?text=DEMO+ONLY" alt="Demo Only" class="compliance-logo">
+                    <img src="https://via.placeholder.com/120x60?text=VIRTUAL+FUNDS" alt="Virtual Funds" class="compliance-logo">
+                    <img src="https://via.placeholder.com/120x60?text=NOT+REGULATED" alt="Not Regulated" class="compliance-logo">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq" id="faq">
+        <div class="container">
+            <div class="section-header">
+                <h2>Frequently Asked Questions</h2>
+                <p>Find answers to common questions about our demo prop trading firm</p>
+            </div>
+            
+            <div class="faq-container">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Is this real trading with actual money?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>No, AlphaSynth is a demo proprietary trading firm. All trading is conducted with virtual funds in a simulated environment. There is no real money involved in any aspect of our platform.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>How do payouts work if it's all demo?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Our payouts are simulated by the company for educational purposes. When you reach profit targets, we simulate what a real payout would look like based on your performance, but these are not actual market profits.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>What are synthetic indices?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Our synthetic indices are proprietary simulated markets that mimic the behavior of real financial instruments but are generated algorithmically. They allow for customizable volatility and market conditions, making them ideal for strategy testing.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Why should I pay for a demo account?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>The fee covers access to our advanced platform, educational resources, and the structured evaluation process that helps traders develop discipline. Think of it as paying for a comprehensive trading education tool rather than for market access.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Can I upgrade my account after passing?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Yes, we offer scaling plans where successful traders can qualify for larger virtual accounts. This simulates how professional prop firms would increase capital allocation to proven traders.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta">
+        <div class="container">
+            <h2>Ready to Test Your Trading Skills?</h2>
+            <p>Join AlphaSynth today and access our exclusive synthetic markets with virtual capital. No financial risk, just valuable trading experience.</p>
+            <div class="hero-buttons">
+                <a href="#" class="btn btn-primary">Start Your Challenge</a>
+                <a href="#" class="btn btn-secondary">Contact Us</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-container">
+                <div class="footer-col">
+                    <h3>AlphaSynth</h3>
+                    <p style="color: #94a3b8; margin-top: 20px;">The premier demo proprietary trading firm for synthetic indices. Trade with virtual capital and develop your skills risk-free.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#about">About Us</a></li>
+                        <li><a href="#pricing">Pricing</a></li>
+                        <li><a href="#platform">Trading Platform</a></li>
+                        <li><a href="#faq">FAQ</a></li>
+                        <li><a href="#">Blog</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Legal</h3>
+                    <ul>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Risk Disclosure</a></li>
+                        <li><a href="#">Refund Policy</a></li>
+                        <li><a href="#">Compliance</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Contact Us</h3>
+                    <div class="footer-contact">
+                        <p><i class="fas fa-envelope"></i> support@alphasynth.co.za</p>
+                        <p><i class="fas fa-phone"></i> +27 12 345 6789</p>
+                        <p><i class="fas fa-map-marker-alt"></i> 123 Trading Street, Sandton, Johannesburg, 2196</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2023 AlphaSynth. All rights reserved. | <strong>Disclaimer:</strong> AlphaSynth is a demo proprietary trading firm. All trading is conducted with virtual funds and does not involve real money or real market execution.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mainNav = document.getElementById('mainNav');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            mainNav.classList.toggle('active');
+        });
+        
+        // FAQ Accordion
+        const faqItems = document.querySelectorAll('.faq-item');
+        
+        faqItems.forEach(item => {
+            const question = item.querySelector('.faq-question');
+            
+            question.addEventListener('click', () => {
+                // Close all other items
+                faqItems.forEach(otherItem => {
+                    if (otherItem !== item) {
+                        otherItem.classList.remove('active');
+                    }
+                });
+                
+                // Toggle current item
+                item.classList.toggle('active');
+            });
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                    
+                    // Close mobile menu if open
+                    if (mainNav.classList.contains('active')) {
+                        mainNav.classList.remove('active');
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

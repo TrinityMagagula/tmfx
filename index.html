@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TM FX TRADING - Professional Forex Education</title>
+    <link rel="manifest" href="/manifest.json">
+    <link rel="icon" href="images/logo 32.png" type="image/png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="service-worker.js"></script>
+    <style>
+        :root {
+            --primary-color: #1abc9c;
+            --primary-dark: #16a085;
+            --secondary-color: #3498db;
+            --dark-bg: #121212;
+            --darker-bg: #0d0d0d;
+            --card-bg: #1f1f1f;
+            --text-color: #e4e4e4;
+            --text-light: #f5f5f5;
+            --accent-color: #f39c12;
+            --border-color: #2c2c2c;
+            --success-color: #22c55e;
+            --danger-color: #ef4444;
+            --info-color: #3b82f6;
+            --whatsapp-green: #25D366;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--dark-bg);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header Styles */
+        .main-header {
+            background: var(--darker-bg);
+            color: var(--text-light);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            transition: all 0.3s;
+        }
+        
+        .header-scrolled {
+            padding: 0.5rem 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .logo h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-light);
+            margin-bottom: 0.2rem;
+        }
+        
+        .logo .tagline {
+            font-size: 0.7rem;
+            color: var(--primary-color);
+            font-weight: 300;
+        }
+        
+        .small-text {
+            font-size: 0.6em;
+            color: #aaa;
+        }
+        
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 1.5rem;
+        }
+        
+        nav a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        nav a:hover {
+            color: var(--primary-color);
+        }
+        
+        .menu-toggle {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-light);
+        }
+        
+        #login-button {
+            background: var(--primary-color);
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+        
+        #login-button:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+        
+        #install-link {
+            display: none;
+            background: var(--accent-color);
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            color: white;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        #install-link:hover {
+            background: #e67e22;
+            transform: translateY(-2px);
+        }
+        
+        /* Hero Section */
+        #hero {
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('images/bull.jpg');
+            background-size: cover;
+            background-position: center;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+        
+        .hero-content {
+            max-width: 600px;
+            padding: 2rem;
+        }
+        
+        .hero-content h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+            color: var(--text-light);
+        }
+        
+        .hero-content p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            color: var(--text-color);
+        }
+        
+        #signup-button {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        #signup-button:hover {
+            background: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        
+        .attribution-button {
+            position: absolute;
+            bottom: 1rem;
+            right: 1rem;
+            font-size: 0.7rem;
+            color: var(--text-light);
+            background: rgba(0,0,0,0.5);
+            padding: 0.3rem 0.6rem;
+            border-radius: 3px;
+            text-decoration: none;
+        }
+        
+        /* Market Ticker */
+        .market-ticker {
+            background: var(--darker-bg);
+            padding: 0.5rem 0;
+        }
+        
+        /* Sections */
+        .section {
+            padding: 5rem 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: var(--text-light);
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-title h2:after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: var(--primary-color);
+        }
+        
+        .section-title p {
+            max-width: 700px;
+            margin: 0 auto;
+            color: var(--text-color);
+        }
+        
+        /* About Section */
+        #about {
+            background: var(--darker-bg);
+        }
+        
+        .about-content {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .about-content p {
+            margin-bottom: 1.5rem;
+            text-align: justify;
+        }
+        
+        /* Services Section */
+        #services {
+            background: var(--dark-bg);
+        }
+        
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .service-card {
+            background: var(--card-bg);
+            border-radius: 8px;
+            padding: 2rem;
+            transition: all 0.3s;
+            border-left: 3px solid var(--primary-color);
+        }
+        
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        
+        .service-card h3 {
+            font-size: 1.3rem;
+            color: var(--text-light);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+        
+        .service-card h3 i {
+            color: var(--primary-color);
+        }
+        
+        .service-card p {
+            color: var(--text-color);
+        }
+        
+        /* Competition Section */
+        #competition {
+            background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            text-align: center;
+            color: white;
+        }
+        
+        .competition-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .prizes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+        
+        .prize-card {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 8px;
+            padding: 2rem;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .prize-card h4 {
+            font-size: 1.5rem;
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+        }
+        
+        /* Testimonials */
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .testimonial-card {
+            background: var(--card-bg);
+            border-radius: 8px;
+            padding: 2rem;
+            position: relative;
+        }
+        
+        .testimonial-card:before {
+            content: '"';
+            font-size: 5rem;
+            color: var(--primary-color);
+            opacity: 0.2;
+            position: absolute;
+            top: 0;
+            left: 1rem;
+        }
+        
+        .testimonial-content {
+            font-style: italic;
+            margin-bottom: 1.5rem;
+        }
+        
+        .testimonial-author {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+        
+        /* Contact Section */
+        #contact {
+            background: var(--darker-bg);
+        }
+        
+        .contact-methods {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .contact-card {
+            background: var(--card-bg);
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s;
+            min-width: 250px;
+        }
+        
+        .contact-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .contact-card i {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+        
+        .contact-card h3 {
+            margin-bottom: 1rem;
+            color: var(--text-light);
+        }
+        
+        .contact-card a {
+            color: var(--text-color);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .contact-card a:hover {
+            color: var(--primary-color);
+        }
+        
+        /* FAQ Section */
+        #faq {
+            background: var(--dark-bg);
+        }
+        
+        .accordion {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .accordion-item {
+            margin-bottom: 1rem;
+            border-radius: 8px;
+            overflow: hidden;
+            background: var(--card-bg);
+        }
+        
+        .accordion-header {
+            padding: 1.5rem;
+            background: var(--darker-bg);
+            color: var(--text-light);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+        }
+        
+        .accordion-header:hover {
+            background: #252525;
+        }
+        
+        .accordion-content {
+            padding: 0 1.5rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+        
+        .accordion-item.active .accordion-content {
+            padding: 1.5rem;
+            max-height: 500px;
+        }
+        
+        /* Legal Section */
+        #legal {
+            background: var(--darker-bg);
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+        
+        .legal-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .legal-content h3 {
+            color: var(--text-light);
+            margin-bottom: 1rem;
+        }
+        
+        .legal-content p {
+            margin-bottom: 1rem;
+        }
+        
+        /* Footer */
+        .main-footer {
+            background: #0a0a0a;
+            padding: 3rem 0;
+            text-align: center;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        .footer-logo h3 {
+            font-size: 1.5rem;
+            color: var(--text-light);
+            margin-bottom: 1rem;
+        }
+        
+        .footer-links h4 {
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+        }
+        
+        .footer-links ul {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+        
+        .footer-links a {
+            color: #aaa;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: var(--primary-color);
+        }
+        
+        .footer-bottom {
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        /* Chat Button */
+        .chat-now-button {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--whatsapp-green);
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            z-index: 999;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+        
+        .chat-now-button:hover {
+            background: #128C7E;
+            transform: scale(1.1);
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .hero-content h1 {
+                font-size: 2.8rem;
+            }
+            
+            .section {
+                padding: 4rem 0;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+            
+            #nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: var(--darker-bg);
+                flex-direction: column;
+                padding: 1rem;
+                gap: 1rem;
+                box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+            }
+            
+            #nav-links.show {
+                display: flex;
+            }
+            
+            .hero-content {
+                text-align: center;
+                margin: 0 auto;
+            }
+            
+            .hero-content h1 {
+                font-size: 2.2rem;
+            }
+            
+            .contact-methods {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .contact-card {
+                width: 100%;
+                max-width: 350px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .hero-content h1 {
+                font-size: 1.8rem;
+            }
+            
+            .section-title h2 {
+                font-size: 2rem;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="main-header" id="main-header">
+        <div class="header-container">
+            <div class="logo">
+                <h1>TM FX TRADING <span class="small-text">(pty) Ltd</span></h1>
+                <p class="tagline">Professional Trading Education</p>
+            </div>
+            <nav>
+                <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+                <ul id="nav-links">
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#competition">Competition</a></li>
+                    <li><a href="#testimonials">Success Stories</a></li>
+                    <li><a href="#faq">FAQ</a></li>
+                    <li><a href="login/login.html" id="login-button">Login</a></li>
+                    <li><a href="#" id="install-link">Install App</a></li>             
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section id="hero">
+        <div class="container">
+            <div class="hero-content animate__animated animate__fadeIn">
+                <h1>Master The Markets With Expert Guidance</h1>
+                <p>Join our community of traders and gain access to premium education, signals, and mentorship to elevate your trading skills</p>
+                <button type="button" id="signup-button">START YOUR JOURNEY</button>
+            </div>
+            <!-- Attribution Button -->
+            <a href="https://www.vecteezy.com/free-photos/bull" target="_blank" rel="noopener noreferrer" class="attribution-button">Image by Vecteezy</a>
+        </div>
+    </section>
+
+    <div class="market-ticker">
+        <!-- TradingView Ticker Strip -->
+        <iframe src="https://www.tradingview-widget.com/embed-widget/ticker-tape/?locale=en#%7B%22symbols%22%3A%5B%7B%22proName%22%3A%22FOREXCOM%3ASPXUSD%22%2C%22title%22%3A%22S%26P%20500%22%7D%2C%7B%22proName%22%3A%22FOREXCOM%3ANSXUSD%22%2C%22title%22%3A%22US%20100%22%7D%2C%7B%22proName%22%3A%22FX_IDC%3AEURUSD%22%2C%22title%22%3A%22EUR%2FUSD%22%7D%2C%7B%22proName%22%3A%22BITSTAMP%3ABTCUSD%22%2C%22title%22%3A%22Bitcoin%22%7D%2C%7B%22proName%22%3A%22BITSTAMP%3AETHUSD%22%2C%22title%22%3A%22Ethereum%22%7D%5D%2C%22showSymbolLogo%22%3Atrue%2C%22colorTheme%22%3A%22dark%22%2C%22isTransparent%22%3Atrue%2C%22displayMode%22%3A%22adaptive%22%2C%22width%22%3A%22100%25%22%2C%22height%22%3A44%7D" 
+            width="100%" 
+            height="50" 
+            frameborder="0" 
+            allowtransparency="false" 
+            scrolling="no">
+        </iframe>
+    </div>
+
+    <section id="about" class="section">
+        <div class="container">
+            <div class="section-title">
+                <h2>About TM FX TRADING</h2>
+                <p>Your trusted partner in forex trading education</p>
+            </div>
+            <div class="about-content">
+                <p>At TM FX TRADING (Pty) Ltd, we are committed to empowering traders with comprehensive education and practical skills needed to navigate the dynamic forex markets. Our structured mentorship program is designed to take you from foundational concepts to advanced trading strategies, all while emphasizing risk management and disciplined execution.</p>
+
+                <p>Unlike traditional trading education, we provide hands-on experience through simulated demo trading environments before transitioning to live market conditions. This progressive approach ensures you develop confidence and competence at each stage of your trading journey.</p>
+                
+                <p>Our team of experienced traders and educators brings years of market insight to every lesson, workshop, and coaching session. We don't just teach trading - we cultivate traders who can analyze markets, manage risk, and execute strategies with precision.</p>
+                
+                <p>As we continue to grow, our mission remains clear: to deliver exceptional trading education that transforms beginners into confident traders and helps experienced traders refine their edge in the markets.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="services" class="section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Our Premium Services</h2>
+                <p>Comprehensive solutions tailored to your trading needs</p>
+            </div>
+            <div class="services-grid">
+                <div class="service-card">
+                    <h3><i class="fas fa-graduation-cap"></i> Comprehensive Mentorship</h3>
+                    <p>Structured one-on-one guidance covering everything from market basics to advanced strategies with personalized feedback from experienced traders.</p>
+                </div>
+                
+                <div class="service-card">
+                    <h3><i class="fas fa-chart-line"></i> Live Trading Signals</h3>
+                    <p>Receive carefully analyzed trade opportunities with clear entry, stop loss, and take profit levels for both forex and synthetic indices.</p>
+                </div>
+                
+                <div class="service-card">
+                    <h3><i class="fas fa-laptop-code"></i> Demo Trading Environment</h3>
+                    <p>Practice trading strategies risk-free in our simulated trading environment that mirrors live market conditions.</p>
+                </div>
+                
+                <div class="service-card">
+                    <h3><i class="fas fa-shield-alt"></i> Risk Management Training</h3>
+                    <p>Learn professional techniques for position sizing, stop placement, and portfolio protection to trade with confidence.</p>
+                </div>
+                
+                <div class="service-card">
+                    <h3><i class="fas fa-users"></i> Trading Community</h3>
+                    <p>Join our active community of traders to share insights, discuss strategies, and grow together in a supportive environment.</p>
+                </div>
+                
+                <div class="service-card">
+                    <h3><i class="fas fa-trophy"></i> Weekly Trading Competition</h3>
+                    <p>Test your skills in our weekly demo trading competitions with exciting prizes for top performers.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="competition" class="section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Weekly Trading Competition</h2>
+                <p>Test your skills and win exciting prizes</p>
+            </div>
+            <div class="competition-content">
+                <p>Join our weekly demo trading competition where traders compete to achieve the highest returns using our provided strategies and mentorship. This risk-free environment is perfect for practicing your skills and measuring your progress against other community members.</p>
+                
+                <div class="prizes-grid">
+                    <div class="prize-card">
+                        <h4>1st Place</h4>
+                        <p>Free monthly mentorship + $100 trading credit</p>
+                    </div>
+                    <div class="prize-card">
+                        <h4>2nd Place</h4>
+                        <p>Free weekly signals + $50 trading credit</p>
+                    </div>
+                    <div class="prize-card">
+                        <h4>3rd Place</h4>
+                        <p>Free weekly signals package</p>
+                    </div>
+                </div>
+                
+                <p>To participate, simply sign up for a free account and join the competition through your member dashboard. All trading is done on demo accounts - no real money required!</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="testimonials" class="section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Success Stories</h2>
+                <p>Hear from our community members</p>
+            </div>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        "The mentorship program completely transformed my approach to trading. I went from inconsistent results to consistent profitability within 3 months of joining."
+                    </div>
+                    <div class="testimonial-author">- Thabo M., Johannesburg</div>
+                </div>
+                
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        "The risk management training was a game-changer for me. I finally understand how to protect my capital while still capturing good opportunities."
+                    </div>
+                    <div class="testimonial-author">- Nomsa K., Cape Town</div>
+                </div>
+                
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        "The weekly competitions keep me motivated and the community support is incredible. I've learned more here in 2 months than I did in 2 years on my own."
+                    </div>
+                    <div class="testimonial-author">- David L., Pretoria</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Contact Us</h2>
+                <p>Get in touch with our support team</p>
+            </div>
+            <div class="contact-methods">
+                <div class="contact-card">
+                    <i class="fas fa-envelope"></i>
+                    <h3>Email Support</h3>
+                    <a href="mailto:enquiries@tmfx.co.za">enquiries@tmfx.co.za</a>
+                </div>
+                
+                <div class="contact-card">
+                    <i class="fab fa-whatsapp"></i>
+                    <h3>WhatsApp</h3>
+                    <a href="https://wa.me/27682253532">+27 68 225 3532</a>
+                </div>
+                
+                <div class="contact-card">
+                    <i class="fas fa-phone"></i>
+                    <h3>Phone</h3>
+                    <a href="tel:+27682253532">+27 68 225 3532</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="faq" class="section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Frequently Asked Questions</h2>
+                <p>Find answers to common questions</p>
+            </div>
+            <div class="accordion">
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <span>Do I need prior trading experience to join?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="accordion-content">
+                        <p>No prior experience is necessary. Our mentorship program is designed to accommodate all skill levels, from complete beginners to experienced traders looking to refine their strategies.</p>
+                    </div>
+                </div>
+                
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <span>What's the difference between demo and live trading?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="accordion-content">
+                        <p>Demo trading uses virtual funds in a simulated market environment, allowing you to practice without risk. Live trading involves real money and actual market conditions. We strongly recommend mastering demo trading before considering live accounts.</p>
+                    </div>
+                </div>
+                
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <span>How much time should I dedicate to learning?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="accordion-content">
+                        <p>We recommend at least 5-10 hours per week for consistent progress. Our program is designed to be flexible to accommodate different schedules, but regular practice is essential for developing trading skills.</p>
+                    </div>
+                </div>
+                
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <span>What trading platforms do you support?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="accordion-content">
+                        <p>Our education applies to all major trading platforms including MetaTrader 4/5, cTrader, and Deriv. We provide specific guidance for each platform during the mentorship program.</p>
+                    </div>
+                </div>
+                
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <span>Can I participate if I'm outside South Africa?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="accordion-content">
+                        <p>Yes, our online programs are available to traders worldwide. All our materials are in English and our trading hours accommodate multiple time zones.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="legal" class="section">
+        <div class="container">
+            <div class="legal-content">
+                <h3>Important Legal Information</h3>
+                <p>TM FX TRADING (Pty) Ltd is an educational service provider and not a licensed financial services provider. We do not provide financial advice, investment recommendations, or trading signals for real money accounts.</p>
+                
+                <p>All trading examples, competitions, and mentorship are conducted using demo accounts with virtual funds. We strongly advise against trading with real money until you have demonstrated consistent profitability in a simulated environment.</p>
+                
+                <p>Forex and derivatives trading carries substantial risk of loss and is not suitable for all investors. Past performance is not indicative of future results. The educational content we provide is for informational purposes only and should not be construed as financial advice.</p>
+                
+                <p>By using our services, you acknowledge that you understand these risks and that TM FX TRADING (Pty) Ltd cannot be held responsible for any trading losses you may incur.</p>
+                
+                <p>Our mentorship program focuses exclusively on educational development and simulated trading. We do not manage accounts, handle client funds, or provide investment services.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <h3>TM FX TRADING</h3>
+                    <p>Empowering traders through education since 2018</p>
+                </div>
+                
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#about">About Us</a></li>
+                        <li><a href="#services">Services</a></li>
+                        <li><a href="#competition">Competition</a></li>
+                        <li><a href="#faq">FAQ</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-links">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="#legal">Disclaimer</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 TM FX TRADING (Pty) Ltd. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <a href="https://wa.me/27682253532" target="_blank" class="chat-now-button">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <script>
+        // PWA app
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js')
+                    .then(registration => {
+                        console.log('Service Worker registered with scope:', registration.scope);
+                    }).catch(error => {
+                        console.error('Service Worker registration failed:', error);
+                    });
+            });
+        }
+
+        let deferredPrompt;
+        
+        // Listen for the `beforeinstallprompt` event
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            document.getElementById('install-link').style.display = 'flex';
+        });
+
+        // Add click event listener to "Install App" link
+        document.addEventListener('DOMContentLoaded', () => {
+            const installButton = document.getElementById('install-link');
+            if (installButton) {
+                installButton.addEventListener('click', async (e) => {
+                    e.preventDefault();
+                    installButton.style.display = 'none';
+
+                    if (deferredPrompt) {
+                        deferredPrompt.prompt();
+                        const { outcome } = await deferredPrompt.userChoice;
+                        console.log(outcome === 'accepted' ? 'User accepted the install prompt' : 'User dismissed the install prompt');
+                        deferredPrompt = null;
+                    }
+                });
+            }
+
+            // Optional: Track app installation
+            window.addEventListener('appinstalled', () => {
+                console.log('PWA was installed successfully');
+            });
+
+            // Accordion functionality
+            const accordionItems = document.querySelectorAll('.accordion-item');
+            accordionItems.forEach(item => {
+                const header = item.querySelector('.accordion-header');
+                header.addEventListener('click', () => {
+                    item.classList.toggle('active');
+                    const icon = header.querySelector('i');
+                    if (item.classList.contains('active')) {
+                        icon.classList.remove('fa-chevron-down');
+                        icon.classList.add('fa-chevron-up');
+                    } else {
+                        icon.classList.remove('fa-chevron-up');
+                        icon.classList.add('fa-chevron-down');
+                    }
+                });
+            });
+
+            // Signup button functionality
+            document.getElementById('signup-button').onclick = function() {
+                window.location.href = 'signup/signup.html';
+            }
+        });
+
+        // Toggle mobile menu
+        function toggleMenu() {
+            const navLinks = document.getElementById('nav-links');
+            const menuToggle = document.querySelector('.menu-toggle');
+            navLinks.classList.toggle('show');
+            menuToggle.classList.toggle('active');
+        }
+
+        // Header scroll effect
+        window.addEventListener('scroll', function() {
+            const header = document.getElementById('main-header');
+            if (window.scrollY > 50) {
+                header.classList.add('header-scrolled');
+            } else {
+                header.classList.remove('header-scrolled');
+            }
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                    
+                    // Close mobile menu if open
+                    const navLinks = document.getElementById('nav-links');
+                    const menuToggle = document.querySelector('.menu-toggle');
+                    if (navLinks.classList.contains('show')) {
+                        navLinks.classList.remove('show');
+                        menuToggle.classList.remove('active');
+                    }
+                }
+            });
+        });
+
+        // Animate elements when they come into view
+        const animateOnScroll = function() {
+            const elements = document.querySelectorAll('.service-card, .testimonial-card, .contact-card, .prize-card');
+            
+            elements.forEach(element => {
+                const elementPosition = element.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+                
+                if (elementPosition < windowHeight - 100) {
+                    element.classList.add('animate__animated', 'animate__fadeInUp');
+                }
+            });
+        };
+
+        window.addEventListener('scroll', animateOnScroll);
+        window.addEventListener('load', animateOnScroll);
+    </script>
+</body>
+</html>

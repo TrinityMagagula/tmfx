@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TM FX Trading - Agent Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="agent.css">
+    
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                TM FX Trading Agent
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-user-circle me-1"></i>
+                            <span id="agentNameNav">Loading...</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>Profile</a></li>
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>Settings</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#" id="logoutBtn"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid mt-4">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-lg-3">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-id-card me-2"></i>Agent Information
+                    </div>
+                    <div class="card-body">
+                        <div class="text-center mb-4">
+                            <img src="https://firebasestorage.googleapis.com/v0/b/mt-trading-signup-and-log-in.appspot.com/o/tm%20fx.png?alt=media&token=4e6aded3-2796-4487-82d4-987b75ca18c1" alt="Agent Avatar" class="rounded-circle mb-3" width="100">
+                            <h5 id="agentName">Loading...</h5>
+                            <p >Independant Sales Agent</p>
+                        </div>
+                        <div class="mb-3">
+                            <h6>Your Referral Code</h6>
+                            <div class="agent-code text-center" id="agentCode">------</div>
+                            <small >Share this code with your referrals</small>
+                        </div>
+                        <hr>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Total Referrals:</span>
+                            <span class="fw-bold" id="totalReferrals">0</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Active Subscribers:</span>
+                            <span class="fw-bold" id="activeSubscriptions">0</span>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <span>Estimated Earnings:</span>
+                            <span class="fw-bold" id="estimatedEarnings">R0.00</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mt-4">
+                    <div class="card-header">
+                        <i class="fas fa-tags me-2"></i>Service Prices
+                    </div>
+                    <div class="card-body" id="servicePrices">
+                        <div class="loading-spinner text-center py-4">
+                            <div class="spinner-border" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <p class="mt-2">Loading services...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="col-lg-9">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="card stats-card">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class=" mb-2">Weekly Signals</h6>
+                                        <h3 id="weeklySignalsCount">0</h3>
+                                    </div>
+                                    <div class="bg-primary bg-opacity-10 p-3 rounded">
+                                        <i class="fas fa-chart-line fa-2x text-primary"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card stats-card">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class=" mb-2">Monthly Signals</h6>
+                                        <h3 id="monthlySignalsCount">0</h3>
+                                    </div>
+                                    <div class="bg-success bg-opacity-10 p-3 rounded">
+                                        <i class="fas fa-chart-bar fa-2x text-success"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card stats-card">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class=" mb-2">Mentorships</h6>
+                                        <h3 id="mentorshipsCount">0</h3>
+                                    </div>
+                                    <div class="bg-info bg-opacity-10 p-3 rounded">
+                                        <i class="fas fa-user-graduate fa-2x text-info"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mt-4">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <div>
+                            <i class="fas fa-users me-2"></i>Your Referrals
+                        </div>
+                        <div>
+                            <button class="btn btn-sm btn-outline-secondary" id="refreshBtn">
+                                <i class="fas fa-sync-alt me-1"></i>Refresh
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover" id="referralsTable">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Name</th>
+                                        <th>DSW</th>
+                                        <th>DSM</th>
+                                        <th>FSW</th>
+                                        <th>FSM</th>
+                                        <th>MW</th>
+                                        <th>MM</th>
+                                        <th>MY</th>
+                                        <th>DMC</th>
+                                        <th>MCS</th>
+                                        <th>DTU</th>
+                                        <th>OMS</th>
+                                        <th>FMS</th>
+                                        <th>TFS</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="referralsTableBody">
+                                    <tr>
+                                        <td colspan="15" class="text-center py-5">
+                                            <div class="loading-spinner">
+                                                <div class="spinner-border" role="status">
+                                                    <span class="visually-hidden">Loading...</span>
+                                                </div>
+                                                <p class="mt-2">Loading referrals data...</p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+        import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBIRVXFCPBpepPUEZz9aAbF-oVICVxTsec",
+            authDomain: "mt-trading-signup-and-log-in.firebaseapp.com",
+            projectId: "mt-trading-signup-and-log-in",
+            storageBucket: "mt-trading-signup-and-log-in.appspot.com",
+            messagingSenderId: "101302422584",
+            appId: "1:101302422584:web:07d472b05e81a6930beacd"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        const supabase = createClient(
+            'https://fepujhdzovzbygczdjxe.supabase.co',
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZlcHVqaGR6b3Z6YnlnY3pkanhlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDYwODE2MDUsImV4cCI6MjA2MTY1NzYwNX0.mVNDZaHTodnQQ3EGvUS3puaAfTKsiyRCSGldOo_wFmU'
+        );
+
+        // Global variables
+        let currentUser = null;
+        let agentCode = '';
+        let realtimeSubscription = null;
+
+        // DOM elements
+        const agentNameNav = document.getElementById('agentNameNav');
+        const agentName = document.getElementById('agentName');
+        const agentCodeElement = document.getElementById('agentCode');
+        const totalReferrals = document.getElementById('totalReferrals');
+        const activeSubscriptions = document.getElementById('activeSubscriptions');
+        const estimatedEarnings = document.getElementById('estimatedEarnings');
+        const servicePrices = document.getElementById('servicePrices');
+        const weeklySignalsCount = document.getElementById('weeklySignalsCount');
+        const monthlySignalsCount = document.getElementById('monthlySignalsCount');
+        const mentorshipsCount = document.getElementById('mentorshipsCount');
+        const referralsTableBody = document.getElementById('referralsTableBody');
+        const refreshBtn = document.getElementById('refreshBtn');
+        const logoutBtn = document.getElementById('logoutBtn');
+
+        // Service mapping
+        const serviceColumns = {
+            'DSW': 'DerivSignalsWeekly',
+            'DSM': 'DerivSignalsMonthly',
+            'FSW': 'FSW',
+            'FSM': 'FSM',
+            'MW': 'WeeklyMentorship',
+            'MM': 'MonthlyMentorship',
+            'MY': 'YearlyMentorship',
+            'DMC': 'DMC',
+            'MCS': 'MCS',
+            'DTU': 'DTU',
+            'OMS': 'OMS',
+            'FMS': 'FMS',
+            'TFS': 'TFS'
+        };
+
+        // Check authentication state
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                currentUser = user;
+                await initializeDashboard();
+            } else {
+                window.location.href = '/login.html'; // Redirect to login page if not authenticated
+            }
+        });
+
+        // Initialize dashboard
+        async function initializeDashboard() {
+            try {
+                // Generate or get agent code
+                await generateAgentCode();
+                
+                // Load agent details
+                await loadAgentDetails();
+                
+                // Load service prices
+                await loadServicePrices();
+                
+                // Load and setup real-time referrals data
+                await loadReferralsData();
+                setupRealtimeUpdates();
+                
+                // Set up event listeners
+                refreshBtn.addEventListener('click', loadReferralsData);
+                logoutBtn.addEventListener('click', handleSignOut);
+                
+            } catch (error) {
+                console.error('Error initializing dashboard:', error);
+                showError('An error occurred while loading the dashboard. Please try again.');
+            }
+        }
+
+        // Generate or get agent code
+        async function generateAgentCode() {
+            // Check if user already has a code
+            const { data: userData, error: userError } = await supabase
+                .from('users')
+                .select('code')
+                .eq('id', currentUser.uid)
+                .single();
+
+            if (userError && userError.code !== 'PGRST116') { // Ignore "No rows found" error
+                throw userError;
+            }
+
+            if (userData && userData.code) {
+                agentCode = userData.code;
+            } else {
+                // Generate a new 6-digit code
+                agentCode = Math.floor(100000 + Math.random() * 900000).toString();
+                
+                // Save to database
+                const { error: updateError } = await supabase
+                    .from('users')
+                    .update({ code: agentCode })
+                    .eq('id', currentUser.uid);
+
+                if (updateError) throw updateError;
+            }
+
+            // Display code
+            agentCodeElement.textContent = agentCode;
+        }
+
+        // Load agent details
+        async function loadAgentDetails() {
+            const { data, error } = await supabase
+                .from('users')
+                .select('name')
+                .eq('id', currentUser.uid)
+                .single();
+
+            if (error) throw error;
+
+            if (data) {
+                agentName.textContent = data.name;
+                agentNameNav.textContent = data.name;
+            }
+        }
+
+        // Load service prices
+        async function loadServicePrices() {
+            const { data, error } = await supabase
+                .from('ItemList')
+                .select('*');
+
+            if (error) {
+                console.error('Error loading service prices:', error);
+                servicePrices.innerHTML = '<div class="alert alert-danger">Failed to load service prices</div>';
+                return;
+            }
+
+            if (data && data.length > 0) {
+                const services = data[0];
+                delete services.id; // Remove the id field
+                
+                let html = '';
+                for (const [service, price] of Object.entries(services)) {
+                    if (price !== null) {
+                        html += `
+                            <div class="service-item">
+                                <div class="d-flex justify-content-between">
+                                    <span class="service-name">${formatServiceName(service)}</span>
+                                    <span class="service-price">R${price.toFixed(2)}</span>
+                                </div>
+                            </div>
+                        `;
+                    }
+                }
+                
+                servicePrices.innerHTML = html;
+            } else {
+                servicePrices.innerHTML = '<div class="alert alert-warning">No service prices found</div>';
+            }
+        }
+
+        // Format service name for display
+        function formatServiceName(service) {
+            const nameMap = {
+                'DSW': 'Deriv Signals Weekly',
+                'DSM': 'Deriv Signals Monthly',
+                'FSW': 'Forex Signals Weekly',
+                'FSM': 'Forex Signals Monthly',
+                'MW': 'Mentorship Weekly',
+                'MM': 'Mentorship Monthly',
+                'MY': 'Mentorship Yearly',
+                'DMC': 'Demo Synthetic Competition',
+                'MCS': 'Mentorship and Competition Special',
+                'DTU': 'Demo Top Up',
+                'OMS': 'Online Mentorship Session',
+                'FMS': 'Face-to-Face Mentorship Session',
+                'TFS': 'TM FX Trading Strategy'
+            };
+            
+            return nameMap[service] || service;
+        }
+
+        // Load referrals data
+        async function loadReferralsData() {
+            showLoading(referralsTableBody);
+            
+            try {
+                // Get all users referred by this agent
+                const { data: referrals, error: referralsError } = await supabase
+                    .from('users')
+                    .select('id, name, Agent')
+                    .eq('Agent', agentCode);
+
+                if (referralsError) throw referralsError;
+
+                // Update total referrals count
+                totalReferrals.textContent = referrals.length;
+                
+                // If no referrals, show message
+                if (referrals.length === 0) {
+                    referralsTableBody.innerHTML = '<tr><td colspan="15" class="text-center py-4">No referrals found</td></tr>';
+                    return;
+                }
+                
+                // Get subscription status for each referral
+                const referralsWithSubscriptions = await Promise.all(
+                    referrals.map(async (referral) => {
+                        const subscriptions = {};
+                        
+                        // Check each subscription table
+                        for (const [column, table] of Object.entries(serviceColumns)) {
+                            const { data: subscriptionData, error: subError } = await supabase
+                                .from(table)
+                                .select('id')
+                                .eq('id', referral.id)
+                                .maybeSingle();
+
+                            if (!subError) {
+                                subscriptions[column] = !!subscriptionData;
+                            } else {
+                                console.error(`Error checking ${table} for user ${referral.id}:`, subError);
+                                subscriptions[column] = false;
+                            }
+                        }
+                        
+                        return {
+                            ...referral,
+                            ...subscriptions
+                        };
+                    })
+                );
+                
+                // Calculate stats
+                calculateStats(referralsWithSubscriptions);
+                
+                // Render table
+                renderReferralsTable(referralsWithSubscriptions);
+                
+            } catch (error) {
+                console.error('Error loading referrals data:', error);
+                referralsTableBody.innerHTML = '<tr><td colspan="15" class="text-center text-danger py-4">Error loading data. Please try again.</td></tr>';
+            }
+        }
+
+        // Calculate and display stats
+        function calculateStats(referrals) {
+            let weeklySignals = 0;
+            let monthlySignals = 0;
+            let mentorships = 0;
+            let activeSubs = 0;
+            let totalEarnings = 0;
+            
+            // Service prices (example values - should fetch from ItemList)
+            const servicePrices = {
+                'DSW': 150,
+                'DSM': 500,
+                'FSW': 170,
+                'FSM': 550,
+                'MW': 100,
+                'MM': 200,
+                'MY': 3600,
+                'DMC': 200,
+                'MCS': 200,
+                'DTU': 50,
+                'OMS': 300,
+                'FMS': 700,
+                'TFS': 5000
+            };
+            
+            // Commission rate (20%)
+            const commissionRate = 0.25;
+            
+            referrals.forEach(referral => {
+                // Count subscriptions
+                if (referral.DSW || referral.FSW) weeklySignals++;
+                if (referral.DSM || referral.FSM) monthlySignals++;
+                if (referral.MW || referral.MM || referral.MY || referral.OMS || referral.FMS) mentorships++;
+                
+                // Check if user has any active subscription
+                const hasActiveSub = Object.entries(serviceColumns).some(([column]) => referral[column]);
+                if (hasActiveSub) activeSubs++;
+                
+                // Calculate estimated earnings
+                Object.entries(serviceColumns).forEach(([column]) => {
+                    if (referral[column] && servicePrices[column]) {
+                        totalEarnings += servicePrices[column] * commissionRate;
+                    }
+                });
+            });
+            
+            // Update UI
+            weeklySignalsCount.textContent = weeklySignals;
+            monthlySignalsCount.textContent = monthlySignals;
+            mentorshipsCount.textContent = mentorships;
+            activeSubscriptions.textContent = activeSubs;
+            estimatedEarnings.textContent = `R${totalEarnings.toFixed(2)}`;
+        }
+
+        // Render referrals table
+        function renderReferralsTable(referrals) {
+            let html = '';
+            
+            referrals.forEach(referral => {
+                html += `<tr>
+                    <td>${referral.id.substring(0, 8)}...</td>
+                    <td>${referral.name || 'N/A'}</td>`;
+                
+                // Add subscription status columns
+                Object.keys(serviceColumns).forEach(column => {
+                    const statusClass = referral[column] ? 'status-active' : 'status-inactive';
+                    const statusText = referral[column] ? 'Active' : 'Inactive';
+                    html += `<td class="text-center">
+                        <span class="subscription-status ${statusClass}">${statusText}</span>
+                    </td>`;
+                });
+                
+                html += `</tr>`;
+            });
+            
+            referralsTableBody.innerHTML = html;
+        }
+
+        // Set up real-time updates
+        function setupRealtimeUpdates() {
+            // Cancel any existing subscription
+            if (realtimeSubscription) {
+                supabase.removeChannel(realtimeSubscription);
+            }
+            
+            // Subscribe to changes in all relevant tables
+            realtimeSubscription = supabase.channel('agent-dashboard-updates')
+                .on(
+                    'postgres_changes',
+                    {
+                        event: '*',
+                        schema: 'public',
+                        table: 'users',
+                        filter: `Agent=eq.${agentCode}`
+                    },
+                    async () => {
+                        await loadReferralsData();
+                    }
+                )
+                .on(
+                    'postgres_changes',
+                    {
+                        event: '*',
+                        schema: 'public',
+                        table: /^(DerivSignalsWeekly|DerivSignalsMonthly|FSW|FSM|WeeklyMentorship|MonthlyMentorship|YearlyMentorship|DMC|DTU|MCS|TFS|OMS|FMS)$/
+                    },
+                    async () => {
+                        await loadReferralsData();
+                    }
+                )
+                .subscribe();
+        }
+
+        // Show loading spinner
+        function showLoading(element) {
+            element.innerHTML = `
+                <tr>
+                    <td colspan="15" class="text-center py-5">
+                        <div class="loading-spinner">
+                            <div class="spinner-border" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <p class="mt-2">Loading data...</p>
+                        </div>
+                    </td>
+                </tr>
+            `;
+        }
+
+        // Show error message
+        function showError(message) {
+            const alert = document.createElement('div');
+            alert.className = 'alert alert-danger alert-dismissible fade show';
+            alert.innerHTML = `
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            
+            const container = document.querySelector('.container-fluid');
+            container.prepend(alert);
+        }
+
+        // Handle sign out
+        async function handleSignOut() {
+            try {
+                await signOut(auth);
+                window.location.href = '/login.html';
+            } catch (error) {
+                console.error('Error signing out:', error);
+                showError('Error signing out. Please try again.');
+            }
+        }
+    </script>
+    
+</body>
+</html>

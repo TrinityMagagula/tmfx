@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Delete Synthetic Index Price History</title>
+
+  <!-- Firebase SDKs for Firebase v9+ (using ES modules) -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.9.0/firebase-app.js";
+    import { getDatabase, ref, get, remove } from "https://www.gstatic.com/firebasejs/9.9.0/firebase-database.js";
+
+    // Firebase Configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyBIRVXFCPBpepPUEZz9aAbF-oVICVxTsec",
+      authDomain: "mt-trading-signup-and-log-in.firebaseapp.com",
+      databaseURL: "https://mt-trading-signup-and-log-in-default-rtdb.firebaseio.com",
+      projectId: "mt-trading-signup-and-log-in",
+      storageBucket: "mt-trading-signup-and-log-in.appspot.com",
+      messagingSenderId: "101302422584",
+      appId: "1:101302422584:web:07d472b05e81a6930beacd"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const database = getDatabase(app);
+
+    // Function to delete priceHistory data in smaller batches
+    async function deletePriceHistoryInBatches() {
+      const priceHistoryRef = ref(database, 'syntheticIndex/priceHistory');
+      
+      // Show status message while deleting
+      document.getElementById('statusMessage').innerText = 'Deleting price history data...';
+
+      try {
+        const snapshot = await get(priceHistoryRef);
+        if (snapshot.exists()) {
+          const data = snapshot.val();
+          const keys = Object.keys(data);
+
+          // Batch size (reduce to avoid exceeding limits)
+          const batchSize = 1000;  // Deleting 5 items at a time
+          let deletedCount = 0;
+
+          for (let i = 0; i < keys.length; i += batchSize) {
+            const batchKeys = keys.slice(i, i + batchSize);
+            const deletePromises = batchKeys.map((key) => {
+              const childRef = ref(database, `syntheticIndex/priceHistory/${key}`);
+              return remove(childRef);
+            });
+
+            // Wait for the batch to be deleted
+            await Promise.all(deletePromises);
+            deletedCount += batchKeys.length;
+
+            console.log(`Successfully deleted ${deletedCount} price history entries so far.`);
+            document.getElementById('statusMessage').innerText = `Deleted ${deletedCount} entries so far.`;
+
+            // Pause briefly before continuing to avoid overwhelming Firebase
+            await new Promise(resolve => setTimeout(resolve, 1000)); // Increased delay between batches
+          }
+
+          document.getElementById('statusMessage').innerText = 'Successfully deleted all price history data.';
+        } else {
+          document.getElementById('statusMessage').innerText = 'No price history data to delete.';
+        }
+      } catch (error) {
+        console.error('Error deleting data:', error);
+        document.getElementById('statusMessage').innerText = `Error deleting data: ${error.message}`;
+      }
+    }
+
+    // Function to start the deletion process when the delete button is clicked
+    document.getElementById('deleteButton').addEventListener('click', deletePriceHistoryInBatches);
+  </script>
+</head>
+<body>
+  <h1>Delete Synthetic Index Price History</h1>
+  <button id="deleteButton">Delete Price History Data</button>
+  <p id="statusMessage"></p>
+</body>
+</html>

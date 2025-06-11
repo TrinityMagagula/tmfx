@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Forex Quiz - Module 1, Lesson 3</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; max-width: 900px; margin: auto; }
+    h1 { color: #2c3e50; }
+    .question { margin-bottom: 20px; }
+    .question h3 { margin-bottom: 5px; }
+    .results { margin-top: 30px; font-size: 1.2em; font-weight: bold; color: #27ae60; }
+    button { padding: 10px 20px; background-color: #2980b9; color: white; border: none; cursor: pointer; border-radius: 5px; }
+    button:hover { background-color: #3498db; }
+  </style>
+</head>
+<body>
+  <h1>Forex Quiz – Module 1, Lesson 1</h1>
+  <form id="quizForm">
+    <!-- Questions -->
+    <div id="quiz"></div>
+    <button type="submit">Submit Quiz</button>
+  </form>
+  <div class="results" id="results"></div>
+
+  <script>
+    const questions = [
+    
+    {
+    q: "What does a line chart primarily show in Forex trading?",
+    options: ["Volume of trades", "Highs and lows of price", "Closing prices over time", "Open and close prices"],
+    answer: 2
+  },
+  {
+    q: "Which axis on a trading chart represents time?",
+    options: ["Z-axis", "Y-axis", "X-axis", "W-axis"],
+    answer: 2
+  },
+  {
+    q: "What type of chart uses bars with left and right ticks to indicate open and close prices?",
+    options: ["Line Chart", "Candlestick Chart", "Bar Chart", "Dot Chart"],
+    answer: 2
+  },
+  {
+    q: "In a bar chart, the vertical line represents what?",
+    options: ["Closing price only", "Opening price only", "Price range (high to low)", "Volume"],
+    answer: 2
+  },
+  {
+    q: "What does the body of a candlestick represent?",
+    options: ["Time range", "High and low prices", "Volume", "Difference between opening and closing prices"],
+    answer: 3
+  },
+  {
+    q: "If a candlestick is green or hollow, what does it indicate?",
+    options: ["Closing price is lower than the opening", "Price stayed constant", "Closing price is higher than the opening", "Price dropped heavily"],
+    answer: 2
+  },
+  {
+    q: "What are the lines above and below the candlestick body called?",
+    options: ["Shadows or Wicks", "Beams", "Poles", "Ticks"],
+    answer: 0
+  },
+  {
+    q: "Which chart type is best for identifying simple overall trends?",
+    options: ["Candlestick", "Bar Chart", "Line Chart", "Volume Chart"],
+    answer: 2
+  },
+  {
+    q: "What does a long candlestick body without wicks imply?",
+    options: ["A sideways trend", "Strong directional price movement", "Low volatility", "Market indecision"],
+    answer: 1
+  },
+  {
+    q: "Which chart type is most detailed for analyzing price behavior?",
+    options: ["Line Chart", "Pie Chart", "Candlestick Chart", "Bar Chart"],
+    answer: 2
+  },
+  {
+    q: "What do short candlestick wicks usually indicate?",
+    options: ["Price moved a lot", "Strong trend", "Price stayed close to open/close", "Low volume"],
+    answer: 2
+  },
+  {
+    q: "What does a filled candlestick body usually represent?",
+    options: ["Bullish movement", "Bearish movement", "Sideways trend", "Market open"],
+    answer: 1
+  },
+  {
+    q: "Which chart is preferred by most experienced traders?",
+    options: ["Bar Chart", "Line Chart", "Candlestick Chart", "Point and Figure Chart"],
+    answer: 2
+  },
+  {
+    q: "What does the right tick on a bar chart represent?",
+    options: ["High", "Low", "Opening price", "Closing price"],
+    answer: 3
+  },
+  {
+    q: "What information does a candlestick NOT show?",
+    options: ["Volume", "Open", "Close", "High and Low"],
+    answer: 0
+  },
+  {
+    q: "If a bar’s left tick is lower than the right tick, what trend does it suggest?",
+    options: ["Neutral", "Bullish", "Bearish", "Reversal"],
+    answer: 1
+  },
+  {
+    q: "What does the term 'x-axis' usually represent on trading charts?",
+    options: ["Time", "Volume", "Price", "Spread"],
+    answer: 0
+  },
+  {
+    q: "Which chart gives the least detailed view of price movement within a time period?",
+    options: ["Bar Chart", "Candlestick Chart", "Line Chart", "Volume Chart"],
+    answer: 2
+  },
+  {
+    q: "In candlestick charts, what do long wicks indicate?",
+    options: ["High trading volume", "Price rejected high/low", "Market open", "No trading activity"],
+    answer: 1
+  },
+  {
+    q: "What does the vertical line of a bar chart span from?",
+    options: ["Open to Close", "High to Low", "Start to End of day", "Volume range"],
+    answer: 1
+  },
+  // Deeper level understanding
+  {
+    q: "Why might a trader prefer a candlestick chart over a line chart for intraday trading?",
+    options: ["It loads faster", "It shows only closing prices", "It gives more detail on price action", "It doesn't show volatility"],
+    answer: 2
+  },
+  {
+    q: "What can a sequence of green candlesticks with increasing body size indicate?",
+    options: ["Decreasing volume", "Strong upward momentum", "Sideways consolidation", "Market uncertainty"],
+    answer: 1
+  },
+  {
+    q: "If a candlestick has a long upper wick but a small body near the low, what might this suggest?",
+    options: ["Strong buying pressure", "Price was rejected from higher levels", "Low trading activity", "A stable market"],
+    answer: 1
+  },
+  {
+    q: "How can comparing line charts and candlestick charts help improve trading decisions?",
+    options: ["They both show identical information", "Candlesticks add context to price moves seen on line charts", "Line charts reveal volume", "Line charts show reversals better"],
+    answer: 1
+  },
+  {
+    q: "Which chart type would be least useful for identifying candlestick patterns like 'Doji' or 'Hammer'?",
+    options: ["Candlestick Chart", "Bar Chart", "Line Chart", "None"],
+    answer: 2
+  },
+  {
+    q: "What type of trader would most benefit from using candlestick charts regularly?",
+    options: ["Buy-and-hold investors", "Long-term fundamental analysts", "Short-term technical traders", "Bond investors"],
+    answer: 2
+  },
+  {
+    q: "How can wicks on a candlestick chart help traders understand market sentiment?",
+    options: ["They show volume", "They indicate price rejection or testing", "They track news impact", "They show order book depth"],
+    answer: 1
+  },
+  {
+    q: "Why might an experienced trader avoid using line charts alone?",
+    options: ["Too detailed", "No color coding", "They don't show full price action", "They are too slow to update"],
+    answer: 2
+  },
+  {
+    q: "How does a candlestick chart enhance psychological analysis in trading?",
+    options: ["It shows news headlines", "It captures trader emotion through patterns", "It displays real-time trades", "It simplifies price action"],
+    answer: 1
+  },
+  {
+    q: "What might it mean if multiple candlesticks have long lower wicks at the same price level?",
+    options: ["Strong resistance", "Fake breakout", "Price support level", "No trading interest"],
+    answer: 2
+  }
+
+    ];
+
+    const quizContainer = document.getElementById("quiz");
+    questions.forEach((q, i) => {
+      const div = document.createElement("div");
+      div.className = "question";
+      div.innerHTML = `<h3>Q${i + 1}: ${q.q}</h3>` +
+        q.options.map((opt, j) => `
+          <label>
+            <input type="radio" name="q${i}" value="${j}" required> ${opt}
+          </label><br>`).join("");
+      quizContainer.appendChild(div);
+    });
+
+    document.getElementById("quizForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      let score = 0;
+      questions.forEach((q, i) => {
+        const selected = document.querySelector(`input[name='q${i}']:checked`);
+        if (selected && parseInt(selected.value) === q.answer) score++;
+      });
+      const percent = (score / questions.length) * 100;
+      document.getElementById("results").innerText = `You scored ${score} out of ${questions.length} (${percent.toFixed(2)}%)`;
+    });
+  </script>
+</body>
+</html>

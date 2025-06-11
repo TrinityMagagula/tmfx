@@ -1,0 +1,140 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TM FX TRADING Subscriptions</title>
+  <link rel="stylesheet" href="subsitemselector.css">
+    <style>
+
+    </style>
+  <script type="module" src="subsitemselector.js"></script>
+</head>
+<body>
+    <header>
+        <div class="containernav">
+            <div class="logo">
+                <h1>
+                    TM FX TRADING SUBSCRIPTIONS
+                        <span class="small-text">
+                            (pty) Ltd
+                        </span>
+                </h1>
+            </div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="wallet.html">Wallet</a></li>
+                    <li><a href="index1.html" onclick="logout(event)">Logout</a></li>
+                </ul>
+                <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+            </nav>
+        </div>
+
+        <script>
+            function toggleMenu() {
+                document.querySelector('.nav-links').classList.toggle('active');
+            }
+            
+        </script>
+    </header>
+    <main>    
+        <div class="trade-panel">
+            <h2>Subscriptions</h2>
+            <div class="profile-section">
+                <img id="profilePic" class="profile-pic" src="" alt="User Pic">
+                <span id="userName">Loading...</span>
+            </div>
+            <div class="panel-item"><span>User Credits:</span><span id="user-credits">Loading...</span></div>
+            <div class="panel-item"><span>Balance:</span><span id="user-balance">Loading...</span></div>
+            
+            <div class="panel-item"><span>Total Items in Cart:</span><span id="total-items-cart">0</span></div>
+        
+            
+            <div class="panel-item">
+                <span>Item Name:</span>
+                <span id="item-name" style="cursor: pointer;">Select</span>
+                <ul id="item-dropdown" style="display: none; list-style: none; padding: 5px; border: 1px solid #ccc; position: absolute; background: white;"></ul>
+            </div>
+
+            <div class="panel-item">
+                <span>Item Cost:</span>
+                <span id="item-cost">0.00</span>
+            </div>
+                
+
+            <div class="panel-item">
+                <span>Quantity:</span><input class="panel-inputs" type="number" id="quantity" value="1" />
+            </div>
+            
+            <div class="panel-item"><span>Total Costs:</span><span id="total-costs">0.00</span></div>
+
+
+            <div class="buttons">
+                <button class="add-btn" onclick="AddToCart('Add')">Add to Cart</button>
+                <button class="subscribe-btn" onclick="CheckOutCart()">Checkout Cart</button>
+            </div>
+        </div>
+
+          
+          
+        <div id="CartContainer"  class="cart-container">
+            <div  style="position: absolute; margin-bottom: 5rem; text-align: center;">
+              <h2>Cart Items</h2>
+            </div>
+          
+            <div style="margin-top: 5rem; overflow-y: scroll; max-height: 200px;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>TransactionID</th>                      
+                            <th>ItemName</th>
+                            <th>Date</th>
+                            <th>Type</th>
+                            <th>Quantity</th>
+                            <th>Amount</th>
+                            <th>Remove</th>
+                            <th>CheckOut</th>
+                        </tr>
+                    </thead>
+                    <tbody id="Cart-Items">
+                    </tbody>
+                </table>
+              </div>
+            </div>
+        </div>
+          
+          
+          
+        <div class="transaction-history" id="TransactionHistoryContainer">
+            <div  style="position: absolute; margin-bottom: 5rem; text-align: center;">
+              <h2>Transaction History</h2>
+            </div>
+          
+          
+            <div style="margin-top: 5rem; overflow-y: scroll; max-height: 200px;">
+              <table>
+                <thead>
+                  <tr>
+                    <th>TransactionID</th>                      
+                    <th>ItemName</th>
+                    <th>Time</th>
+                    <th>Type</th>
+                    <th>Quantity</th>
+                    <th>Amount</th>
+                    <th>UserCredits</th>
+                    <th>OpeningBalance</th>
+                    <th>ClosingBalance</th>
+                    <th>Invoice</th>
+                  </tr>
+                </thead>
+                <tbody id="TransactionHistory"></tbody>
+              </table>
+            </div>  
+        </div>
+    </main>  
+</body>
+
+<footer class="footer">
+    <p>&copy; 2024 TM FX TRADING (pty) Ltd. All rights reserved.</p>
+</footer>

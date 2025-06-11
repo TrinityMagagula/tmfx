@@ -1,0 +1,35 @@
+.item-selector {
+    position: relative;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    font-family: Arial, sans-serif;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .dropdown-trigger {
+    color: #007bff;
+    border-bottom: 1px dashed #007bff;
+  }
+
+  .dropdown-list {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 90px;
+    background-color: white;
+    border: 1px solid #ccc;
+    z-index: 10;
+    width: 150px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .dropdown-option {
+    padding: 8px 10px;
+    cursor: pointer;
+  }
+
+  .dropdown-option:hover {
+    background-color: #f0f0f0;
+  }

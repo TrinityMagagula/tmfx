@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile - TM FX TRADING (pty) Ltd</title>
+    <link rel="icon" href="images/logo 32.png" type="image/png">
+    <script type="module" src="auth.js"></script>
+    
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <h1>TM FX TRADING <span class="small-text">(pty) Ltd</span></h1>
+            </div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="../mentorship/mentorship.html">Mentorship</a></li>
+                    <li><a href="#" id="userProfileBtn">Loading...</a></li>
+                    <li><a href="index.html" onclick="logout(event)">Logout</a></li>
+                </ul>
+                <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+            </nav>
+        </div>
+        <script>
+            function toggleMenu() {
+                document.querySelector('.nav-links').classList.toggle('active');
+            }
+            
+            function logout(event) {
+                event.preventDefault();
+                signOut(auth).then(() => {
+                    alert("You have been logged out.");
+                    window.location.href = "index.html"; // Redirect to home page after alert
+                }).catch((error) => {
+                    console.error("Logout error:", error);
+                });
+            }
+
+            let inactivityTime = function () {
+                let timer;
+                window.onload = resetTimer;
+                window.onmousemove = resetTimer;
+                window.onkeypress = resetTimer;
+
+                function logoutUser() {
+                    // Call logout directly instead of showing an alert here
+                    signOut(auth).then(() => {
+                        alert("You have been logged out.");
+                        window.location.href = "index.html"; // Redirect after alert
+                    }).catch((error) => {
+                        console.error("Logout error:", error);
+                    });
+                }
+
+                function resetTimer() {
+                    clearTimeout(timer);
+                    timer = setTimeout(logoutUser, 600000); // Logout after 10 minutes of inactivity
+                }
+            };
+
+            inactivityTime();
+
+            function logout() {
+                alert("You have been logged out.");
+            }
+
+        </script>
+    </header>
+    <main>
+        <section id="user-profile">
+            <div class="profile-container">
+                <section><h2>Member's Profile</h2></section>
+                <img id="previewImage" src="https://firebasestorage.googleapis.com/v0/b/mt-trading-signup-and-log-in.appspot.com/o/tm%20fx.png?alt=media&token=4e6aded3-2796-4487-82d4-987b75ca18c1" alt="Profile Picture">
+                <h3 id="user-fullname">Name</h3>
+                <p id="user-email">Email</p>
+                
+                <input type="file" id="fileInput" accept="image/*" style="display:none">
+                <button class="elegant-button" onclick="document.getElementById('fileInput').click()">Select Profile Picture</button>
+                <button class="elegant-button" id="uploadButton">Upload</button>
+                <p id="loadingIndicator" style="display: none; color: blue;">Uploading...</p>
+                <script type="module" src="script.js"></script>
+            </div>
+        </section>
+
+        <section id="profile-details-section">
+            <div class="profile-container">
+                <section><h2>Update Profile details</h2></section>
+                <form id="profile-info">
+                    <label for="user-gender">Gender:</label>
+                    <select id="user-gender" required>
+                        <option value="">Select Gender</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                        <option value="other">Other</option>
+                    </select>
+                    <label for="user-country">Country:</label>
+                    <select id="user-country" required>
+                        <option value="">Select Country</option>
+                        <option value="South-Africa">South Africa</option>
+                    </select>
+                    <label for="user-province">Province/State:</label>
+                    <select id="user-province" required>
+                        <option value="">Select Province</option>
+                        <option value="Eastern-Cape">Eastern Cape</option>
+                        <option value="Free-State">Free State</option>
+                        <option value="Gauteng">Gauteng</option>
+                        <option value="KwaZulu-Natal">KwaZulu-Natal</option>
+                        <option value="Limpopo">Limpopo</option>
+                        <option value="Mpumalanga">Mpumalanga</option>
+                        <option value="North-West">North West</option>
+                        <option value="Northern-Cape">Northern Cape</option>
+                        <option value="Western-Cape">Western Cape</option>
+                    </select>
+                    <label for="user-city">City:</label>
+                    <input type="text" id="user-city" placeholder="City" required>
+                    <label for="user-street">Street:</label>
+                    <input type="text" id="user-street" placeholder="Street" required>
+                    <label for="user-postal">Postal Code:</label>
+                    <input type="number" id="user-postal" placeholder="Postal Code" required>
+                
+                    <button class="elegant-button" type="submit">Update</button>
+                </form>
+                <p id="error-message" style="color: red;"></p>
+            </div>
+            <script type="module">
+                import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+                import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+                import { getDatabase, ref, onValue, update } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
+                
+                const firebaseConfig = {
+                    apiKey: "AIzaSyBIRVXFCPBpepPUEZz9aAbF-oVICVxTsec",
+                    authDomain: "mt-trading-signup-and-log-in.firebaseapp.com",
+                    databaseURL: "https://mt-trading-signup-and-log-in-default-rtdb.firebaseio.com",
+                    projectId: "mt-trading-signup-and-log-in",
+                    storageBucket: "mt-trading-signup-and-log-in.appspot.com",
+                    messagingSenderId: "101302422584",
+                    appId: "1:101302422584:web:07d472b05e81a6930beacd"
+                };
+                
+                const app = initializeApp(firebaseConfig);
+                const auth = getAuth(app);
+                const database = getDatabase(app);
+                let userId;
+
+                onAuthStateChanged(auth, (user) => {
+                    if (user) {
+                        userId = user.uid;
+                        loadUserData(userId);
+                    }
+                });
+
+                function loadUserData(userId) {
+                    const userRef = ref(database, 'users/' + userId);
+                    onValue(userRef, (snapshot) => {
+                        const data = snapshot.val();
+                        document.getElementById('user-fullname').innerText = data.name || '';
+                        document.getElementById('user-email').innerText = data.email;
+                        document.getElementById('userProfileBtn').innerText = data.name || '';
+                        document.getElementById('user-gender').value = data.gender || '';
+                        document.getElementById('user-country').value = data.country || '';
+                        document.getElementById('user-province').value = data.province || '';
+                        document.getElementById('user-city').value = data.city || '';
+                        document.getElementById('user-street').value = data.street || '';
+                        document.getElementById('user-postal').value = data.postal || '';
+                    });
+                }
+
+                document.getElementById('profile-info').addEventListener('submit', (event) => {
+                    event.preventDefault();
+                    updateProfile();
+                });
+
+                function updateProfile() {
+                    const gender = document.getElementById('user-gender').value;
+                    const country = document.getElementById('user-country').value;
+                    const province = document.getElementById('user-province').value;
+                    const city = document.getElementById('user-city').value;
+                    const street = document.getElementById('user-street').value;
+                    const postal = document.getElementById('user-postal').value;
+
+                    if (!gender || !country || !city ||!province || !street || !postal) {
+                        document.getElementById('error-message').innerText = "Please fill out all fields.";
+                        return;
+                    }
+
+                    update(ref(database, 'users/' + userId), { gender, country, province, city, street, postal })
+                        .then(() => {
+                            alert("Profile updated successfully!");
+                        })
+                        .catch((error) => {
+                            console.error("Error updating profile:", error);
+                        });
+                }
+            </script>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 TM FX TRADING (pty) Ltd. All rights reserved.</p>
+    </footer>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: #333;
+            color: white;
+            padding: 1rem;
+        }
+
+        .small-text {
+            font-size: 0.5em;
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 0.9rem;
+            margin-top: 1rem;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 1rem;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        nav li {
+            margin-top: 0.75rem;
+        }
+
+        .menu-toggle {
+            display: none;
+            font-size: 1.8rem;
+            cursor: pointer;
+            margin-top: 1rem;
+        }
+
+        .nav-links.active {
+            display: block;
+        }
+
+        main {
+            padding: 2rem;
+        }
+
+        section {
+            padding: 2rem 0;
+        }
+
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 1rem 0;
+            margin-top: 2rem;
+            position: -ms-page;
+        }
+
+        .profile-container {
+            text-align: center;
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .profile-container img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 1rem;
+        }
+
+        .profile-container h3 {
+            margin: 1rem 0;
+        }
+
+        .elegant-button {
+            background-color: #333;
+            color: white;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 0.5rem;
+            transition: background-color 0.3s;
+        }
+
+        .elegant-button:hover {
+            background-color: #5b5b5b;
+        }
+
+        .profile-info {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 0.5rem;
+            margin: 0.5rem 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        form button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 20px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 70px;
+                right: 10px;
+                background: #333;
+                padding: 1rem;
+                width: 200px;
+                border-radius: 8px;
+            }
+
+            .menu-toggle {
+                display: block;
+                color: white;
+            }
+
+            .logo {
+                text-align: center;
+            }
+        }
+    </style>
+</body>
+</html>

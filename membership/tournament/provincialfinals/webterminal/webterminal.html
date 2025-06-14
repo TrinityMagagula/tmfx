@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="icon" href="images/logo 32.png" type="image/png">
+    <title>TM FX TRADING PLATFORM</title>
+    <script src="https://cdn.jsdelivr.net/npm/lightweight-charts@4.1.1/dist/lightweight-charts.standalone.production.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Firebase scripts -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
+    <!-- Supabase script -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.6/dist/umd/supabase.min.js"></script>
+
+    <script type="module" src="auth.js"></script>
+    <script type="module" src="pastTradeInit.js"></script>
+    <script type="module" src="indexlist.js"></script>
+    <script type="module" src="opentrades.js"></script>
+
+
+
+    <script type="module" src="orders.js"></script>
+
+    
+
+    <link rel="stylesheet" href="webterminal.css">
+</head>
+  
+<body>
+  <header>
+    <div class="header-container">
+        <div class="logo">
+            <h1>TM FX TRADING <span class="small-text">(pty) Ltd</span></h1>
+        </div>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="../provfinal.html">Tournament</a></li>
+                <li><a href="../../../../index.html" id="logoutLink">Logout</a></li>
+            </ul>
+            <div class="menu-toggle" id="menuToggle">☰</div>
+        </nav>
+    </div>
+    
+  </header>
+
+  <div class="main-container">
+    
+
+    <div class="right-panel">
+      <div class="panel-tabs">
+  <button class="tab-btn active" data-tab="account">
+    <i class="fas fa-user"></i>
+    <span>Account</span>
+  </button>
+  <button class="tab-btn" data-tab="chart">
+    <i class="fas fa-chart-line"></i>
+    <span>Chart</span>
+  </button>
+  <button class="tab-btn" data-tab="market">
+    <i class="fas fa-shopping-basket"></i>
+    <span>Market</span>
+  </button>
+  <button class="tab-btn" data-tab="open">
+    <i class="fas fa-unlock"></i>
+    <span>Open</span>
+  </button>
+  <button class="tab-btn" data-tab="pending">
+    <i class="fas fa-clock"></i>
+    <span>Pending</span>
+  </button>
+  <button class="tab-btn" data-tab="history">
+    <i class="fas fa-history"></i>
+    <span>History</span>
+  </button>
+</div>
+        
+      
+
+      <div class="tab-content active" id="account-tab">
+        <div class="trade-panel">
+          <div class="profile-section">
+            <img id="profilePic" class="profile-pic" src="" alt="User Pic">
+            <span id="userName">Loading...</span>
+          </div>
+
+          <div class="account-metrics">
+            <div class="metric-row">
+              <span class="metric-label">Balance:</span>
+              <span class="metric-value" id="balance">Loading...</span>
+            </div>
+            <div class="metric-row">
+              <span class="metric-label">Equity:</span>
+              <span class="metric-value" id="equity">Loading...</span>
+            </div>
+            <div class="metric-row">
+              <span class="metric-label">Margin:</span>
+              <span class="metric-value" id="margin">0</span>
+            </div>
+            <div class="metric-row">
+              <span class="metric-label">Free Margin:</span>
+              <span class="metric-value" id="freemargin">0 </span>
+            </div>
+            <div class="metric-row">
+              <span class="metric-label">Open PnL:</span>
+              <span class="metric-value" id="pnl">0.00</span>
+            </div>
+    
+          </div>
+        </div>  
+      </div>
+
+
+
+      <div class="tab-content" id="chart-tab">
+        <div class="chart-section">
+          <div class="chart-header">
+            <div class="chart-controls">
+              <a href="../webterminal/charts/chart.html" class="fullscreen-btn">Full screen</a>
+              <select id="timeframe">
+                <option value="1m">M1</option>
+                <option value="5m">M5</option>
+                <option value="15m">M15</option>
+                <option value="30m">M30</option>
+                <option value="1h">H1</option>
+                <option value="4h">H4</option>
+                <option value="1d">D1</option>
+                <option value="1w">W1</option>
+                <option value="1mn">MN</option>
+              </select>
+            </div>
+          </div>
+          <div id="chart" class="c"></div>
+        </div>
+      </div>
+
+
+
+
+
+      <div class="tab-content" id="market-tab">
+            <div class="trade-panel">
+
+              <select id="instruments" class="instrument-select">
+                <option value="">Select Instrument</option>
+              </select>
+
+              <div class="metric-row">
+                <span class="metric-label">Current Price:</span>
+                <span class="metric-value" id="price">0.00</span>
+              </div>
+
+              <select id="orderType" class="order-type-select">
+                <option value="">Select Order Type</option>
+                <option value="buy_stop">Buy stop</option>
+                <option value="sell_stop">Sell stop</option>
+                <option value="buy_limit">Buy limit</option>
+                <option value="sell_limit">Sell limit</option>
+                <option value="buy">Buy</option>
+                <option value="sell">Sell</option>
+              </select>
+              
+              <div class="control-group" id="priceInputContainer" style="display: none;">
+                <input type="number" id="pendingPrice" placeholder="Enter Pending Price" />
+              </div>
+
+              <div class="control-group">
+                <label>Take Profit</label>
+                <input type="number" id="tp" value="0.00" step="0.01" />
+              </div>
+              <div class="control-group">
+                <label>Stop Loss</label>
+                <input type="number" id="sl" value="0.00" step="0.01" />
+              </div>
+              <div class="control-group">
+                <label>Lot Size</label>
+                <input type="number" id="lot" value="0.01" step="0.01" min="0.01" />
+              </div>
+
+              
+
+              
+
+              
+
+              <button class="execute-btn" id="executeBtn">Execute Order</button>
+            </div>
+      </div>
+
+      <div class="tab-content" id="open-tab">
+        <div>
+          <h3>Open Trades</h3>
+          <br>
+        </div>
+        <div class="trades-container">
+          
+          <div class="trades-table-container">
+            <table class="trades-table">
+              <thead>
+                <tr>
+                  <th>Symbol</th>
+                  <th>Type</th>
+                  <th>Volume</th>
+                  <th>Entry</th>
+                  <th>P/L</th>
+                </tr>
+              </thead>
+              <tbody id="openTrades"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-content" id="pending-tab">
+        <div>
+          <h3 style="bottom: 2rem;">Pending Trades</h3>
+          <br>
+        </div>
+        <div class="trades-container">
+          
+          <div class="trades-table-container">
+            <table class="trades-table">
+              <thead>
+                <tr>
+                  <th>Symbol</th>
+                  <th>Type</th>
+                  <th>Volume</th>
+                  <th>Entry</th>
+                </tr>
+              </thead>
+              <tbody id="pendingTradesBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-content" id="history-tab">
+        <div class="trades-container">
+          <h3>Trade History</h3>
+          <div class="trades-table-container">
+            <div id="pagination-controls">
+              <button id="prevBtn" disabled>Previous</button>
+              <span id="pageIndicator">Page 1</span>
+              <button id="nextBtn">Next</button>
+            </div>
+        </div>
+        <div class="trades-container">
+          
+            <table class="trades-table">
+              <thead>
+                <tr>
+                  <th>Symbol</th>
+                  <th>Time</th>
+                  <th>Type</th>
+                  <th>Volume</th>
+                  <th>Entry</th>
+                  <th>Close</th>
+                  <th>TP</th>
+                  <th>SL</th>
+                  <th>P/L</th>
+                  <th>Reason</th>
+                </tr>
+              </thead>
+              <tbody id="tradeHistory"></tbody>
+            </table>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2024 TM FX TRADING (pty) Ltd. All rights reserved.</p>
+  </footer>
+
+<script>
+  // Tab switching functionality
+  const tabInitFunctions = {
+    chart: null,
+    account: null,
+    market: null,
+    open: null,
+    pending: null,
+    history: null
+  };
+
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      // Remove active states
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+
+      // Activate clicked tab button and content
+      btn.classList.add('active');
+      const tabName = btn.dataset.tab;
+      const tabContent = document.getElementById(`${tabName}-tab`);
+      tabContent.classList.add('active');
+
+      // If the tab has not been initialized yet, import and run its script(s)
+      if (!tabInitFunctions[tabName]) {
+        try {
+          switch (tabName) {
+            case 'chart':
+              const chartModule = await import('./charts/chart.js');
+
+              break;
+
+
+
+            case 'market':
+              // Import all three market-related modules
+              const [ordersModule, priceModule, indexListModule] = await Promise.all([
+
+                import('./calculations.js'),
+
+              ]);
+
+              break;
+
+
+
+            case 'pending':
+              const pendingModule = await import('./pendingtrades.js');
+
+              break;
+
+            case 'history':
+              const historyModule = await import('./hist.js');
+
+              break;
+
+
+          }
+
+          // Mark this tab as initialized
+          tabInitFunctions[tabName] = true;
+
+        } catch (err) {
+          console.error(`Error loading ${tabName} module`, err);
+        }
+      }
+    });
+  });
+</script>
+<script>
+  // Toggle menu functionality
+  document.addEventListener('DOMContentLoaded', function() {
+    const menuToggle = document.getElementById('menuToggle');
+    const navLinks = document.querySelector('.nav-links');
+    
+    menuToggle.addEventListener('click', function() {
+      navLinks.classList.toggle('active');
+    });
+
+    // Tab switching functionality
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    
+    tabBtns.forEach(btn => {
+      btn.addEventListener('click', function() {
+        // Remove active class from all buttons and tabs
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+        
+        // Add active class to clicked button
+        this.classList.add('active');
+        
+        // Show corresponding tab content
+        const tabId = this.getAttribute('data-tab');
+        document.getElementById(`${tabId}-tab`).classList.add('active');
+      });
+    });
+
+    // Initialize first tab as active
+    if (tabBtns.length > 0) {
+      tabBtns[0].click();
+    }
+  });
+</script>
+
+</body>
+
+</html>

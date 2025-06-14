@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TM FX National Trading Championship | TM FX TRADING (Pty) Ltd</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js"></script>
+    <script type="module" src="pk.js"></script>
+    <script type="module" src="pf.js"></script>
+    <script type="module" src="nk.js"></script>
+    <script type="module" src="nf.js"></script>
+</head>
+<body>
+    <header class="main-header">
+        <div class="container-header">
+            <div class="logo">
+                <h1>TM FX TRADING <span class="small-text">(pty) Ltd</span></h1>
+                <p class="tagline">Your Gateway to Professional Trading Success</p>
+            </div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a style="cursor: pointer;" onclick="goToProvincialKO()"><i class="fas fa-flag"></i> Prov K.O</a></li>
+                    <li><a style="cursor: pointer;" onclick="goToProvincialFinals()"><i class="fas fa-medal"></i> Prov Finals</a></li>
+                    <li><a style="cursor: pointer;" onclick="goToNationalKO()"><i class="fas fa-trophy"></i> National K.O</a></li>
+                    <li><a style="cursor: pointer;" onclick="goToNationalFinals()"><i class="fas fa-crown"></i> National Finals</a></li>
+                    <li><a href="../membership.html"><i class="fas fa-user"></i>Membership</a></li>
+                    <li><a href="../../index.html" onclick="logout(event)"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                </ul>
+                <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+            </nav>
+        </div>
+
+    </header>
+    
+    
+    <main class="container">
+        <section class="container1">
+            <h1>TM FX National Trading Championship</h1>
+            <p>The ultimate test of trading skill where South Africa's top traders battle for glory and R15,000 in prizes!</p>
+            <div style="margin-top: 2rem;">
+                <a href="../cashier/transact/subscriptions.html" class="cta-button">Enter Now</a>
+                <br>
+                <br>
+                <a href="#provincial-knockout" class="cta-button secondary" style="padding: 1rem;">Provincial Knockout Stages</a>
+                <a href="#provincial-finals" class="cta-button secondary">Provincial Finals</a>
+                <a href="#national-knockout" class="cta-button secondary">National Knockout Stages</a>
+                <a href="#national-finals" class="cta-button secondary">National Finals</a>
+            </div>
+        </section>
+        <section class="countdown">
+            <h3>Registration closes in:</h3>
+            <div class="timer" id="countdown-timer">28 days 06:45:32</div>
+            <p>Limited spots available per province - secure your place today!</p>
+        </section>
+        
+        <section class="social-proof">
+            <div class="proof-item">
+                <div class="proof-number">1,200+</div>
+                <div>Traders Registered</div>
+            </div>
+            <div class="proof-item">
+                <div class="proof-number">R15,000</div>
+                <div>Grand Prize</div>
+            </div>
+            <div class="proof-item">
+                <div class="proof-number">9</div>
+                <div>Provinces Competing</div>
+            </div>
+        </section>
+        
+        <section id="how-it-works" class="stage-section">
+            <div class="stage-header">
+                <h2>How The Championship Works</h2>
+                <p>4 intense months of competition across multiple stages</p>
+            </div>
+            
+            <div class="stage-content">
+                <div class="stage-details">
+                    <h3>The Road to Glory</h3>
+                    <p>This isn't just another trading competition - it's a structured championship designed to test every aspect of your trading psychology, risk management, and consistency over time.</p>
+                    
+                    <p>Here's what makes our tournament unique:</p>
+                    <ul>
+                        <li><strong>Provincial Pride:</strong> Start by representing your home province against local rivals</li>
+                        <li><strong>Progressive Difficulty:</strong> Each stage introduces new market challenges</li>
+                        <li><strong>Elite Qualification:</strong> Only the top 25% advance at each level</li>
+                        <li><strong>Real Trading Conditions:</strong> Simulated environments mirror live markets</li>
+                    </ul>
+                    
+                    <div class="prize-card">
+                        <h4>Why Traders Love This Format</h4>
+                        <p>"The month-long stages separate lucky gamblers from truly disciplined traders. You can't fake consistency!" - Last Year's Finalist</p>
+                    </div>
+                </div>
+                
+                <div class="stage-image">
+                    <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Trading Championship Stages">
+                </div>
+            </div>
+        </section>
+        
+        <section id="provincial-knockout" class="stage-section">
+            <div class="stage-header">
+                <div class="icon"><i class="fas fa-flag"></i></div>
+                <h2>Provincial Knockout Round</h2>
+                <p>Where local legends are born</p>
+            </div>
+            
+            <div class="stage-content">
+                <div class="stage-image">
+                    <img src="https://images.unsplash.com/photo-1535320903710-d993d3d77d29?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Provincial Trading Competition">
+                </div>
+                
+                <div class="stage-details">
+                    <h3>Month 1: Prove Your Local Dominance</h3>
+                    <p>Your championship journey begins in your home province, competing against traders from your region on identical market conditions.</p>
+                    
+                    <p><strong>Key Details:</strong></p>
+                    <ul>
+                        <li><strong>Duration:</strong> 1 month of intense trading</li>
+                        <li><strong>Entry:</strong> R150 registration fee</li>
+                        <li><strong>Starting Capital:</strong> R1000 demo funds</li>
+                        <li><strong>Goal:</strong> Grow your account while managing risk</li>
+                        <li><strong>Advancement:</strong> Top 25% with balances above R1000 qualify for Provincial Finals</li>
+                    </ul>
+                    
+                    <div class="prize-card">
+                        <h4>Pro Tip</h4>
+                        <p>Consistency matters more than huge wins. The algorithm rewards steady growth with controlled drawdowns.</p>
+                    </div>
+                    
+                    <a style="cursor: pointer;" onclick="goToProvincialKO()" class="cta-button" style="margin-top: 1rem; display: inline-block;">Go To Provincial K.Os</a>
+                </div>
+            </div>
+        </section>
+        
+        <section id="provincial-finals" class="stage-section">
+            <div class="stage-header">
+                <div class="icon"><i class="fas fa-medal"></i></div>
+                <h2>Provincial Finals</h2>
+                <p>Battle for provincial supremacy</p>
+            </div>
+            
+            <div class="stage-content">
+                <div class="stage-details">
+                    <h3>Month 2: The Best of Your Province</h3>
+                    <p>You've proven yourself against local competition. Now face the elite traders from your province in a high-stakes showdown.</p>
+                    
+                    <p><strong>What Changes:</strong></p>
+                    <ul>
+                        <li><strong>Increased Volatility:</strong> Markets become more challenging</li>
+                        <li><strong>Stricter Rules:</strong> Maximum position sizes enforced</li>
+                        <li><strong>Psychological Pressure:</strong> Leaderboard updates hourly</li>
+                        <li><strong>Advancement:</strong> Top 25% qualify for National Knockouts</li>
+                    </ul>
+                    
+                    <p><strong>Why This Matters:</strong><br>
+                    Provincial winners earn permanent recognition in our Hall of Fame and special seeding in future tournaments.</p>
+                    
+                    <a style="cursor: pointer;" onclick="goToProvincialFinals()" class="cta-button" style="margin-top: 1rem; display: inline-block;">Go To Provincial Finals</a>
+                </div>
+                
+                <div class="stage-image">
+                    <img src="https://images.unsplash.com/photo-1606326608606-aa0b62935f2b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Provincial Finals">
+                </div>
+            </div>
+        </section>
+        
+        <section id="national-knockout" class="stage-section">
+            <div class="stage-header">
+                <div class="icon"><i class="fas fa-trophy"></i></div>
+                <h2>National Knockout Round</h2>
+                <p>Where provinces collide</p>
+            </div>
+            
+            <div class="stage-content">
+                <div class="stage-image">
+                    <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="National Trading Competition">
+                </div>
+                
+                <div class="stage-details">
+                    <h3>Month 3: Nationwide Competition</h3>
+                    <p>The field narrows as provincial champions face off in the first national stage. This is where trading legends separate themselves from the pack.</p>
+                    
+                    <p><strong>New Challenges:</strong></p>
+                    <ul>
+                        <li><strong>Diverse Strategies:</strong> Encounter trading styles from all regions</li>
+                        <li><strong>Market Rotation:</strong> Different asset classes each week</li>
+                        <li><strong>News Events:</strong> Scheduled economic announcements test reactions</li>
+                        <li><strong>Advancement:</strong> Only the top 25% reach the National Finals</li>
+                    </ul>
+                    
+                    <div class="prize-card">
+                        <h4>Competitor Insight</h4>
+                        <p>"The national stage exposed weaknesses in my strategy I never knew existed. Best learning experience of my trading career." - 2023 Competitor</p>
+                    </div>
+                    
+                    <a style="cursor: pointer;" onclick="goToNationalKO()" class="cta-button" style="margin-top: 1rem; display: inline-block;">Go To National K.Os</a>
+                </div>
+            </div>
+        </section>
+        
+        <section id="national-finals" class="stage-section">
+            <div class="stage-header">
+                <div class="icon"><i class="fas fa-crown"></i></div>
+                <h2>National Finals</h2>
+                <p>The ultimate trading showdown</p>
+            </div>
+            
+            <div class="stage-content">
+                <div class="stage-details">
+                    <h3>Month 4: Winner Takes All</h3>
+                    <p>The final month brings together South Africa's absolute best traders in a battle for the championship title and R15,000 grand prize.</p>
+                    
+                    <p><strong>What Awaits:</strong></p>
+                    <ul>
+                        <li><strong>Extreme Conditions:</strong> Markets designed to test every strategy</li>
+                        <li><strong>Live Leaderboard:</strong> Real-time tracking of all positions</li>
+                        <li><strong>Final Challenge:</strong> Mystery asset revealed in last week</li>
+                        <li><strong>Grand Prize:</strong> R15,000 cash + Championship trophy</li>
+                    </ul>
+                    
+                    <p><strong>Why Compete:</strong><br>
+                    Beyond the prize money, finalists receive exclusive invitations to private trading masterminds and broker partnerships.</p>
+                    
+                    <a style="cursor: pointer;" onclick="goToNationalFinals()" class="cta-button" style="margin-top: 1rem; display: inline-block;">Go To National Finals</a>
+                </div>
+                
+                <div class="stage-image">
+                    <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="National Finals">
+                </div>
+            </div>
+        </section>
+        
+        <section class="testimonial">
+            <div class="testimonial-content">
+                "I entered last year's tournament as a complete beginner. The structured competition format forced me to develop real discipline. After reaching the national stage, I finally became consistently profitable in my personal trading."
+            </div>
+            <div class="testimonial-author">- Thando N., Gauteng Finalist</div>
+            <small><em>Results not typical. Trading involves substantial risk.</em></small>
+        </section>
+        
+        <section id="register" class="stage-section" style="text-align: center;">
+            <h2 style="font-size: 2rem; margin-bottom: 1rem;">Ready to Prove Your Skills?</h2>
+            <p style="margin-bottom: 2rem; font-size: 1.2rem;">Join hundreds of traders in South Africa's most prestigious trading competition</p>
+            <a href="../cashier/transact/subscriptions.html" class="cta-button" style="font-size: 1.2rem; padding: 15px 40px;">Register Now for R150</a>
+            <p style="margin-top: 1rem; font-size: 0.9rem;">Limited spots per province - allocations close soon!</p>
+        </section>
+        
+        <div class="disclaimer">
+            <h4><i class="fas fa-exclamation-triangle"></i> Important Compliance Notice</h4>
+            <p><strong>DEMO TRADING ONLY:</strong> TM FX National Trading Championship operates exclusively with simulated demo accounts using virtual currency. No real money is traded, invested, or managed.</p>
+            <p><strong>EDUCATIONAL PURPOSE:</strong> This competition is designed to teach trading principles only. The R15,000 prize is awarded as an educational grant, not as investment returns.</p>
+            <p><strong>NO FINANCIAL SERVICES:</strong> TM FX TRADING (Pty) Ltd is not a licensed Financial Services Provider. Entry fees purchase educational access only.</p>
+            <p><strong>RISK DISCLOSURE:</strong> Trading involves substantial risk of loss. Past simulated results are not indicative of future performance.</p>
+        </div>
+    </main>
+    
+    <footer style="background: var(--darker-bg); padding: 2rem 0; text-align: center;">
+        <div class="container">
+            <p>TM FX TRADING (Pty) Ltd © 2024 | Empowering Traders Through Education</p>
+            <p style="margin-top: 1rem; font-size: 0.9rem;">
+                <a href="/terms" style="color: var(--primary-color);">Terms</a> | 
+                <a href="/privacy" style="color: var(--primary-color);">Privacy</a> | 
+                <a href="/contact" style="color: var(--primary-color);">Contact</a>
+            </p>
+        </div>
+    </footer>
+    
+    <script>
+        // Countdown timer script
+        function updateCountdown() {
+            const endDate = new Date();
+            endDate.setDate(endDate.getDate() + 28);
+            
+            const now = new Date().getTime();
+            const distance = endDate - now;
+            
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            
+            document.getElementById("countdown-timer").innerHTML = 
+                `${days}d ${hours}h ${minutes}m ${seconds}s`;
+        }
+        
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+    </script>
+</body>
+</html>

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Forex Quiz - Module 1, Lesson 3</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; max-width: 900px; margin: auto; }
+    h1 { color: #2c3e50; }
+    .question { margin-bottom: 20px; }
+    .question h3 { margin-bottom: 5px; }
+    .results { margin-top: 30px; font-size: 1.2em; font-weight: bold; color: #27ae60; }
+    button { padding: 10px 20px; background-color: #2980b9; color: white; border: none; cursor: pointer; border-radius: 5px; }
+    button:hover { background-color: #3498db; }
+  </style>
+</head>
+<body>
+  <h1>Forex Quiz – Module 1, Lesson 1</h1>
+  <form id="quizForm">
+    <!-- Questions -->
+    <div id="quiz"></div>
+    <button type="submit">Submit Quiz</button>
+  </form>
+  <div class="results" id="results"></div>
+
+  <script>
+    const questions = [
+    
+    {
+    q: "What does trading volume in the Forex market represent?",
+    options: ["The number of trades made by banks", "The total amount of currency traded in a period", "The number of active traders", "The volatility level of a currency pair"],
+    answer: 1
+  },
+  {
+    q: "What does high trading volume usually indicate?",
+    options: ["Low liquidity", "Stable prices", "High market activity", "Lack of interest"],
+    answer: 2
+  },
+  {
+    q: "What is slippage in Forex trading?",
+    options: ["A sudden drop in trading volume", "The delay in trade execution", "The difference between expected and actual trade price", "A type of chart pattern"],
+    answer: 3
+  },
+  {
+    q: "Which scenario suggests a strong market move?",
+    options: ["Price rises with low volume", "Price falls with low volume", "Price rises with high volume", "Price stays the same with high volume"],
+    answer: 3
+  },
+  {
+    q: "What does low volatility indicate in the Forex market?",
+    options: ["Large price movements", "Stable market conditions", "A breakout is coming", "High risk"],
+    answer: 2
+  },
+  {
+    q: "What does high volatility typically lead to?",
+    options: ["Small profits", "No trading opportunities", "High risk and high reward", "Lower liquidity"],
+    answer: 3
+  },
+  {
+    q: "Which of the following is a good time for range trading?",
+    options: ["During high volatility", "When news is released", "During consolidation", "At market open"],
+    answer: 3
+  },
+  {
+    q: "Why do trading volumes spike at the start of sessions?",
+    options: ["Lack of liquidity", "Market is closed", "Traders reacting to news", "Price manipulation"],
+    answer: 3
+  },
+  {
+    q: "When do Forex markets typically experience a 'midday lull'?",
+    options: ["During major news events", "During market close", "Between session overlaps", "At market open"],
+    answer: 3
+  },
+  {
+    q: "What happens to volume and volatility during a major economic event?",
+    options: ["Volume drops, volatility drops", "Volume spikes, volatility rises", "Volume stays the same, volatility drops", "No significant change"],
+    answer: 2
+  },
+  {
+    q: "Which currency pair is considered an exotic pair?",
+    options: ["EUR/USD", "USD/JPY", "USD/TRY", "GBP/USD"],
+    answer: 3
+  },
+  {
+    q: "What is a typical characteristic of exotic pairs like USD/TRY?",
+    options: ["High liquidity", "Low volatility", "Subject to geopolitical risk", "Rarely influenced by news"],
+    answer: 3
+  },
+  {
+    q: "Which currency pair typically shows high activity during London-New York session overlap?",
+    options: ["USD/ZAR", "USD/JPY", "AUD/NZD", "EUR/USD"],
+    answer: 4
+  },
+  {
+    q: "What time of day is the Forex market generally quieter?",
+    options: ["During session overlaps", "At major news releases", "At market open", "During market close"],
+    answer: 4
+  },
+  {
+    q: "Why is liquidity important in Forex trading?",
+    options: ["It increases spread", "It allows smooth trade execution", "It reduces volatility", "It slows down trading"],
+    answer: 2
+  },
+  {
+    q: "What type of movement would likely follow a high-volume breakout?",
+    options: ["Reversal", "Trend continuation", "Range-bound movement", "No movement"],
+    answer: 2
+  },
+  {
+    q: "What’s the likely outcome of a low-volume price rise?",
+    options: ["Trend continuation", "Reversal or weak move", "Strong breakout", "No change"],
+    answer: 2
+  },
+  {
+    q: "Which session’s opening is most associated with a sudden increase in volatility?",
+    options: ["Sydney", "Tokyo", "New York", "All of them"],
+    answer: 4
+  },
+  {
+    q: "How do traders use trading volume in analysis?",
+    options: ["To ignore market trends", "To detect trend reversal only", "To confirm or doubt price moves", "To calculate pip values"],
+    answer: 3
+  },
+  {
+    q: "What typically follows a news release with unexpected results?",
+    options: ["Low volume and stable prices", "High volatility and sharp moves", "No market movement", "Decrease in spreads"],
+    answer: 2
+  },
+
+  // Deeper understanding
+  {
+    q: "Why might a trader reduce their position size during periods of high volatility?",
+    options: ["To avoid margin calls", "To increase potential profit", "To protect against large losses", "To speed up trade execution"],
+    answer: 3
+  },
+  {
+    q: "Why is high liquidity beneficial for stop-loss execution?",
+    options: ["Ensures tighter spreads", "Reduces risk of slippage", "Delays execution", "Increases volatility"],
+    answer: 2
+  },
+  {
+    q: "What is the danger of relying solely on volume for trade decisions?",
+    options: ["Volume cannot be measured", "Volume lags price", "Volume may be misleading without price context", "Volume causes volatility"],
+    answer: 3
+  },
+  {
+    q: "Why might a trader prefer trading major pairs over exotic pairs?",
+    options: ["They offer bigger spreads", "They have higher risk", "They are less volatile", "They are more liquid and predictable"],
+    answer: 4
+  },
+  {
+    q: "What trading approach works best in low volatility environments?",
+    options: ["Scalping news", "Breakout trading", "Trend-following", "Range trading"],
+    answer: 4
+  },
+  {
+    q: "What does it mean when volume increases during a price reversal?",
+    options: ["Weak reversal", "Fakeout", "Possible trend change", "Market consolidation"],
+    answer: 3
+  },
+  {
+    q: "What might cause a sudden drop in volatility during peak hours?",
+    options: ["Market close", "Technical consolidation", "Holiday in major economy", "High inflation"],
+    answer: 3
+  },
+  {
+    q: "If EUR/USD breaks a resistance level with high volume during the London session, what is likely?",
+    options: ["Price will reverse", "Breakout may be strong and sustained", "Market will close", "Low volatility will follow"],
+    answer: 2
+  },
+  {
+    q: "Why is it risky to trade during extremely low volume periods?",
+    options: ["Higher slippage and wider spreads", "More market opportunities", "Quick executions", "Low volatility ensures big gains"],
+    answer: 1
+  },
+  {
+    q: "How can understanding typical daily volume cycles help a trader?",
+    options: ["To sleep better", "To avoid using charts", "To time entries and exits more effectively", "To ignore market noise"],
+    answer: 3
+  },
+
+    ];
+
+    const quizContainer = document.getElementById("quiz");
+    questions.forEach((q, i) => {
+      const div = document.createElement("div");
+      div.className = "question";
+      div.innerHTML = `<h3>Q${i + 1}: ${q.q}</h3>` +
+        q.options.map((opt, j) => `
+          <label>
+            <input type="radio" name="q${i}" value="${j}" required> ${opt}
+          </label><br>`).join("");
+      quizContainer.appendChild(div);
+    });
+
+    document.getElementById("quizForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      let score = 0;
+      questions.forEach((q, i) => {
+        const selected = document.querySelector(`input[name='q${i}']:checked`);
+        if (selected && parseInt(selected.value) === q.answer) score++;
+      });
+      const percent = (score / questions.length) * 100;
+      document.getElementById("results").innerText = `You scored ${score} out of ${questions.length} (${percent.toFixed(2)}%)`;
+    });
+  </script>
+</body>
+</html>

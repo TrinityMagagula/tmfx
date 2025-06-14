@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Forex Quiz - Module 1, Lesson 3</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; max-width: 900px; margin: auto; }
+    h1 { color: #2c3e50; }
+    .question { margin-bottom: 20px; }
+    .question h3 { margin-bottom: 5px; }
+    .results { margin-top: 30px; font-size: 1.2em; font-weight: bold; color: #27ae60; }
+    button { padding: 10px 20px; background-color: #2980b9; color: white; border: none; cursor: pointer; border-radius: 5px; }
+    button:hover { background-color: #3498db; }
+  </style>
+</head>
+<body>
+  <h1>Forex Quiz – Module 1, Lesson 1</h1>
+  <form id="quizForm">
+    <!-- Questions -->
+    <div id="quiz"></div>
+    <button type="submit">Submit Quiz</button>
+  </form>
+  <div class="results" id="results"></div>
+
+  <script>
+    const questions = [
+    {
+      q: "What does a currency pair represent in Forex?",
+      options: [
+        "The amount of profit expected",
+        "The number of traders trading",
+        "The value of one currency in terms of another",
+        "The name of the trading session"
+      ],
+      answer: 2
+    },
+    {
+      q: "In the pair EUR/USD, which is the base currency?",
+      options: ["USD", "EUR", "Both", "Neither"],
+      answer: 1
+    },
+    {
+      q: "In a Forex quote, what does the quote currency indicate?",
+      options: [
+        "Amount received after trade",
+        "How much of it is needed to buy one base unit",
+        "Your profit margin",
+        "None of the above"
+      ],
+      answer: 1
+    },
+    {
+      q: "If USD/JPY = 145.25, how much is 1 USD worth?",
+      options: ["145.25 Yen", "1.45 Yen", "0.145 Yen", "Cannot determine"],
+      answer: 0
+    },
+    {
+      q: "If GBP/USD = 1.2800, what does this mean?",
+      options: [
+        "1 Pound = 1.28 USD",
+        "1 USD = 1.28 Pounds",
+        "GBP is weaker than USD",
+        "USD is the base currency"
+      ],
+      answer: 0
+    },
+    {
+      q: "If AUD/CAD = 0.9100, how many Canadian Dollars do you get for 1 AUD?",
+      options: ["1.91", "0.91", "9.10", "0.0191"],
+      answer: 1
+    },
+    {
+      q: "What happens when a currency pair quote rises?",
+      options: [
+        "Base currency weakens",
+        "Quote currency strengthens",
+        "Base currency strengthens",
+        "The spread widens"
+      ],
+      answer: 2
+    },
+    {
+      q: "If EUR/USD moves from 1.1000 to 1.1200, which statement is true?",
+      options: [
+        "The Euro weakened",
+        "The Dollar strengthened",
+        "The Euro strengthened",
+        "The quote became indirect"
+      ],
+      answer: 2
+    },
+    {
+      q: "What does going 'long' on EUR/USD mean?",
+      options: [
+        "Selling Euros for Dollars",
+        "Buying Dollars",
+        "Expecting the Euro to rise against the Dollar",
+        "Trading short term"
+      ],
+      answer: 2
+    },
+    {
+      q: "When you sell a currency pair, you expect the base currency to...",
+      options: ["Rise", "Fall", "Stay flat", "Be removed from the quote"],
+      answer: 1
+    },
+    {
+      q: "What is a direct quote?",
+      options: [
+        "Quote that includes commission",
+        "Where local currency is the quote currency",
+        "Where local currency is the base currency",
+        "Quote shown only during London session"
+      ],
+      answer: 1
+    },
+    {
+      q: "What is an indirect quote in Forex?",
+      options: [
+        "When quote currency is USD",
+        "When spread is large",
+        "When local currency is the base currency",
+        "When the broker hides the spread"
+      ],
+      answer: 2
+    },
+    {
+      q: "What would USD/ZAR = 18.50 represent for someone in South Africa?",
+      options: [
+        "An indirect quote",
+        "A direct quote",
+        "A cross currency pair",
+        "A low spread"
+      ],
+      answer: 1
+    },
+    {
+      q: "In Europe, what kind of quote is USD/EUR = 0.9090?",
+      options: [
+        "Direct quote",
+        "Indirect quote",
+        "Cross quote",
+        "Synthetic quote"
+      ],
+      answer: 1
+    },
+    {
+      q: "What are the two prices shown for every currency pair called?",
+      options: ["Open and close", "High and low", "Bid and ask", "Start and stop"],
+      answer: 2
+    },
+    {
+      q: "What is the 'bid price'?",
+      options: [
+        "The price you buy at",
+        "The price broker pays to buy from you",
+        "The spread",
+        "None of the above"
+      ],
+      answer: 1
+    },
+    {
+      q: "The 'ask price' is the price...",
+      options: [
+        "You pay to buy the base currency",
+        "At which brokers sell the quote currency",
+        "Used for long-term investments",
+        "Always lower than the bid"
+      ],
+      answer: 0
+    },
+    {
+      q: "What is the 'spread' in Forex?",
+      options: [
+        "Currency volatility",
+        "Difference between base and quote",
+        "Difference between bid and ask",
+        "The size of the market"
+      ],
+      answer: 2
+    },
+    {
+      q: "What is a typical benefit of low spreads?",
+      options: [
+        "Higher broker fees",
+        "Faster internet",
+        "Cheaper trading for scalpers",
+        "Less leverage"
+      ],
+      answer: 2
+    },
+    {
+      q: "Which of the following is a base currency in a major pair?",
+      options: ["ZAR", "EUR", "INR", "MXN"],
+      answer: 1
+    },
+    {
+      q: "Which pair is considered a 'cross currency' pair?",
+      options: ["EUR/USD", "GBP/JPY", "USD/CHF", "USD/CAD"],
+      answer: 1
+    },
+    {
+      q: "Cross currency pairs...",
+      options: [
+        "Always include USD",
+        "Include two non-USD currencies",
+        "Are illegal in some countries",
+        "Only traded in Asia"
+      ],
+      answer: 1
+    },
+    {
+      q: "Which of these is most likely to have a wider spread?",
+      options: [
+        "EUR/USD",
+        "USD/JPY",
+        "GBP/USD",
+        "NZD/CHF"
+      ],
+      answer: 3
+    },
+    {
+      q: "If the ask is 1.1052 and the bid is 1.1050, what’s the spread?",
+      options: ["0.002", "0.0002", "2", "0.02"],
+      answer: 1
+    },
+
+    // Deeper Thinking Questions
+    {
+      q: "Why might a trader prefer direct quotes when evaluating currency pairs?",
+      options: [
+        "They are always cheaper",
+        "Easier to understand in local terms",
+        "Quotes are guaranteed",
+        "Spread is always lower"
+      ],
+      answer: 1
+    },
+    {
+      q: "If a trader expects the Swiss Franc to weaken, what should they do?",
+      options: [
+        "Buy USD/CHF",
+        "Sell USD/CHF",
+        "Buy CHF/USD",
+        "Avoid trading CHF"
+      ],
+      answer: 0
+    },
+    {
+      q: "What impact does a high spread have on frequent traders?",
+      options: [
+        "Improves profit margins",
+        "Slows execution",
+        "Reduces profitability",
+        "Increases volume"
+      ],
+      answer: 2
+    },
+    {
+      q: "How does economic news affect currency quotes?",
+      options: [
+        "Has no impact",
+        "Can shift quotes significantly",
+        "Only changes base currency",
+        "Only lowers spreads"
+      ],
+      answer: 1
+    },
+    {
+      q: "What might a sudden rise in USD/JPY indicate?",
+      options: [
+        "JPY is strengthening",
+        "USD is weakening",
+        "USD is strengthening",
+        "The spread widened"
+      ],
+      answer: 2
+    },
+
+
+    ];
+
+    const quizContainer = document.getElementById("quiz");
+    questions.forEach((q, i) => {
+      const div = document.createElement("div");
+      div.className = "question";
+      div.innerHTML = `<h3>Q${i + 1}: ${q.q}</h3>` +
+        q.options.map((opt, j) => `
+          <label>
+            <input type="radio" name="q${i}" value="${j}" required> ${opt}
+          </label><br>`).join("");
+      quizContainer.appendChild(div);
+    });
+
+    document.getElementById("quizForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      let score = 0;
+      questions.forEach((q, i) => {
+        const selected = document.querySelector(`input[name='q${i}']:checked`);
+        if (selected && parseInt(selected.value) === q.answer) score++;
+      });
+      const percent = (score / questions.length) * 100;
+      document.getElementById("results").innerText = `You scored ${score} out of ${questions.length} (${percent.toFixed(2)}%)`;
+    });
+  </script>
+</body>
+</html>

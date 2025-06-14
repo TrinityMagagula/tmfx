@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Forex Quiz - Module 1, Lesson 3</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; max-width: 900px; margin: auto; }
+    h1 { color: #2c3e50; }
+    .question { margin-bottom: 20px; }
+    .question h3 { margin-bottom: 5px; }
+    .results { margin-top: 30px; font-size: 1.2em; font-weight: bold; color: #27ae60; }
+    button { padding: 10px 20px; background-color: #2980b9; color: white; border: none; cursor: pointer; border-radius: 5px; }
+    button:hover { background-color: #3498db; }
+  </style>
+</head>
+<body>
+  <h1>Forex Quiz – Module 1, Lesson 1</h1>
+  <form id="quizForm">
+    <!-- Questions -->
+    <div id="quiz"></div>
+    <button type="submit">Submit Quiz</button>
+  </form>
+  <div class="results" id="results"></div>
+
+  <script>
+    const questions = [
+    
+    {
+    q: "What is the purpose of economic indicators in Forex trading?",
+    options: ["To predict future economic activity", "To confirm existing trends", "To measure currency strength", "To show past economic data only"],
+    answer: 0
+  },
+  {
+    q: "Which of the following is an example of a leading indicator?",
+    options: ["Unemployment rate", "Building permits", "Gross Domestic Product (GDP)", "Consumer Price Index (CPI)"],
+    answer: 1
+  },
+  {
+    q: "What does a high Consumer Price Index (CPI) usually indicate?",
+    options: ["A strengthening currency due to inflation", "A weakening currency due to deflation", "Economic stagnation", "A decrease in consumer spending"],
+    answer: 0
+  },
+  {
+    q: "Which economic indicator is used by central banks to guide interest rate policy?",
+    options: ["Non-Farm Payrolls (NFP)", "Interest rate decisions", "Consumer Price Index (CPI)", "Retail Sales"],
+    answer: 2
+  },
+  {
+    q: "What does a Non-Farm Payrolls (NFP) report measure?",
+    options: ["The number of jobs added in the U.S. economy", "The rate of inflation in the U.S.", "The gross domestic product of the U.S.", "The level of consumer spending in the U.S."],
+    answer: 0
+  },
+  {
+    q: "If the U.S. reports stronger-than-expected NFP numbers, what is likely to happen?",
+    options: ["The USD may strengthen", "The USD may weaken", "The market will remain unchanged", "The Federal Reserve will lower interest rates"],
+    answer: 0
+  },
+  {
+    q: "What does a rising GDP usually signal about an economy?",
+    options: ["Economic contraction", "Economic growth", "Recession", "Inflation"],
+    answer: 1
+  },
+  {
+    q: "How do central bank interest rate decisions generally affect currency strength?",
+    options: ["Higher interest rates attract foreign investment, strengthening the currency", "Lower interest rates attract foreign investment, strengthening the currency", "Interest rate decisions have no impact on currency value", "Interest rate decisions only affect stock prices"],
+    answer: 0
+  },
+  {
+    q: "What economic indicator would be useful for measuring consumer confidence in an economy?",
+    options: ["Consumer Price Index (CPI)", "Retail Sales", "Non-Farm Payrolls (NFP)", "Interest Rate Decisions"],
+    answer: 1
+  },
+  {
+    q: "Which event in an economic calendar would likely have the most immediate impact on a currency pair?",
+    options: ["Interest rate decisions", "Retail Sales reports", "Building Permits data", "GDP reports"],
+    answer: 0
+  },
+  {
+    q: "What does a high unemployment rate generally indicate about an economy?",
+    options: ["Economic strength", "Economic weakness", "Inflation", "Increased consumer spending"],
+    answer: 1
+  },
+  {
+    q: "If a country's Non-Farm Payrolls report shows fewer jobs created than expected, what might happen?",
+    options: ["The currency may strengthen", "The currency may weaken", "The market will be unaffected", "The central bank will lower interest rates"],
+    answer: 1
+  },
+  {
+    q: "Why is the GDP considered one of the most important economic indicators?",
+    options: ["It reflects the total value of goods and services produced", "It measures the interest rates", "It tracks consumer spending habits", "It indicates inflation trends"],
+    answer: 0
+  },
+  {
+    q: "How can a surprise CPI release affect the Forex market?",
+    options: ["It may lead to large price movements if it deviates from expectations", "It has no effect unless combined with other indicators", "It always leads to currency appreciation", "It causes a temporary market pause"],
+    answer: 0
+  },
+  {
+    q: "Which of the following is NOT a commonly used economic calendar?",
+    options: ["ForexFactory.com", "Investing.com", "DailyFX.com", "TradingView.com"],
+    answer: 3
+  },
+  {
+    q: "How does the forecast value of an economic report impact Forex traders?",
+    options: ["Traders react more strongly to the forecast than the actual value", "Traders anticipate the report's actual value based on the forecast", "The forecast is irrelevant", "Traders ignore it if the previous value is similar"],
+    answer: 1
+  },
+  {
+    q: "What does an unexpected rate hike by a central bank generally cause in the Forex market?",
+    options: ["Currency depreciation", "Currency appreciation", "No change in currency value", "A reversal in currency trends"],
+    answer: 1
+  },
+  {
+    q: "How does market sentiment affect Forex market movements after news events?",
+    options: ["It has no impact", "It can amplify or reverse the initial reaction to the news", "It only impacts stock markets", "Sentiment always aligns with the economic data"],
+    answer: 1
+  },
+  {
+    q: "What would a lower-than-expected Retail Sales number likely cause in the Forex market?",
+    options: ["A strengthening of the local currency", "A weakening of the local currency", "An increase in interest rates", "No impact on the currency"],
+    answer: 1
+  },
+  {
+    q: "What does the forecast value in an economic calendar represent?",
+    options: ["The previous value of the event", "The predicted result based on analysts' expectations", "The actual result after the event", "The volatility expected from the event"],
+    answer: 1
+  },
+  // Deeper level understanding
+  {
+    q: "Why might a trader ignore a positive Non-Farm Payrolls report in favor of another economic indicator?",
+    options: ["The NFP report is irrelevant", "Traders may already expect a strong NFP result", "Other data may suggest an economic slowdown despite job growth", "All reports are equally weighted"],
+    answer: 2
+  },
+  {
+    q: "What could cause a currency to react negatively even if a country's GDP report is positive?",
+    options: ["A surprise drop in the unemployment rate", "Worse-than-expected consumer sentiment", "A lower-than-expected CPI reading", "Traders anticipated a higher GDP growth rate"],
+    answer: 3
+  },
+  {
+    q: "If two countries' central banks announce rate hikes simultaneously, how might their currencies react?",
+    options: ["Both currencies will weaken", "The currency with the higher rate hike will strengthen more", "Both currencies will remain unchanged", "The currencies will strengthen equally"],
+    answer: 1
+  },
+  {
+    q: "How can traders use an economic calendar to prepare for potential Forex volatility?",
+    options: ["By identifying high-impact events and setting up trades around them", "By avoiding trading during all news events", "By watching the news after events happen", "By relying on forecasts over actual data"],
+    answer: 0
+  },
+  {
+    q: "Why might a currency weaken despite strong economic data like Non-Farm Payrolls or GDP growth?",
+    options: ["The data doesn't align with market expectations", "The currency has been overly bought already", "The country is facing political instability", "All of the above"],
+    answer: 3
+  },
+  {
+    q: "What could be a reason for a currency to strengthen despite negative economic data, such as a weak CPI or retail sales report?",
+    options: ["The data was better than expected", "A central bank has made an unexpected policy change", "The market had already priced in the bad news", "The country is experiencing political unrest"],
+    answer: 2
+  },
+  {
+    q: "How can surprise economic events impact Forex market trends?",
+    options: ["They can cause a reversal of the current trend", "They always lead to long-term trends", "They have no lasting impact", "They only affect short-term volatility"],
+    answer: 0
+  },
+  {
+    q: "How do interest rate decisions by central banks affect international investment?",
+    options: ["They affect only domestic investment", "They make the local currency less attractive to foreign investors", "Higher rates tend to attract foreign capital", "They have no effect on international investments"],
+    answer: 2
+  }
+
+    ];
+
+    const quizContainer = document.getElementById("quiz");
+    questions.forEach((q, i) => {
+      const div = document.createElement("div");
+      div.className = "question";
+      div.innerHTML = `<h3>Q${i + 1}: ${q.q}</h3>` +
+        q.options.map((opt, j) => `
+          <label>
+            <input type="radio" name="q${i}" value="${j}" required> ${opt}
+          </label><br>`).join("");
+      quizContainer.appendChild(div);
+    });
+
+    document.getElementById("quizForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      let score = 0;
+      questions.forEach((q, i) => {
+        const selected = document.querySelector(`input[name='q${i}']:checked`);
+        if (selected && parseInt(selected.value) === q.answer) score++;
+      });
+      const percent = (score / questions.length) * 100;
+      document.getElementById("results").innerText = `You scored ${score} out of ${questions.length} (${percent.toFixed(2)}%)`;
+    });
+  </script>
+</body>
+</html>

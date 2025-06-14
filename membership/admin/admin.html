@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - TM FX TRADING</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="icon" href="images/logo 32.png" type="image/png">
+    
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <h1>TM FX TRADING <span class="small-text">(pty) Ltd</span></h1>
+            </div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="../mentorship/competition/competition.html">Competition</a></li>
+                    <li><a href="../../index.html" onclick="logout(event)">Logout</a></li>
+                </ul>
+                <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+            </nav>
+        </div>
+    </header>
+    <script>
+        function toggleMenu() {
+            document.querySelector('.nav-links').classList.toggle('active');
+        }
+        
+        function logout(event) {
+            event.preventDefault();
+            signOut(auth).then(() => {
+                alert("You have been logged out.");
+                window.location.href = "index.html"; // Redirect to home page after alert
+            }).catch((error) => {
+                console.error("Logout error:", error);
+            });
+        }
+
+        let inactivityTime = function () {
+            let timer;
+            window.onload = resetTimer;
+            window.onmousemove = resetTimer;
+            window.onkeypress = resetTimer;
+
+            function logoutUser() {
+                signOut(auth).then(() => {
+                    alert("You have been logged out.");
+                    window.location.href = "index.html"; // Redirect after alert
+                }).catch((error) => {
+                    console.error("Logout error:", error);
+                });
+            }
+
+            function resetTimer() {
+                clearTimeout(timer);
+                timer = setTimeout(logoutUser, 600000); // Logout after 10 minutes of inactivity
+            }
+        };
+
+        inactivityTime();
+
+        function logout() {
+            alert("You have been logged out.");
+        }
+
+    </script>
+
+    <main>
+        <section id="leaderboard1">
+            <h2>Admin Leaderboard Panel</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Picture</th>
+                        <th>Name</th>
+                        <th>Province</th>
+                        <th>Status</th>
+                        <th>Equity (ZAR)</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="leaderboard">
+                    <!-- Dynamic rows inserted here -->
+                </tbody>
+            </table>
+        </section>
+
+        <section>
+            
+        </section>
+        <section id="leaderboard1">
+            <h2>User Management Panel</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Surname</th>
+                        <th>Login ID</th>
+                        <th>Password</th>
+                        <th>status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="userTable">
+                    <!-- Dynamic rows inserted here -->
+                </tbody>
+            </table>
+        </section>
+        <section></section>
+        <section>
+            
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 TM FX TRADING (pty) Ltd. All rights reserved.</p>
+    </footer>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+        import { getDatabase, ref, get, child, update } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+        import { getStorage, ref as storageRef, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-storage.js";
+    
+        const firebaseConfig = {
+            apiKey: "AIzaSyBIRVXFCPBpepPUEZz9aAbF-oVICVxTsec",
+            authDomain: "mt-trading-signup-and-log-in.firebaseapp.com",
+            databaseURL: "https://mt-trading-signup-and-log-in-default-rtdb.firebaseio.com",
+            projectId: "mt-trading-signup-and-log-in",
+            storageBucket: "mt-trading-signup-and-log-in.appspot.com",
+            messagingSenderId: "101302422584",
+            appId: "1:101302422584:web:07d472b05e81a6930beacd"
+        };
+    
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        const storage = getStorage(app);
+        const auth = getAuth(app);
+    
+        const leaderboardTable = document.getElementById('leaderboard');
+        const userTable = document.getElementById('userTable');
+    
+        // Admin UID
+        const adminUID = '9gCLyG0x8zg90B0s9d65G13VRm72';
+    
+        // Check if the user is authenticated and is an admin
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                if (user.uid !== adminUID) {
+                    alert("You do not have permission to access this page.");
+                    window.location.href = 'membership.html'; // Redirect to homepage if not admin
+                } else {
+                    loadLeaderboard(); // Proceed with loading leaderboard if admin
+                    loadUsers(); // Load users for management
+                }
+            } else {
+                alert("You must be logged in to access this page.");
+                window.location.href = '/login'; // Redirect to login page if not logged in
+            }
+        });
+    
+        async function loadLeaderboard() {
+            const snapshot = await get(child(ref(db), 'users'));
+            if (snapshot.exists()) {
+                const users = snapshot.val();
+    
+                const sortedUsers = Object.entries(users)
+                    .filter(([id, u]) => u.name)
+                    .map(([id, u]) => ({
+                        ...u,
+                        uid: id,
+                        equity: parseFloat(u.equity) || 0
+                    }))
+                    .sort((a, b) => b.equity - a.equity);
+    
+                leaderboardTable.innerHTML = '';
+    
+                for (let index = 0; index < sortedUsers.length; index++) {
+                    const user = sortedUsers[index];
+                    let profilePic;
+    
+                    try {
+                        profilePic = await getDownloadURL(storageRef(storage, `profile_pictures/${user.uid}`));
+                    } catch {
+                        profilePic = "https://firebasestorage.googleapis.com/v0/b/mt-trading-signup-and-log-in.appspot.com/o/tm%20fx.png?alt=media&token=4e6aded3-2796-4487-82d4-987b75ca18c1";
+                    }
+    
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${index + 1}</td>
+                        <td><img src="${profilePic}" alt="Profile Picture" class="profile-pic" width="40" height="40"></td>
+                        <td>${user.name || 'N/A'}</td>
+                        <td>${user.province || 'N/A'}</td>
+                        <td>${user.status || 'N/A'}</td>
+                        <td><input type="number" id="equity-${user.uid}" value="${user.equity.toFixed(2)}" min="0"></td>
+                        <td><button class="save-btn" data-uid="${user.uid}">Save</button></td>
+                    `;
+                    leaderboardTable.appendChild(row);
+                }
+    
+                document.querySelectorAll(".save-btn").forEach(button => {
+                    button.addEventListener("click", async (e) => {
+                        const uid = e.target.getAttribute("data-uid");
+                        const input = document.getElementById(`equity-${uid}`);
+                        const newEquity = parseFloat(input.value);
+    
+                        if (!isNaN(newEquity) && newEquity >= 0) {
+                            try {
+                                await update(ref(db, `users/${uid}`), { equity: newEquity });
+                                alert("✅ Equity updated successfully!");
+                                await loadLeaderboard(); // Refresh after successful update
+                            } catch (error) {
+                                console.error("Error updating equity:", error);
+                                alert("❌ Failed to update equity. Please try again.");
+                            }
+                        } else {
+                            alert("⚠️ Please enter a valid equity value.");
+                        }
+                    });
+                });
+            } else {
+                leaderboardTable.innerHTML = '<tr><td colspan="7">No data found</td></tr>';
+            }
+        }
+
+        async function loadUsers() {
+            const snapshot = await get(child(ref(db), 'users'));
+            if (snapshot.exists()) {
+                const users = snapshot.val();
+                userTable.innerHTML = '';
+
+                for (const uid in users) {
+                    const user = users[uid];
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${user.name || 'N/A'}</td>
+                        <td>${user.surname || 'N/A'}</td>
+                        <td><input type="text" id="loginID-${uid}" value="${user.loginID || ''}"></td>
+                        <td><input type="text" id="password-${uid}" value="${user.password || ''}"></td>
+                        <td><input type="text" id="status-${uid}" value="${user.status || ''}"></td>
+                        <td><button class="update-btn" data-uid="${uid}">Update</button></td>
+                    `;
+                    userTable.appendChild(row);
+                }
+
+                document.querySelectorAll(".update-btn").forEach(button => {
+                    button.addEventListener("click", async (e) => {
+                        const uid = e.target.getAttribute("data-uid");
+                        const loginID = document.getElementById(`loginID-${uid}`).value;
+                        const password = document.getElementById(`password-${uid}`).value;
+                        const status = document.getElementById(`status-${uid}`).value;
+
+                        try {
+                            await update(ref(db, `users/${uid}`), {
+                                loginID: loginID === '' ? null : loginID,
+                                password: password === '' ? null : password,
+                                status: status === '' ? null : status,
+                            });
+                            alert("✅ User updated successfully!");
+                            await loadUsers(); // Refresh after successful update
+                        } catch (error) {
+                            console.error("Error updating user:", error);
+                            alert("❌ Failed to update user. Please try again.");
+                        }
+                    });
+                });
+            } else {
+                userTable.innerHTML = '<tr><td colspan="5">No users found</td></tr>';
+            }
+        }
+    </script>
+
+<style>
+    table input {
+        width: 80px;
+        padding: 5px;
+    }
+    button.save-btn {
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        cursor: pointer;
+    }
+</style>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        scroll-behavior: smooth;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #a6a6a6;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+    }
+
+    header {
+        background-color: #333;
+        color: white;
+        padding: 1rem;
+    }
+
+    .small-text {
+        font-size: 0.5em;
+    }
+
+    .container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .logo {
+        font-size: 0.9rem;
+        margin-top: 1rem;
+    }
+
+    nav ul {
+        list-style: none;
+        display: flex;
+        gap: 1rem;
+    }
+
+    nav a {
+        color: white;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    nav li {
+        margin-top: 0.75rem;
+    }
+
+    .menu-toggle {
+        display: none;
+        font-size: 1.8rem;
+        cursor: pointer;
+        margin-top: 1rem;
+    }
+
+    .nav-links.active {
+        display: block;
+    }
+
+    main {
+        padding: 2rem;
+    }
+
+    section {
+        padding: 2rem 0;
+    }
+
+    footer {
+        background-color: #333;
+        color: white;
+        text-align: center;
+        padding: 1rem 0;
+        margin-top: 2rem;
+        position: -ms-page;
+    }
+
+
+
+    @media (max-width: 768px) {
+        .nav-links {
+            display: none;
+            flex-direction: column;
+            position: absolute;
+            top: 70px;
+            right: 10px;
+            background: #333;
+            padding: 1rem;
+            width: 200px;
+            border-radius: 0px;
+        }
+
+        .menu-toggle {
+            display: block;
+            color: white;
+        }
+
+        .logo {
+            text-align: center;
+        }
+    }
+
+    .ticker-strip {
+        text-align: center;
+        margin-top: 2rem;
+    }
+
+    #Details {
+        padding: 40px;
+        text-align: left;
+        background-color: #e4e4e4;
+    }
+
+    #leaderboard1 {
+        padding: 40px;
+        text-align: left;
+        background-color: #e4e4e4;
+        overflow-y: scroll;
+        max-height: 500px;
+    }
+
+    /* Leaderboard Styling */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+        font-size: 13px;
+        text-align: left;
+        overflow-y: scroll;
+    }
+
+    th,
+    td {
+        border: 1px solid #ddd;
+        padding: 8px;
+    }
+
+    th {
+        background-color: #f4f4f4;
+        color: #333;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+
+    tr:hover {
+        background-color: #f1f1f1;
+    }
+
+@media (max-width: 768px) {
+th, td {
+    font-size: 0.7rem; /* Reduce font size on smaller screens */
+    padding: 3px; /* Reduce padding to save space */
+    }
+
+    }
+
+    .pagination {
+        display: flex;
+        justify-content: center;
+        margin: 20px 0;
+        list-style: none;
+        padding: 0;
+    }
+
+    .pagination li {
+        margin: 0 5px;
+    }
+
+    .pagination li button {
+        border: none;
+        background-color: #007bff;
+        color: white;
+        padding: 8px 12px;
+        cursor: pointer;
+        border-radius: 4px;
+    }
+
+    .pagination li button.active {
+        background-color: #0056b3;
+    }
+
+    .pagination li button:hover {
+        background-color: #0056b3;
+    }
+
+    .pagination li button:disabled {
+        background-color: #ddd;
+        cursor: not-allowed;
+    }
+
+    .profile-pic {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+
+    @media (max-width: 768px) {
+    .profile-pic {
+        width: 30px; /* Smaller size for medium screens */
+        height: 30px;
+        border-radius: 40%;
+        object-fit: cover;
+        }
+    }
+</style>
+</body>
+</html>

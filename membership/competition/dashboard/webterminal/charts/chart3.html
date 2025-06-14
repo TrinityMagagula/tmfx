@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TM FX Trading Terminal</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #0e0e0e;
+      color: #ddd;
+    }
+    .navbar {
+      background: #141414;
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #2a2a2a;
+    }
+    .navbar h1 {
+      color: #0fbcf9;
+      font-size: 1.2rem;
+    }
+    .navbar select {
+      padding: 6px 12px;
+      background: #1f1f1f;
+      color: white;
+      border: 1px solid #444;
+      border-radius: 4px;
+    }
+    #chartContainer {
+      width: 100%;
+      height: calc(100vh - 50px);
+    }
+    #chart {
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <h1>TM FX TradingView</h1>
+    <select id="timeframe">
+      <option value="1m">1 Minute</option>
+      <option value="5m">5 Minutes</option>
+      <option value="15m">15 Minutes</option>
+      <option value="30m">30 Minutes</option>
+      <option value="1h">1 Hour</option>
+      <option value="4h">4 Hours</option>
+      <option value="1d">1 Day</option>
+      <option value="1w">1 Week</option>
+      <option value="1mn">1 Month</option>
+    </select>
+  </div>
+
+  <div id="chartContainer">
+    <div id="chart"></div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/lightweight-charts@4.1.1/dist/lightweight-charts.standalone.production.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <script type="module">
+    const SUPABASE_URL = 'https://fepujhdzovzbygczdjxe.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZlcHVqaGR6b3Z6YnlnY3pkanhlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDYwODE2MDUsImV4cCI6MjA2MTY1NzYwNX0.mVNDZaHTodnQQ3EGvUS3puaAfTKsiyRCSGldOo_wFmU';
+
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    const chart = LightweightCharts.createChart(document.getElementById("chart"), {
+      layout: {
+        background: { color: "#0e0e0e" },
+        textColor: "#ccc",
+        fontFamily: 'Segoe UI',
+      },
+      grid: {
+        vertLines: { color: "#1f1f1f" },
+        horzLines: { color: "#1f1f1f" },
+      },
+      timeScale: {
+        timeVisible: true,
+        secondsVisible: false,
+        borderColor: "#2a2a2a",
+      },
+      priceScale: {
+        borderColor: "#2a2a2a",
+      },
+      crosshair: {
+        mode: 0,
+        vertLine: { color: '#666', style: 1, width: 1 },
+        horzLine: { color: '#666', style: 1, width: 1 },
+      },
+    });
+
+    const candleSeries = chart.addCandlestickSeries({
+      upColor: "#26a69a",
+      downColor: "#ef5350",
+      borderUpColor: "#26a69a",
+      borderDownColor: "#ef5350",
+      wickUpColor: "#26a69a",
+      wickDownColor: "#ef5350",
+    });
+
+    const timeframeSelect = document.getElementById("timeframe");
+    let currentTimeframe = localStorage.getItem("tmfx-timeframe") || "1m";
+    timeframeSelect.value = currentTimeframe;
+
+    let realtimeInterval = null;
+
+    // Validate candle object for required numeric fields and logical price consistency
+    function isValidCandle(c) {
+      if (!c) return false;
+      const fields = ['time', 'open', 'high', 'low', 'close'];
+      for (const f of fields) {
+        if (c[f] === null || c[f] === undefined) return false;
+        if (typeof c[f] !== 'number' || isNaN(c[f])) return false;
+      }
+      if (c.high < c.low) return false;
+      if (c.open > c.high || c.open < c.low) return false;
+      if (c.close > c.high || c.close < c.low) return false;
+      return true;
+    }
+
+    // Format raw candle data from Supabase to Lightweight Charts format
+    function formatCandle(candle) {
+      // time is int4 in seconds - ensure number type
+      const time = Number(candle.time);
+      if (!Number.isInteger(time) || time <= 0) return null;
+
+      // Convert numeric fields to Number type
+      const open = Number(candle.open);
+      const high = Number(candle.high);
+      const low = Number(candle.low);
+      const close = Number(candle.close);
+
+      if ([open, high, low, close].some(v => typeof v !== 'number' || isNaN(v))) return null;
+
+      return { time, open, high, low, close };
+    }
+
+    async function loadCandles(timeframe) {
+      candleSeries.setData([]);
+      if (realtimeInterval) {
+        clearInterval(realtimeInterval);
+        realtimeInterval = null;
+      }
+
+      try {
+        const { data, error } = await supabase
+          .from(`candles_${timeframe}`)
+          .select('time, open, high, low, close')
+          .order('time', { ascending: true });
+
+        if (error) throw error;
+        if (!data || data.length === 0) {
+          console.warn('No candle data received.');
+          return;
+        }
+
+        // Map and filter valid candles
+        const candles = data
+          .map(formatCandle)
+          .filter(c => c !== null && isValidCandle(c));
+
+        if (candles.length === 0) {
+          console.warn('No valid candles after filtering.');
+          return;
+        }
+
+        candleSeries.setData(candles);
+
+        // Start real-time updates
+        await updateLiveCandle(timeframe);
+        realtimeInterval = setInterval(() => updateLiveCandle(timeframe), 1000);
+      } catch (err) {
+        console.error('Failed to load candles:', err);
+      }
+    }
+
+    async function updateLiveCandle(timeframe) {
+      try {
+        const { data, error } = await supabase
+          .from(`current_candle_${timeframe}`)
+          .select('time, open, high, low, close')
+          .eq('id', 1)
+          .single();
+
+        if (error) throw error;
+        if (!data) return;
+
+        const liveCandle = formatCandle(data);
+        if (!liveCandle || !isValidCandle(liveCandle)) return;
+
+        candleSeries.update(liveCandle);
+      } catch (err) {
+        console.error('Failed to update live candle:', err);
+      }
+    }
+
+    timeframeSelect.addEventListener('change', (e) => {
+      currentTimeframe = e.target.value;
+      localStorage.setItem('tmfx-timeframe', currentTimeframe);
+      loadCandles(currentTimeframe);
+    });
+
+    // Initial load
+    loadCandles(currentTimeframe);
+  </script>
+</body>
+</html>

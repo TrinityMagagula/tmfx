@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TM FX Trading Competition - TM FX TRADING (pty) Ltd</title>
+    <link rel="icon" href="images/logo 32.png" type="image/png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script type="module" src="auth.js"></script>
+    <link rel="stylesheet" href="dashboard.css">
+    <script type="module" src="dashboard.js"></script>
+
+</head>
+<body>
+    <header class="main-header">
+        <div class="containernav">
+            <div class="logo">
+                <h1>TM FX TRADING <span class="small-text">(pty) Ltd</span></h1>
+            </div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="../../profile/profile.html"><i class="fas fa-user"></i> My Profile</a></li>
+                    <li><a href="webterminal/webterminal.html"><i class="fas fa-terminal"></i> Web Terminal</a></li>
+                    <li><a href="../competition.html"><i class="fas fa-trophy"></i> Competition</a></li>
+
+                    <li id="leaveBtn"><a href="index.html" onclick="logout(event)"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                </ul>
+                <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+            </nav>
+        </div>
+
+        <div class="ticker-strip">
+            <iframe src="https://www.tradingview-widget.com/embed-widget/ticker-tape/?locale=en#%7B%22symbols%22%3A%5B%7B%22proName%22%3A%22FOREXCOM%3ASPXUSD%22%2C%22title%22%3A%22S%26P%20500%22%7D%2C%7B%22proName%22%3A%22FOREXCOM%3ANSXUSD%22%2C%22title%22%3A%22US%20100%22%7D%2C%7B%22proName%22%3A%22FX_IDC%3AEURUSD%22%2C%22title%22%3A%22EUR%2FUSD%22%7D%2C%7B%22proName%22%3A%22BITSTAMP%3ABTCUSD%22%2C%22title%22%3A%22Bitcoin%22%7D%2C%7B%22proName%22%3A%22BITSTAMP%3AETHUSD%22%2C%22title%22%3A%22Ethereum%22%7D%5D%2C%22showSymbolLogo%22%3Atrue%2C%22colorTheme%22%3A%22dark%22%2C%22isTransparent%22%3Atrue%2C%22displayMode%22%3A%22adaptive%22%2C%22width%22%3A%22100%25%22%2C%22height%22%3A44%7D" 
+                    width="100%" 
+                    height="50" 
+                    frameborder="0" 
+                    allowtransparency="true" 
+                    scrolling="no">
+            </iframe>
+        </div>
+    </header>
+    
+    <main class="main-content container">
+        <!-- Account Details Section -->
+        <section class="account-section">
+            <div class="account-header">
+                <h2><i class="fas fa-user-circle"></i> Account Details</h2>
+                <a href="https://chat.whatsapp.com/Hna9qvbY0jmFJ0fzwrqxUj" target="_blank" class="community-button" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: #25D366; color: white; text-decoration: none; border-radius: 50px; font-weight: 600;">
+                    <i class="fab fa-whatsapp"></i> Competition Group
+                </a>
+            </div>
+            <div class="account-details">
+                <div class="detail-item">
+                    <span class="detail-label">Login:</span>
+                    <span class="detail-value">
+                        <span id="account-login">Loading...</span>
+                        <button class="copy-btn" onclick="copyToClipboard('account-login')"><i class="far fa-copy"></i></button>
+                    </span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Password:</span>
+                    <span class="detail-value">
+                        <span id="account-password" class="blurred">••••••••</span>
+                        <button class="toggle-password" onclick="togglePasswordVisibility('account-password')"><i class="far fa-eye"></i></button>
+                        <button class="copy-btn" onclick="copyToClipboard('account-password')"><i class="far fa-copy"></i></button>
+                    </span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Server:</span>
+                    <span class="detail-value" id="account-server">Synth-Markets-DEMO</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Platform:</span>
+                    <span class="detail-value" id="account-platform">SM Web Terminal</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Account Type:</span>
+                    <span class="detail-value" id="account-type">Standard Synth</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Broker:</span>
+                    <span class="detail-value" id="account-broker">Synth Markets</span>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Stats Section -->
+        <section class="stats-section">
+            <div class="user-profile">
+                <img id="user-avatar" src="" alt="Profile" class="user-avatar">
+                <div>
+                    <h3 id="user-name">Loading...</h3>
+                    <p id="user-province">Loading...</p>
+                </div>
+            </div>
+            <div class="stats-card">
+                <h3>Your Rank</h3>
+                <div class="stats-value" id="user-rank">-</div>
+            </div>
+            <div class="stats-card">
+                <h3>Total Participants</h3>
+                <div class="stats-value" id="total-participants">-</div>
+            </div>
+            <div class="stats-card">
+                <h3>Equity</h3>
+                <div class="stats-value" id="user-equity">-</div>
+            </div>
+            <div class="stats-card">
+                <h3>Status</h3>
+                <div class="stats-value" id="user-status">-</div>
+            </div>
+        </section>
+        
+        <!-- Leaderboard Section -->
+        <section class="leaderboard-section">
+            <div class="leaderboard-header">
+                <h2><i class="fas fa-trophy"></i> Weekly Leaderboard</h2>
+                <div class="pagination" id="leaderboard-pagination">
+                    <!-- Pagination buttons will be added here -->
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="leaderboard-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 0.1rem;">Rank</th>
+                            <th style="width: 1rem;">Trader</th>
+                            <th>Province</th>
+                            <th>Status</th>
+                            <th>Equity</th>
+                        </tr>
+                    </thead>
+                    <tbody id="leaderboard-body">
+                        <!-- Leaderboard data will be populated here -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+    
+    <footer class="main-footer">
+        <div class="container">
+            <p>&copy; 2024 TM FX TRADING (pty) Ltd. All rights reserved.</p>
+        </div>
+    </footer>
+
+
+</body>
+</html>
